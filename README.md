@@ -92,6 +92,20 @@ tests/                 tests Japa
 tmp/                   fichiers temporaires (CSV Rebrickable téléchargés, etc.)
 ```
 
+## Base de données
+
+| Table                        | Modèle                   | Contenu                                                                  |
+| ---------------------------- | ------------------------ | ------------------------------------------------------------------------ |
+| `themes`                     | `Theme`                  | Thèmes Rebrickable (id Rebrickable, imbriqués via `parent_id`)           |
+| `sets`                       | `BrickSet`               | Sets (nommé ainsi pour ne pas masquer le `Set` natif de JavaScript)      |
+| `minifigs`                   | `Minifig`                | Minifigs, avec thème principal et année de première apparition           |
+| `set_minifigs`               | —                        | Table pivot sets ↔ minifigs (`quantity`), via les relations `manyToMany` |
+| `users`                      | `User`                   | Comptes (email, pseudo, jeton de partage de wishlist)                    |
+| `user_sets`, `user_minifigs` | `UserSet`, `UserMinifig` | Collection (`owned`) et wishlist (`wanted`)                              |
+| `import_runs`                | `ImportRun`              | Journal des imports, avec curseur JSON pour la reprise                   |
+
+Les classes de colonnes sont générées dans `database/schema.ts` (ne pas modifier à la main). Les règles de génération (prix en `number`, enums typés, JSON) sont dans `database/schema_rules.ts`.
+
 Le logo provisoire est dans `inertia/components/logo.tsx` : c'est le seul fichier à modifier pour le remplacer.
 
 ## Disque externe exFAT (macOS)

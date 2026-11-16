@@ -4,11 +4,11 @@ import Seo from '~/components/seo'
 
 const fields = [
   {
-    name: 'fullName',
-    label: 'Nom (facultatif)',
+    name: 'username',
+    label: 'Pseudo',
     type: 'text',
-    autoComplete: 'name',
-    required: false,
+    autoComplete: 'username',
+    required: true,
   },
   { name: 'email', label: 'Adresse e-mail', type: 'email', autoComplete: 'email', required: true },
   {

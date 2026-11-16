@@ -5,7 +5,64 @@
  */
 
 import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { jsonColumn, decimalColumn } from '#database/column_types'
 import { DateTime } from 'luxon'
+
+export class ImportRunSchema extends BaseModel {
+  static $columns = ['cursor', 'error', 'finishedAt', 'id', 'source', 'startedAt', 'stats', 'status', 'type'] as const
+  $columns = ImportRunSchema.$columns
+  @jsonColumn()
+  declare cursor: Record<string, unknown> | null
+  @column()
+  declare error: string | null
+  @column.dateTime()
+  declare finishedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare source: 'rebrickable' | 'brickset' | 'bricklink'
+  @column.dateTime()
+  declare startedAt: DateTime
+  @jsonColumn()
+  declare stats: Record<string, number> | null
+  @column()
+  declare status: 'running' | 'completed' | 'failed' | 'interrupted'
+  @column()
+  declare type: string
+}
+
+export class MinifigSchema extends BaseModel {
+  static $columns = ['createdAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'figNum', 'id', 'imgUrl', 'mainThemeId', 'name', 'numParts', 'slug', 'updatedAt', 'yearFirst'] as const
+  $columns = MinifigSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare estimatedValueCurrency: string | null
+  @decimalColumn()
+  declare estimatedValueNew: number | null
+  @column.dateTime()
+  declare estimatedValueUpdatedAt: DateTime | null
+  @decimalColumn()
+  declare estimatedValueUsed: number | null
+  @column()
+  declare figNum: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare imgUrl: string | null
+  @column()
+  declare mainThemeId: number | null
+  @column()
+  declare name: string
+  @column()
+  declare numParts: number
+  @column()
+  declare slug: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare yearFirst: number | null
+}
 
 export class RateLimitSchema extends BaseModel {
   static $columns = ['expire', 'key', 'points'] as const
@@ -18,19 +75,152 @@ export class RateLimitSchema extends BaseModel {
   declare points: number
 }
 
+export class SetMinifigSchema extends BaseModel {
+  static $columns = ['minifigId', 'quantity', 'setId'] as const
+  $columns = SetMinifigSchema.$columns
+  @column()
+  declare minifigId: number
+  @column()
+  declare quantity: number
+  @column({ isPrimary: true })
+  declare setId: number
+}
+
+export class SetSchema extends BaseModel {
+  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgUrl', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
+  $columns = SetSchema.$columns
+  @column()
+  declare availabilityStatus: 'available' | 'retired' | 'unknown'
+  @column()
+  declare bricksetId: number | null
+  @column.dateTime()
+  declare bricksetSyncedAt: DateTime | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.date()
+  declare dateFirstAvailable: DateTime | null
+  @column.date()
+  declare dateLastAvailable: DateTime | null
+  @column()
+  declare description: string | null
+  @column()
+  declare estimatedValueCurrency: string | null
+  @decimalColumn()
+  declare estimatedValueNew: number | null
+  @column.dateTime()
+  declare estimatedValueUpdatedAt: DateTime | null
+  @decimalColumn()
+  declare estimatedValueUsed: number | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare imgUrl: string | null
+  @column()
+  declare name: string
+  @column()
+  declare numMinifigs: number
+  @column()
+  declare numParts: number
+  @column()
+  declare number: string
+  @decimalColumn()
+  declare rrpEur: number | null
+  @decimalColumn()
+  declare rrpGbp: number | null
+  @decimalColumn()
+  declare rrpUsd: number | null
+  @column()
+  declare setNum: string
+  @column()
+  declare slug: string
+  @column()
+  declare subtheme: string | null
+  @column()
+  declare themeId: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare variant: number
+  @column()
+  declare year: number | null
+}
+
+export class ThemeSchema extends BaseModel {
+  static $columns = ['id', 'name', 'parentId', 'slug'] as const
+  $columns = ThemeSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column()
+  declare parentId: number | null
+  @column()
+  declare slug: string
+}
+
+export class UserMinifigSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'minifigId', 'note', 'quantity', 'status', 'updatedAt', 'userId'] as const
+  $columns = UserMinifigSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare minifigId: number
+  @column()
+  declare note: string | null
+  @column()
+  declare quantity: number
+  @column()
+  declare status: 'owned' | 'wanted'
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number
+}
+
+export class UserSetSchema extends BaseModel {
+  static $columns = ['condition', 'createdAt', 'id', 'note', 'purchaseDate', 'purchasePrice', 'quantity', 'setId', 'status', 'updatedAt', 'userId'] as const
+  $columns = UserSetSchema.$columns
+  @column()
+  declare condition: 'built' | 'in_box' | 'sealed' | 'partial' | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare note: string | null
+  @column.date()
+  declare purchaseDate: DateTime | null
+  @decimalColumn()
+  declare purchasePrice: number | null
+  @column()
+  declare quantity: number
+  @column()
+  declare setId: number
+  @column()
+  declare status: 'owned' | 'wanted'
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number
+}
+
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
+  static $columns = ['createdAt', 'email', 'id', 'password', 'updatedAt', 'username', 'wishlistShareToken'] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
   declare email: string
-  @column()
-  declare fullName: string | null
   @column({ isPrimary: true })
   declare id: number
   @column({ serializeAs: null })
   declare password: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  @column()
+  declare username: string
+  @column()
+  declare wishlistShareToken: string | null
 }
