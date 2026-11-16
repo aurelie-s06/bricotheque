@@ -17,15 +17,15 @@ export const KIND_BY_ROOT_THEME: Record<number, { name: string; kind: SetKind }>
 }
 
 /**
- * Builds a `themeId → kind` lookup from the themes tree.
+ * Builds a `themeId → root theme id` lookup from the themes tree.
  */
-export function buildKindResolver(themes: { id: number; parentId: number | null }[]) {
+export function buildRootResolver(themes: { id: number; parentId: number | null }[]) {
   const parents = new Map(themes.map((theme) => [theme.id, theme.parentId]))
-  const cache = new Map<number, SetKind>()
+  const cache = new Map<number, number>()
 
-  return (themeId: number): SetKind => {
+  return (themeId: number): number => {
     const cached = cache.get(themeId)
-    if (cached) {
+    if (cached !== undefined) {
       return cached
     }
 
@@ -38,8 +38,15 @@ export function buildKindResolver(themes: { id: number; parentId: number | null 
       current = parents.get(current)
     }
 
-    const kind = KIND_BY_ROOT_THEME[root]?.kind ?? 'set'
-    cache.set(themeId, kind)
-    return kind
+    cache.set(themeId, root)
+    return root
   }
+}
+
+/**
+ * Builds a `themeId → kind` lookup from the themes tree.
+ */
+export function buildKindResolver(themes: { id: number; parentId: number | null }[]) {
+  const rootOf = buildRootResolver(themes)
+  return (themeId: number): SetKind => KIND_BY_ROOT_THEME[rootOf(themeId)]?.kind ?? 'set'
 }

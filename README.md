@@ -109,15 +109,21 @@ Les classes de colonnes sont générées dans `database/schema.ts` (ne pas modif
 ## Import du catalogue (Rebrickable)
 
 ```bash
-node ace import:rebrickable                   # télécharge themes.csv.gz et sets.csv.gz puis importe
+node ace import:rebrickable                   # télécharge les CSV puis importe tout
 node ace import:rebrickable --skip-download   # réutilise les fichiers de tmp/rebrickable/
 node ace import:rebrickable --only=sets       # seulement les sets (les thèmes doivent exister)
+node ace import:rebrickable --only=minifigs   # minifigs + liens avec les sets + champs calculés
 ```
 
 - Source : les exports CSV publics de Rebrickable (`https://cdn.rebrickable.com/media/downloads/`). L'API Rebrickable n'est pas utilisée pour l'import en masse.
 - Lecture en streaming, écriture par lots de 500, **upsert** : relancer la commande met à jour les lignes existantes sans créer de doublons, et ne touche jamais aux données Brickset/BrickLink.
 - Chaque import est journalisé dans `import_runs` (créés, mis à jour, inchangés, ignorés, erreurs).
 - Les images ne sont pas téléchargées : seule leur URL est stockée.
+- Étapes : `themes` → `sets` → `minifigs`. L'étape `minifigs` utilise `minifigs.csv.gz`, `inventories.csv.gz` et `inventory_minifigs.csv.gz` :
+  - les liens sets ↔ minifigs (`set_minifigs`) viennent de la **dernière version** d'inventaire de chaque set ; les liens qui ont disparu du fichier sont supprimés ;
+  - `sets.num_minifigs` = total des minifigs du set, quantités comprises ;
+  - `minifigs.year_first` = année du premier set (tous types) qui la contient ;
+  - `minifigs.main_theme_id` = thème **racine** le plus fréquent parmi ses vrais sets (`kind = set`) ; à défaut, parmi ses livres/gear ; vide si la minifig n'est dans aucun set.
 - Rebrickable range aussi des produits qui ne sont pas des sets. Ils sont importés mais **marqués** dans `sets.kind` d'après leur thème racine (`app/services/rebrickable/set_kinds.ts`) :
 
 | `kind`   | Thèmes racine Rebrickable                       |

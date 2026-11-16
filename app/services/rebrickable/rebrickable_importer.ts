@@ -1,6 +1,6 @@
-import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import { readCsv } from '#services/rebrickable/csv'
+import { emptyStats, upsertBatch, type ImportStats } from '#services/rebrickable/bulk'
 import {
   buildKindResolver,
   KIND_BY_ROOT_THEME,
@@ -8,18 +8,7 @@ import {
 } from '#services/rebrickable/set_kinds'
 import { emptyToNull, makeSlug, parseSetNum, toInteger } from '#services/rebrickable/parsing'
 
-export type ImportStats = {
-  /** rows read from the CSV */
-  read: number
-  created: number
-  updated: number
-  /** already up to date */
-  unchanged: number
-  /** valid rows we chose not to import (e.g. unknown theme) */
-  skipped: number
-  /** invalid rows */
-  errors: number
-}
+export type { ImportStats } from '#services/rebrickable/bulk'
 
 export type ImporterOptions = {
   batchSize?: number
@@ -44,6 +33,14 @@ type SetRow = {
   img_url: string | null
 }
 
+type MinifigRow = {
+  fig_num: string
+  name: string
+  slug: string
+  num_parts: number
+  img_url: string | null
+}
+
 /** Columns refreshed from Rebrickable on every import (Brickset/BrickLink data is never touched). */
 const SET_COLUMNS = [
   'number',
@@ -57,13 +54,8 @@ const SET_COLUMNS = [
   'img_url',
 ] as const
 
-function emptyStats(): ImportStats {
-  return { read: 0, created: 0, updated: 0, unchanged: 0, skipped: 0, errors: 0 }
-}
-
-function nowForSql() {
-  return DateTime.utc().toSQL({ includeOffset: false })
-}
+/** Columns refreshed on every import (computed fields and BrickLink values are never touched). */
+const MINIFIG_COLUMNS = ['name', 'slug', 'num_parts', 'img_url'] as const
 
 /**
  * Imports the Rebrickable CSV dumps into our tables, with upserts:
@@ -232,48 +224,58 @@ export default class RebrickableImporter {
   }
 
   /**
-   * Compares the batch with what is stored, then writes only new and
-   * changed rows with a single INSERT … ON DUPLICATE KEY UPDATE.
+   * minifigs.csv: fig_num, name, num_parts, img_url
    */
-  async #upsertSets(batch: SetRow[], stats: ImportStats) {
-    // A set_num listed twice in the same batch: keep the last one
-    const unique = [...new Map(batch.map((row) => [row.set_num, row])).values()]
+  async importMinifigs(path: string): Promise<ImportStats> {
+    const stats = emptyStats()
+    let batch: MinifigRow[] = []
 
-    const stored = await db
-      .from('sets')
-      .whereIn(
-        'set_num',
-        unique.map((row) => row.set_num)
-      )
-      .select('set_num', ...SET_COLUMNS)
-    const storedBySetNum = new Map(stored.map((row: SetRow) => [row.set_num, row]))
+    for await (const record of readCsv(path, [
+      'fig_num',
+      'name',
+      'num_parts',
+      'img_url',
+    ] as const)) {
+      stats.read++
+      const figNum = emptyToNull(record.fig_num)
+      const name = emptyToNull(record.name)
 
-    const toWrite = unique.filter((row) => {
-      const current = storedBySetNum.get(row.set_num)
-      if (!current) {
-        stats.created++
-        return true
+      if (figNum === null || name === null) {
+        stats.errors++
+        this.#onWarning(
+          `Minifig invalide ignorée (ligne ${stats.read + 1}) : ${JSON.stringify(record)}`
+        )
+        continue
       }
-      const changed = SET_COLUMNS.some((column) => current[column] !== row[column])
-      if (changed) {
-        stats.updated++
-      } else {
-        stats.unchanged++
-      }
-      return changed
-    })
 
-    if (toWrite.length === 0) {
-      return
+      batch.push({
+        fig_num: figNum,
+        name,
+        slug: makeSlug(name, 'minifig'),
+        num_parts: toInteger(record.num_parts) ?? 0,
+        img_url: emptyToNull(record.img_url),
+      })
+
+      if (batch.length >= this.#batchSize) {
+        await this.#upsertMinifigs(batch, stats)
+        batch = []
+        this.#onProgress(stats.read)
+      }
     }
 
-    const now = nowForSql()
-    await db
-      .knexQuery()
-      .table('sets')
-      .insert(toWrite.map((row) => ({ ...row, created_at: now, updated_at: now })))
-      .onConflict('set_num')
-      .merge([...SET_COLUMNS])
+    if (batch.length) {
+      await this.#upsertMinifigs(batch, stats)
+    }
+    this.#onProgress(stats.read)
+    return stats
+  }
+
+  #upsertSets(rows: SetRow[], stats: ImportStats) {
+    return upsertBatch({ table: 'sets', key: 'set_num', columns: SET_COLUMNS, rows, stats })
+  }
+
+  #upsertMinifigs(rows: MinifigRow[], stats: ImportStats) {
+    return upsertBatch({ table: 'minifigs', key: 'fig_num', columns: MINIFIG_COLUMNS, rows, stats })
   }
 
   /**

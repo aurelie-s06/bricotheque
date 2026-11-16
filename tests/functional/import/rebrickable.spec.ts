@@ -7,6 +7,7 @@ import Theme from '#models/theme'
 import BrickSet from '#models/brick_set'
 import ImportRun from '#models/import_run'
 import RebrickableImporter from '#services/rebrickable/rebrickable_importer'
+import ImportRebrickable from '#commands/import_rebrickable'
 import { gzippedFixtures } from '#tests/helpers/rebrickable'
 
 async function importFixtures(name: string) {
@@ -20,6 +21,15 @@ async function importFixtures(name: string) {
 
 test.group('Rebrickable import', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  /**
+   * Capture the command output instead of printing it, so it can be
+   * asserted and does not pollute the test report.
+   */
+  group.each.setup(() => {
+    ace.ui.switchMode('raw')
+    return () => ace.ui.switchMode('normal')
+  })
 
   test('imports themes with their parents and unique slugs', async ({ assert }) => {
     const { themes } = await importFixtures('initial')
@@ -48,6 +58,7 @@ test.group('Rebrickable import', (group) => {
       created: 7,
       updated: 0,
       unchanged: 0,
+      deleted: 0,
       skipped: 1,
       errors: 1,
     })
@@ -93,6 +104,7 @@ test.group('Rebrickable import', (group) => {
       created: 1,
       updated: 1,
       unchanged: 6,
+      deleted: 0,
       skipped: 0,
       errors: 0,
     })
@@ -110,8 +122,10 @@ test.group('Rebrickable import', (group) => {
   test('the command imports the files and records import runs', async ({ assert }) => {
     const directory = await gzippedFixtures('initial')
 
-    const command = await ace.exec('import:rebrickable', ['--skip-download', `--dir=${directory}`])
-    assert.equal(command.exitCode, 0)
+    const command = await ace.create(ImportRebrickable, ['--skip-download', `--dir=${directory}`])
+    await command.exec()
+    command.assertSucceeded()
+    command.assertLogMatches(/Set BAD-1 ignoré : thème 99999 inconnu/)
 
     const runs = await ImportRun.query().where('source', 'rebrickable').orderBy('id')
     assert.deepEqual(
@@ -119,19 +133,27 @@ test.group('Rebrickable import', (group) => {
       [
         ['themes', 'completed'],
         ['sets', 'completed'],
+        ['minifigs', 'completed'],
+        ['set_minifigs', 'completed'],
       ]
     )
     assert.deepInclude(runs[1].stats!, { created: 7, skipped: 1, errors: 1 })
+    assert.deepInclude(runs[3].stats!, { created: 8, setsRecounted: 4, minifigsRecomputed: 5 })
     assert.isNotNull(runs[1].finishedAt)
     const imported = await BrickSet.all()
     assert.lengthOf(imported, 7)
   })
 
-  test('the command fails cleanly when files are missing', async ({ assert }) => {
-    const command = await ace.exec('import:rebrickable', [
+  test('the command fails cleanly when files are missing', async () => {
+    const command = await ace.create(ImportRebrickable, [
       '--skip-download',
       '--dir=/nonexistent/rebrickable',
     ])
-    assert.equal(command.exitCode, 1)
+    await command.exec()
+
+    command.assertFailed()
+    command.assertLogMatches(
+      /\/nonexistent\/rebrickable\/themes\.csv\.gz introuvable : relance sans --skip-download/
+    )
   })
 })
