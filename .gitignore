@@ -1,0 +1,40 @@
+# Dependencies and AdonisJS build
+node_modules
+build
+tmp/*
+!tmp/.gitkeep
+
+# Secrets (never commit credentials)
+.env
+.env.local
+.env.production
+.env.production.local
+.env.development.local
+
+# Frontend assets compiled code
+public/assets
+
+# Downloaded data dumps (Rebrickable CSV, caches)
+*.csv.gz
+storage/
+
+# Local databases
+*.sqlite
+*.sqlite3
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# Build tools specific
+npm-debug.log
+yarn-error.log
+
+# Editors specific
+.fleet
+.idea
+.vscode
+
+# Platform specific
+.DS_Store
+._*
