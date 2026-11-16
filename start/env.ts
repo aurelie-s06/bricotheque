@@ -37,6 +37,8 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   // Brickset API v3 (https://brickset.com/tools/webservices/requestkey/)
   BRICKSET_API_KEY: Env.schema.secret.optional(),
+  // Max getSets calls per day allowed by Brickset (the importer keeps a small margin)
+  BRICKSET_DAILY_LIMIT: Env.schema.number.optional(),
 
   // BrickLink API (OAuth 1.0, optional)
   BRICKLINK_CONSUMER_KEY: Env.schema.string.optional(),

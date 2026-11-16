@@ -92,6 +92,27 @@ tests/                 tests Japa
 tmp/                   fichiers temporaires (CSV Rebrickable téléchargés, etc.)
 ```
 
+## Enrichissement Brickset (prix, disponibilité, description)
+
+```bash
+node ace import:brickset                  # import complet, année par année
+node ace import:brickset --resume         # reprend un import arrêté (quota atteint, erreur)
+node ace import:brickset --set=75192-1    # un seul set (debug)
+node ace import:brickset --refresh        # ignore le cache des réponses
+```
+
+- Clé gratuite à demander sur https://brickset.com/tools/webservices/requestkey/, à mettre dans `.env` (`BRICKSET_API_KEY`).
+- Brickset limite les appels `getSets` par jour (`BRICKSET_DAILY_LIMIT`, 100 par défaut). La commande vérifie l'usage du jour avec `getKeyUsageStats`, garde 2 appels de marge, puis **s'arrête proprement** en enregistrant où elle en est (`import_runs.cursor`) : il suffit de relancer le lendemain avec `--resume`.
+- Les sets sont demandés **par année** (pages de 500, de l'année prochaine vers la plus ancienne) : une centaine d'appels pour tout le catalogue, contre des milliers par thème × année. Le rapprochement se fait par numéro + variante (`75192-1`, ou `71048-0` pour les sachets surprise).
+- Les réponses sont mises en cache 20 h dans `tmp/brickset/` : une relance le même jour ne consomme pas de quota.
+- Colonnes remplies : `rrp_eur` (LEGO.com Allemagne), `rrp_usd`, `rrp_gbp`, `date_first_available` (`launchDate`), `date_last_available` (`exitDate`), `subtheme`, `description` (HTML nettoyé ; texte anglais de LEGO.com), `brickset_id`, `brickset_synced_at`.
+- **Règle de disponibilité** (`availability_status`, recalculée pour tous les sets) :
+  1. date de fin connue : aujourd'hui ou plus tard → `available`, passée → `retired` ;
+  2. sans date de fin, sorti il y a plus de 3 ans (date de sortie, sinon 1er janvier de l'année) → `retired` ;
+  3. sans date de fin, déjà sorti → `available` ;
+  4. sinon (pas encore sorti, aucune donnée) → `unknown`.
+- Sans description Brickset, l'affichage génère un texte de remplacement (`app/services/set_description.ts`), jamais enregistré en base.
+
 ## Base de données
 
 | Table                        | Modèle                   | Contenu                                                                  |
