@@ -96,7 +96,7 @@ tmp/                   fichiers temporaires (CSV Rebrickable téléchargés, etc
 
 ```bash
 node ace import:brickset                  # import complet, année par année
-node ace import:brickset --resume         # reprend un import arrêté (quota atteint, erreur)
+node ace import:brickset --resume         # reprend un import arrêté (quota, erreur) ; ne fait rien sinon
 node ace import:brickset --set=75192-1    # un seul set (debug)
 node ace import:brickset --refresh        # ignore le cache des réponses
 ```

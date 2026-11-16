@@ -264,6 +264,19 @@ test.group('import:brickset command', (group) => {
     assert.isNull(runs[1].cursor)
   })
 
+  test('--resume does nothing when there is nothing to resume', async ({ assert }) => {
+    await seedCatalogue()
+    const api = new FakeBricksetApi(bricksetFixtures())
+    ImportBrickset.apiFactory = () => api
+
+    const command = await ace.create(ImportBrickset, ['--resume'])
+    await command.exec()
+    command.assertSucceeded()
+    command.assertLogMatches(/rien à faire/)
+    assert.lengthOf(api.calls, 0)
+    assert.lengthOf(await ImportRun.query().where('source', 'brickset'), 0)
+  })
+
   test('enriches one set with --set', async ({ assert }) => {
     await seedCatalogue()
     ImportBrickset.apiFactory = () => new FakeBricksetApi(bricksetFixtures())

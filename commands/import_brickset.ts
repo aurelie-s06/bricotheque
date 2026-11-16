@@ -24,7 +24,7 @@ export default class ImportBrickset extends BaseCommand {
     'Stops cleanly before the daily getSets quota and can resume the next day.',
     '',
     '{{ binaryName }} import:brickset',
-    '{{ binaryName }} import:brickset --resume',
+    '{{ binaryName }} import:brickset --resume   (does nothing when there is nothing to resume)',
     '{{ binaryName }} import:brickset --set=75192-1',
   ]
 
@@ -79,7 +79,9 @@ export default class ImportBrickset extends BaseCommand {
   async #importAll(api: BricksetApi) {
     const resumeFrom = this.resume ? await this.#lastCursor() : undefined
     if (this.resume && !resumeFrom) {
-      this.logger.info('Aucun import interrompu à reprendre : import complet')
+      // Safe to schedule every day: nothing happens once the import is complete
+      this.logger.info('Aucun import interrompu à reprendre : rien à faire')
+      return
     }
     if (resumeFrom) {
       const year = resumeFrom.years[resumeFrom.yearIndex]
