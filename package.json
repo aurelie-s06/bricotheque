@@ -82,6 +82,7 @@
     "@inertiajs/react": "^3.7.1",
     "@tuyau/core": "^1.2.2",
     "@vinejs/vine": "^4.4.0",
+    "csv-parse": "^7.0.3",
     "edge.js": "^6.5.1",
     "lucide-react": "^1.48.0",
     "luxon": "^3.7.2",

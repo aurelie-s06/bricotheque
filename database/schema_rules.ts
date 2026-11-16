@@ -34,6 +34,7 @@ export default {
     sets: {
       columns: {
         availability_status: enumOf(['available', 'retired', 'unknown']),
+        kind: enumOf(['set', 'book', 'gear', 'parts', 'bundle']),
       },
     },
     user_sets: {

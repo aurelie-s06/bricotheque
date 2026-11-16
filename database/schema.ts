@@ -87,7 +87,7 @@ export class SetMinifigSchema extends BaseModel {
 }
 
 export class SetSchema extends BaseModel {
-  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgUrl', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
+  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgUrl', 'kind', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
   $columns = SetSchema.$columns
   @column()
   declare availabilityStatus: 'available' | 'retired' | 'unknown'
@@ -115,6 +115,8 @@ export class SetSchema extends BaseModel {
   declare id: number
   @column()
   declare imgUrl: string | null
+  @column()
+  declare kind: 'set' | 'book' | 'gear' | 'parts' | 'bundle'
   @column()
   declare name: string
   @column()

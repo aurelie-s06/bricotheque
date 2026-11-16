@@ -36,9 +36,10 @@ const dbConfig = defineConfig({
         rulesPaths: ['./database/schema_rules.js'],
       },
       /**
-       * Emit SQL queries to the logger in development.
+       * Emit SQL queries to the logger in development (web server only,
+       * so that import commands stay readable).
        */
-      debug: app.inDev,
+      debug: app.inDev && app.getEnvironment() === 'web',
     },
   },
 })

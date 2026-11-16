@@ -1,0 +1,12 @@
+id,name,parent_id
+1,Technic,
+18,Star Wars,1
+171,Ultimate Collector Series,158
+158,Star Wars,
+497,Books,
+498,Technic,497
+501,Gear,
+503,Key Chain,501
+443,Service Packs,
+254,Bulk Bricks,
+559,Value Packs,

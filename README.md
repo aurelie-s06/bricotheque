@@ -106,6 +106,28 @@ tmp/                   fichiers temporaires (CSV Rebrickable téléchargés, etc
 
 Les classes de colonnes sont générées dans `database/schema.ts` (ne pas modifier à la main). Les règles de génération (prix en `number`, enums typés, JSON) sont dans `database/schema_rules.ts`.
 
+## Import du catalogue (Rebrickable)
+
+```bash
+node ace import:rebrickable                   # télécharge themes.csv.gz et sets.csv.gz puis importe
+node ace import:rebrickable --skip-download   # réutilise les fichiers de tmp/rebrickable/
+node ace import:rebrickable --only=sets       # seulement les sets (les thèmes doivent exister)
+```
+
+- Source : les exports CSV publics de Rebrickable (`https://cdn.rebrickable.com/media/downloads/`). L'API Rebrickable n'est pas utilisée pour l'import en masse.
+- Lecture en streaming, écriture par lots de 500, **upsert** : relancer la commande met à jour les lignes existantes sans créer de doublons, et ne touche jamais aux données Brickset/BrickLink.
+- Chaque import est journalisé dans `import_runs` (créés, mis à jour, inchangés, ignorés, erreurs).
+- Les images ne sont pas téléchargées : seule leur URL est stockée.
+- Rebrickable range aussi des produits qui ne sont pas des sets. Ils sont importés mais **marqués** dans `sets.kind` d'après leur thème racine (`app/services/rebrickable/set_kinds.ts`) :
+
+| `kind`   | Thèmes racine Rebrickable                       |
+| -------- | ----------------------------------------------- |
+| `set`    | tous les autres                                 |
+| `book`   | Books                                           |
+| `gear`   | Gear (porte-clés, sacs, vêtements, jeux vidéo…) |
+| `parts`  | Service Packs, Bulk Bricks                      |
+| `bundle` | Value Packs                                     |
+
 Le logo provisoire est dans `inertia/components/logo.tsx` : c'est le seul fichier à modifier pour le remplacer.
 
 ## Disque externe exFAT (macOS)
