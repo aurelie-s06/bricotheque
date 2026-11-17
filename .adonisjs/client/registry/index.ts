@@ -14,6 +14,30 @@ const routes = {
     tokens: [[0,"/"]],
     types: placeholder as Registry['home']['types'],
   },
+  'sets.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/sets',
+    tokens: [[0,"sets"]],
+    types: placeholder as Registry['sets.index']['types'],
+  },
+  'sets.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/sets/:ref',
+    tokens: [[0,"sets"],[1,"ref"]],
+    types: placeholder as Registry['sets.show']['types'],
+  },
+  'themes.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/themes',
+    tokens: [[0,"themes"]],
+    types: placeholder as Registry['themes.index']['types'],
+  },
+  'themes.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/themes/:slug',
+    tokens: [[0,"themes"],[1,"slug"]],
+    types: placeholder as Registry['themes.show']['types'],
+  },
   'search': {
     methods: ["GET","HEAD"],
     pattern: '/recherche',

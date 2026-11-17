@@ -6,10 +6,25 @@
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps, InferFlashData } from '@adonisjs/inertia/types'
+import type BrickSetTransformer from '#transformers/brick_set_transformer'
+import type MinifigTransformer from '#transformers/minifig_transformer'
+import type ThemeTransformer from '#transformers/theme_transformer'
 import type UserTransformer from '#transformers/user_transformer'
 import type InertiaMiddleware from '#middleware/inertia_middleware'
 
 export namespace Data {
+  export type BrickSet = InferData<BrickSetTransformer>
+  export namespace BrickSet {
+    export type Variants = InferVariants<BrickSetTransformer>
+  }
+  export type Minifig = InferData<MinifigTransformer>
+  export namespace Minifig {
+    export type Variants = InferVariants<MinifigTransformer>
+  }
+  export type Theme = InferData<ThemeTransformer>
+  export namespace Theme {
+    export type Variants = InferVariants<ThemeTransformer>
+  }
   export type User = InferData<UserTransformer>
   export namespace User {
     export type Variants = InferVariants<UserTransformer>

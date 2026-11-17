@@ -1,8 +1,18 @@
+import { Link } from '@adonisjs/inertia/react'
+import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import SetCard from '~/components/set_card'
 import SearchForm from '~/components/search_form'
+import { type InertiaProps } from '~/types'
+import { plural } from '~/lib/format'
 
-export default function Home() {
+type Props = InertiaProps<{
+  popularThemes: { name: string; url: string; count: number }[]
+  latestSets: Data.BrickSet[]
+}>
+
+export default function Home({ popularThemes, latestSets }: Props) {
   return (
     <>
       <Seo />
@@ -18,13 +28,38 @@ export default function Home() {
 
       <hr className="section-divider studs studs--muted" />
 
-      <div className="empty-state">
-        <div className="studs" aria-hidden="true" />
-        <h2>Le catalogue arrive bientôt</h2>
-        <p className="text-muted">
-          Les sets et minifigs seront importés lors des prochaines étapes.
-        </p>
-      </div>
+      <section aria-labelledby="themes-title" className="home-section">
+        <div className="home-section__header">
+          <h2 id="themes-title">Thèmes populaires</h2>
+          <Link href="/themes">Tous les thèmes</Link>
+        </div>
+        <ul className="chip-list chip-list--large">
+          {popularThemes.map((theme) => (
+            <li key={theme.url}>
+              <Link href={theme.url} className="chip">
+                {theme.name}{' '}
+                <span className="chip__count" aria-label={plural(theme.count, 'set')}>
+                  {theme.count}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="latest-title" className="home-section">
+        <div className="home-section__header">
+          <h2 id="latest-title">Derniers sets sortis</h2>
+          <Link href="/sets">Tout le catalogue</Link>
+        </div>
+        <ul className="card-grid">
+          {latestSets.map((set) => (
+            <li key={set.id}>
+              <SetCard set={set} />
+            </li>
+          ))}
+        </ul>
+      </section>
     </>
   )
 }

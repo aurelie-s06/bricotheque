@@ -22,11 +22,11 @@ test.group('Layout', () => {
     response.assertTextIncludes('href="/inscription"')
   })
 
-  test('search page echoes the query', async ({ client }) => {
+  test('the search leads to the catalogue results', async ({ client }) => {
     const response = await client.get('/recherche').qs({ q: '75192' })
 
     response.assertStatus(200)
-    response.assertTextIncludes('Tu as cherché « 75192 »')
+    response.assertTextIncludes('Recherche « 75192 » dans les sets')
   })
 
   test('static assets are served', async ({ client }) => {

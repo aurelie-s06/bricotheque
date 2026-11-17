@@ -33,6 +33,16 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
           <nav className="site-nav" aria-label="Menu principal">
             <ul className="site-nav__list">
+              <li>
+                <NavLink route="sets.index" className="site-nav__link">
+                  Sets
+                </NavLink>
+              </li>
+              <li>
+                <NavLink route="themes.index" className="site-nav__link">
+                  Thèmes
+                </NavLink>
+              </li>
               {props.user ? (
                 <li>
                   <Form route="session.destroy">

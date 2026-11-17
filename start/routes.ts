@@ -11,15 +11,23 @@ import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').renderInertia('home', {}).as('home')
+router.get('/', [controllers.Home, 'index']).as('home')
 
 /**
- * Global search (placeholder until the catalogue is imported)
+ * Public catalogue
+ */
+router.get('sets', [controllers.Sets, 'index']).as('sets.index')
+router.get('sets/:ref', [controllers.Sets, 'show']).as('sets.show')
+router.get('themes', [controllers.Themes, 'index']).as('themes.index')
+router.get('themes/:slug', [controllers.Themes, 'show']).as('themes.show')
+
+/**
+ * Global search: sets only for now (minifigs come with step 6)
  */
 router
-  .get('recherche', ({ request, inertia }) => {
+  .get('recherche', ({ request, response }) => {
     const q = String(request.input('q', '')).trim().slice(0, 100)
-    return inertia.render('search', { q })
+    return response.redirect().toRoute('sets.index', {}, { qs: q ? { q } : {} })
   })
   .as('search')
 

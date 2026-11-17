@@ -127,6 +127,18 @@ node ace import:brickset --refresh        # ignore le cache des réponses
 
 Les classes de colonnes sont générées dans `database/schema.ts` (ne pas modifier à la main). Les règles de génération (prix en `number`, enums typés, JSON) sont dans `database/schema_rules.ts`.
 
+## Pages publiques
+
+| URL                               | Contenu                                                                                                                                                                                                                                                                                                                                                                                                    |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                               | Recherche, thèmes populaires, derniers sets sortis                                                                                                                                                                                                                                                                                                                                                         |
+| `/sets`                           | Catalogue paginé (48 par page) avec recherche et filtres dans l'URL : `q`, `theme` (sous-thèmes inclus), `year_min`/`year_max`, `parts_min`/`parts_max`, `price_min`/`price_max` (€), `status` (`available`, `retired`, `unknown`), `type` (`set` par défaut, `book`, `gear`, `parts`, `bundle`, `all`), `sort` (`recent`, `oldest`, `name`, `parts_desc`, `parts_asc`, `price_asc`, `price_desc`), `page` |
+| `/sets/75192-1-millennium-falcon` | Fiche d'un set ; `/sets/75192-1` ou un ancien slug redirigent (301) vers l'URL canonique                                                                                                                                                                                                                                                                                                                   |
+| `/themes`, `/themes/star-wars`    | Thèmes avec leur nombre de sets ; sets d'un thème (et de ses sous-thèmes) par année                                                                                                                                                                                                                                                                                                                        |
+| `/recherche?q=…`                  | Recherche du header (redirige vers `/sets?q=…` en attendant les minifigs)                                                                                                                                                                                                                                                                                                                                  |
+
+La recherche par numéro (`75192`) trouve toutes les variantes (`75192-1`, `75192-2`…) ; la recherche par nom ignore la casse et les accents (les noms sont en anglais, comme chez Rebrickable).
+
 ## Import du catalogue (Rebrickable)
 
 ```bash
