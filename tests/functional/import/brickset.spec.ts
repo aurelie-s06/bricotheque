@@ -120,7 +120,7 @@ test.group('Brickset import', (group) => {
       '8880-1': 'retired', // 1994, no date
       '75192-2': 'retired', // not on Brickset, released more than 3 years ago
       '76000-1': 'available', // released in 2026, no exit date yet
-      '77000-1': 'unknown', // not released yet
+      '77000-1': 'upcoming', // not released yet
       '78000-1': 'unknown', // recent, no data
     })
   })

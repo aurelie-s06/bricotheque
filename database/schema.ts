@@ -138,7 +138,7 @@ export class SetSchema extends BaseModel {
   static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'kind', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
   $columns = SetSchema.$columns
   @column()
-  declare availabilityStatus: 'available' | 'retired' | 'unknown'
+  declare availabilityStatus: 'upcoming' | 'available' | 'retired' | 'unknown'
   @column()
   declare bricksetId: number | null
   @column.dateTime()

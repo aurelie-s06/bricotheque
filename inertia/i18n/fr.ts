@@ -107,6 +107,10 @@ const fr = {
   'home.title': 'Tous les sets et minifigs, une seule collection',
   'home.lead':
     'Retrouve n’importe quel set ou minifig, d’hier comme d’aujourd’hui, et garde la trace de ta collection et de tes envies.',
+  'home.announcements': 'Dernières annonces',
+  'home.allAnnouncements': 'Voir toutes les annonces',
+  'home.releaseOn': 'Sortie prévue le {date}',
+  'home.releaseTbc': 'Date à confirmer',
   'home.latestSets': 'Derniers sets sortis',
   'home.allSets': 'Tout le catalogue',
 
@@ -169,7 +173,9 @@ const fr = {
   'sort.parts_desc': 'Plus de pièces',
   'sort.parts_asc': 'Moins de pièces',
   'sort.price_asc': 'Prix croissant',
+  'sort.release': 'Sortie la plus proche',
   'sort.price_desc': 'Prix décroissant',
+  'status.upcoming': 'Bientôt',
   'status.available': 'En vente',
   'status.retired': 'Retiré',
   'status.unknown': 'Statut inconnu',

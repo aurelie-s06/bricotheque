@@ -98,5 +98,11 @@ function applySort(query: ReturnType<typeof BrickSet.query>, filters: SetFilters
         .orderByRaw('`rrp_eur` IS NULL')
         .orderBy('rrp_eur', 'desc')
         .orderBy('set_num', 'asc')
+    case 'release':
+      // Nearest release first; sets without date at the end of their year
+      query
+        .orderByRaw("COALESCE(`date_first_available`, CONCAT(`year`, '-12-31')) IS NULL")
+        .orderByRaw("COALESCE(`date_first_available`, CONCAT(`year`, '-12-31')) ASC")
+      return naturalNumber()
   }
 }

@@ -12,8 +12,9 @@ const SORTS = [
   'parts_asc',
   'price_asc',
   'price_desc',
+  'release',
 ] as const
-const STATUSES = ['available', 'retired', 'unknown'] as const
+const STATUSES = ['upcoming', 'available', 'retired', 'unknown'] as const
 // Spare parts (kind "parts") stay in the catalogue but have no button of their own
 const TYPES = ['set', 'book', 'gear', 'bundle', 'all'] as const
 const CONDITIONS = ['built', 'in_box', 'sealed', 'partial'] as const

@@ -1,5 +1,7 @@
 import { test } from '@japa/runner'
+import { DateTime } from 'luxon'
 import testUtils from '@adonisjs/core/services/test_utils'
+import db from '@adonisjs/lucid/services/db'
 import { addTechnicSets, seedCatalogue } from '#tests/helpers/catalogue'
 
 type Card = { setNum: string }
@@ -239,6 +241,30 @@ test.group('Catalogue: themes and home', (group) => {
   test('/themes/:slug returns 404 for an unknown theme', async ({ client }) => {
     const response = await client.get('/themes/nope')
     response.assertStatus(404)
+  })
+
+  test('announced sets: status filter, nearest release first, home section', async ({
+    client,
+    assert,
+  }) => {
+    const next = DateTime.utc().plus({ days: 10 }).toISODate()!
+    const later = DateTime.utc().plus({ days: 40 }).toISODate()!
+    await db.from('sets').where('set_num', '8880-1').update({
+      availability_status: 'upcoming',
+      date_first_available: later,
+    })
+    await db.from('sets').where('set_num', '75192-2').update({
+      availability_status: 'upcoming',
+      date_first_available: next,
+    })
+
+    const list = await client.get('/sets').qs({ status: 'upcoming', sort: 'release' }).withInertia()
+    assert.deepEqual(setNums(list.inertiaProps), ['75192-2', '8880-1'])
+
+    const home = await client.get('/').withInertia()
+    assert.deepEqual(setNums({ sets: home.inertiaProps.announcements }), ['75192-2', '8880-1'])
+    assert.equal(home.inertiaProps.announcements[0].releaseDate, next)
+    assert.notInclude(setNums({ sets: home.inertiaProps.latestSets }), '8880-1')
   })
 
   test('the home page shows the latest released sets', async ({ client, assert }) => {

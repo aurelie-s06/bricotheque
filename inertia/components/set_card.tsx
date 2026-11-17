@@ -15,6 +15,7 @@ export default function SetCard({
   reload = 'ids',
   showAcquire = false,
   showButtons = true,
+  note,
 }: {
   set: Data.BrickSet
   headingLevel?: 2 | 3
@@ -23,6 +24,8 @@ export default function SetCard({
   reload?: 'ids' | 'page'
   showAcquire?: boolean
   showButtons?: boolean
+  /** Extra line under the year (e.g. the release date of an announced set) */
+  note?: React.ReactNode
 }) {
   const { t, tc, formatPrice } = useI18n()
   const Heading = `h${headingLevel}` as const
@@ -48,6 +51,7 @@ export default function SetCard({
           </Link>
         </Heading>
         <p className="set-card__meta">{meta.join(' · ')}</p>
+        {note && <p className="set-card__note">{note}</p>}
         {entry && (
           <p className="set-card__entry">
             {tc('collection.copies', entry.quantity)}

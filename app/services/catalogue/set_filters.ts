@@ -10,10 +10,11 @@ export const SET_SORTS = [
   'parts_asc',
   'price_asc',
   'price_desc',
+  'release',
 ] as const
 export type SetSort = (typeof SET_SORTS)[number]
 
-export const SET_STATUSES = ['available', 'retired', 'unknown'] as const
+export const SET_STATUSES = ['upcoming', 'available', 'retired', 'unknown'] as const
 export type SetStatus = (typeof SET_STATUSES)[number]
 
 /** Spare parts (kind "parts") are only shown with "all", not on their own */

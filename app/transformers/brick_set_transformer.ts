@@ -25,6 +25,8 @@ export default class BrickSetTransformer extends BaseTransformer<BrickSet> {
       ]),
       // A picture pasted in the back office wins over the imported one
       imgUrl: this.resource.imgUrlManual ?? this.resource.imgUrl,
+      /** First day on sale (release date of the announced sets) */
+      releaseDate: this.resource.dateFirstAvailable?.toISODate() ?? null,
       url: setPath(this.resource),
     }
   }

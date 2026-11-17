@@ -40,7 +40,7 @@ export default {
   tables: {
     sets: {
       columns: {
-        availability_status: enumOf(['available', 'retired', 'unknown']),
+        availability_status: enumOf(['upcoming', 'available', 'retired', 'unknown']),
         kind: enumOf(['set', 'book', 'gear', 'parts', 'bundle']),
       },
     },

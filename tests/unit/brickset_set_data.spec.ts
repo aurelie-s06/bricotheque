@@ -42,9 +42,20 @@ test.group('Brickset: availability rule', () => {
     assert.equal(status({ year: 2023, dateFirstAvailable: '2023-11-17' }), 'available')
   })
 
+  test('not on sale yet means upcoming', ({ assert }) => {
+    assert.equal(status({ year: 2027, dateFirstAvailable: '2027-01-01' }), 'upcoming')
+    // a known exit date does not matter before the release
+    assert.equal(
+      status({ year: 2026, dateFirstAvailable: '2026-11-21', dateLastAvailable: '2026-11-29' }),
+      'upcoming'
+    )
+    assert.equal(status({ year: 2027 }), 'upcoming') // future year, no date yet
+    assert.equal(status({ year: 2026, dateFirstAvailable: '2026-11-16' }), 'available') // today
+  })
+
   test('otherwise the status is unknown', ({ assert }) => {
     assert.equal(status({ year: 2025 }), 'unknown') // recent, no Brickset data
-    assert.equal(status({ year: 2027, dateFirstAvailable: '2027-01-01' }), 'unknown') // not released yet
+    assert.equal(status({ year: 2026 }), 'unknown') // this year, no date
     assert.equal(status({ year: null }), 'unknown')
   })
 })

@@ -2,13 +2,16 @@ import he from 'he'
 import { DateTime } from 'luxon'
 import type { BricksetSet } from '#services/brickset/types'
 
-export type AvailabilityStatus = 'available' | 'retired' | 'unknown'
+export type AvailabilityStatus = 'upcoming' | 'available' | 'retired' | 'unknown'
 
 /** Number of years after which a set without exit date is considered retired */
 export const RETIRED_AFTER_YEARS = 3
 
 /**
  * Availability rule:
+ * 0. Not on sale yet → upcoming: first availability date in the future, or,
+ *    without that date, a year after the current one (checked on the real
+ *    data: no set of a future year has a past availability date).
  * 1. A known exit date decides: today or later → available, past → retired.
  * 2. Without exit date, a set released more than 3 years ago → retired
  *    (release = first availability date, or 1 January of its year).
@@ -21,6 +24,10 @@ export function availabilityStatus(
   today: DateTime = DateTime.utc()
 ): AvailabilityStatus {
   const day = today.toISODate()!
+
+  if (set.dateFirstAvailable ? set.dateFirstAvailable > day : (set.year ?? 0) > today.year) {
+    return 'upcoming'
+  }
 
   if (set.dateLastAvailable) {
     return set.dateLastAvailable >= day ? 'available' : 'retired'

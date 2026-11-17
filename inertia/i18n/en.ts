@@ -107,6 +107,10 @@ const en: Record<keyof typeof fr, string> = {
   'home.title': 'Every set and minifig, one collection',
   'home.lead':
     'Find any set or minifig, past or present, and keep track of your collection and your wishlist.',
+  'home.announcements': 'Latest announcements',
+  'home.allAnnouncements': 'See all announcements',
+  'home.releaseOn': 'Release planned on {date}',
+  'home.releaseTbc': 'Date to be confirmed',
   'home.latestSets': 'Latest releases',
   'home.allSets': 'Full catalogue',
 
@@ -169,7 +173,9 @@ const en: Record<keyof typeof fr, string> = {
   'sort.parts_desc': 'Most pieces',
   'sort.parts_asc': 'Fewest pieces',
   'sort.price_asc': 'Price: low to high',
+  'sort.release': 'Nearest release',
   'sort.price_desc': 'Price: high to low',
+  'status.upcoming': 'Coming soon',
   'status.available': 'On sale',
   'status.retired': 'Retired',
   'status.unknown': 'Unknown status',
