@@ -20,7 +20,6 @@ const fr = {
   'nav.logout': 'Déconnexion',
   'nav.menu': 'Menu',
   'nav.accountMenu': 'Menu du compte',
-  'nav.backToResults': 'Retour aux résultats',
   'language.label': 'Langue',
   'language.fr': 'Français',
   'language.en': 'English',
@@ -34,8 +33,6 @@ const fr = {
   'home.title': 'Tous les sets et minifigs, une seule collection',
   'home.lead':
     'Retrouve n’importe quel set ou minifig, d’hier comme d’aujourd’hui, et garde la trace de ta collection et de tes envies.',
-  'home.popularThemes': 'Thèmes populaires',
-  'home.allThemes': 'Tous les thèmes',
   'home.latestSets': 'Derniers sets sortis',
   'home.allSets': 'Tout le catalogue',
 
@@ -151,7 +148,6 @@ const fr = {
 
   // Themes
   'themes.title': 'Thèmes',
-  'themes.biggest': 'Les plus grands thèmes',
   'themes.all': 'Tous les thèmes de A à Z',
   'themes.filterLabel': 'Filtrer les thèmes',
   'themes.filterPlaceholder': 'Filtrer (ex. Ninjago, Castle…)',
@@ -366,12 +362,6 @@ const fr = {
   'shared.empty': 'Cette wishlist est vide pour l’instant.',
   'collection.noMatch': 'Aucun résultat avec ces filtres.',
   'collection.browse': 'Parcourir le catalogue',
-  'collection.export': 'Exporter ma collection',
-  'wishlist.export': 'Exporter ma wishlist',
-  'wishlist.exportInfo':
-    'Fichier CSV (tableur), {size} Ko, nommé « briquotheque-wishlist-date.csv ».',
-  'collection.exportInfo':
-    'Fichier CSV (tableur), {size} Ko, nommé « briquotheque-collection-date.csv ».',
   'wishlist.total': 'Prix estimé de la wishlist : {price}',
   'wishlist.totalUnknown_one': '{count} objet sans prix connu n’est pas compté.',
   'wishlist.totalUnknown_other': '{count} objets sans prix connu ne sont pas comptés.',

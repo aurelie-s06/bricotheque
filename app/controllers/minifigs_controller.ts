@@ -10,7 +10,7 @@ import {
 } from '#services/catalogue/minifig_query'
 import MinifigTransformer from '#transformers/minifig_transformer'
 import { minifigPath, setNumCandidates, themePath } from '#helpers/urls'
-import { listReferer, rememberListUrl } from '#helpers/catalogue_memory'
+import { rememberListUrl } from '#helpers/catalogue_memory'
 import Collection from '#services/collection'
 
 export default class MinifigsController {
@@ -80,7 +80,6 @@ export default class MinifigsController {
     return inertia.render('minifigs/show', {
       minifig: MinifigTransformer.transform(minifig).useVariant('forDetail'),
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
-      backUrl: listReferer(ctx),
       ownedEntry: owned ? { quantity: owned.quantity, note: owned.note } : null,
     })
   }

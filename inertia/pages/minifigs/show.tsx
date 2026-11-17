@@ -5,7 +5,6 @@ import Seo from '~/components/seo'
 import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
-import BackLink from '~/components/back_link'
 import CollectionButtons from '~/components/collection_buttons'
 import { MinifigDetailsForm } from '~/components/collection_details'
 import { usePage } from '@inertiajs/react'
@@ -18,7 +17,6 @@ type MinifigDetail = Data.Minifig.Variants['forDetail']
 type Props = InertiaProps<{
   minifig: MinifigDetail
   themeChain: { name: string; url: string }[]
-  backUrl: string | null
   ownedEntry: { quantity: number; note: string | null } | null
 }>
 
@@ -49,7 +47,7 @@ function EstimatedValue({ minifig }: { minifig: MinifigDetail }) {
   )
 }
 
-export default function MinifigShow({ minifig, themeChain, backUrl, ownedEntry }: Props) {
+export default function MinifigShow({ minifig, themeChain, ownedEntry }: Props) {
   const { props } = usePage()
   const { t, tc, formatNumber } = useI18n()
   const sets = minifig.sets ?? []
@@ -69,8 +67,6 @@ export default function MinifigShow({ minifig, themeChain, backUrl, ownedEntry }
             : t('minifig.metaDescriptionNoSet', { figNum: minifig.figNum, name: minifig.name })
         }
       />
-
-      <BackLink href={backUrl} />
       <Breadcrumb
         items={[
           { name: t('breadcrumb.home'), url: '/' },

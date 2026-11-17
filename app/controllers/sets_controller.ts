@@ -8,7 +8,7 @@ import { fallbackDescription } from '#services/set_description'
 import BrickSetTransformer from '#transformers/brick_set_transformer'
 import { setNumCandidates, setPath, themePath } from '#helpers/urls'
 import { resolveLocale } from '#helpers/locale'
-import { listReferer, rememberListUrl } from '#helpers/catalogue_memory'
+import { rememberListUrl } from '#helpers/catalogue_memory'
 import Collection from '#services/collection'
 
 export default class SetsController {
@@ -67,7 +67,6 @@ export default class SetsController {
     return inertia.render('sets/show', {
       set: BrickSetTransformer.transform(set).useVariant('forDetail'),
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
-      backUrl: listReferer(ctx),
       ownedEntry: owned
         ? {
             quantity: owned.quantity,

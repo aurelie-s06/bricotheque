@@ -1424,11 +1424,6 @@ select.field__input {
   font-variant-numeric: tabular-nums;
 }
 
-.chip-list--large .chip {
-  min-height: 44px;
-  font-size: 1rem;
-}
-
 /* ---------- Themes ---------- */
 .theme-grid {
   display: grid;
@@ -1717,10 +1712,6 @@ select.field__input {
 }
 
 /* ---------- Back to results ---------- */
-.back-link {
-  margin-bottom: var(--space-1);
-  font-weight: 600;
-}
 
 /* ---------- Account forms ---------- */
 .auth-form {
@@ -2012,10 +2003,6 @@ textarea.field__input {
   min-width: 0;
 }
 
-.collection-export {
-  margin: var(--space-2) 0;
-}
-
 /* ---------- Dashboard ---------- */
 .stat-tiles {
   display: grid;
@@ -2301,51 +2288,9 @@ a:not([class]):visited {
 }
 
 /* ---------- Themes directory ---------- */
-.themes-biggest {
-  margin-bottom: var(--space-5);
-}
 
-.themes-biggest h2,
 .themes-directory__header h2 {
   margin-bottom: var(--space-2);
-}
-
-.theme-tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
-  gap: var(--space-2);
-  list-style: none;
-  padding: 0;
-}
-
-.theme-tile {
-  display: grid;
-  gap: var(--half);
-  height: 100%;
-  padding: var(--space-2);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-bottom: var(--brick-edge) solid var(--brick-yellow);
-  border-radius: var(--radius);
-  color: var(--ink);
-  text-decoration: none;
-  transition: border-color var(--duration) ease;
-}
-
-.theme-tile:hover {
-  border-color: var(--brick-yellow-dark);
-  color: var(--ink);
-}
-
-.theme-tile__name {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.125rem;
-}
-
-.theme-tile__count {
-  color: var(--ink-muted);
-  font-size: 0.875rem;
 }
 
 .themes-directory__header {

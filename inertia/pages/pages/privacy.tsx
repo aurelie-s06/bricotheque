@@ -107,14 +107,6 @@ export default function Privacy({ contact, host }: Props) {
         </li>
         <li>
           {fr
-            ? 'télécharger votre collection et votre wishlist (fichiers CSV) : pages '
-            : 'download your collection and wishlist (CSV files): '}
-          <Link href="/ma-collection">{t('collection.title')}</Link>
-          {fr ? ' et ' : ' and '}
-          <Link href="/ma-wishlist">{t('wishlist.title')}</Link> ;
-        </li>
-        <li>
-          {fr
             ? 'supprimer votre compte et toutes ses données, immédiatement et définitivement : page '
             : 'delete your account and all its data, immediately and permanently: '}
           <Link href="/mon-compte">{t('account.title')}</Link>.

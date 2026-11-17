@@ -119,12 +119,6 @@ router
     // Collection and wishlist
     router.get('tableau-de-bord', [controllers.Dashboard, 'show']).as('dashboard')
     router.get('ma-collection', [controllers.MyCollection, 'collection']).as('collection.index')
-    router
-      .get('ma-collection/export.csv', [controllers.MyCollection, 'export'])
-      .as('collection.export')
-    router
-      .get('ma-wishlist/export.csv', [controllers.MyCollection, 'exportWishlist'])
-      .as('wishlist.export')
     router.get('ma-wishlist', [controllers.MyCollection, 'wishlist']).as('wishlist.index')
     router.post('ma-wishlist/partage', [controllers.MyCollection, 'share']).as('wishlist.share')
     router

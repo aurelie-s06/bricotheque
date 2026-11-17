@@ -40,8 +40,6 @@ export type ScannedRoutes = {
     'account.update_preferences': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
-    'collection.export': { paramsTuple?: []; params?: {} }
-    'wishlist.export': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'wishlist.share': { paramsTuple?: []; params?: {} }
     'wishlist.unshare': { paramsTuple?: []; params?: {} }
@@ -79,8 +77,6 @@ export type ScannedRoutes = {
     'account.show': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
-    'collection.export': { paramsTuple?: []; params?: {} }
-    'wishlist.export': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
   }
@@ -111,8 +107,6 @@ export type ScannedRoutes = {
     'account.show': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
-    'collection.export': { paramsTuple?: []; params?: {} }
-    'wishlist.export': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
   }

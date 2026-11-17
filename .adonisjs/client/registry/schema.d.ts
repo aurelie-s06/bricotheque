@@ -476,32 +476,6 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['collection']>>>
     }
   }
-  'collection.export': {
-    methods: ["GET","HEAD"]
-    pattern: '/ma-collection/export.csv'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
-    }
-  }
-  'wishlist.export': {
-    methods: ["GET","HEAD"]
-    pattern: '/ma-wishlist/export.csv'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['exportWishlist']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['exportWishlist']>>>
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['exportWishlist']>>>
-    }
-  }
   'wishlist.index': {
     methods: ["GET","HEAD"]
     pattern: '/ma-wishlist'

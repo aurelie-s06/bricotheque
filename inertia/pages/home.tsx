@@ -8,12 +8,11 @@ import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
-  popularThemes: { name: string; url: string; count: number }[]
   latestSets: Data.BrickSet[]
 }>
 
-export default function Home({ popularThemes, latestSets }: Props) {
-  const { t, tc } = useI18n()
+export default function Home({ latestSets }: Props) {
+  const { t } = useI18n()
   return (
     <>
       <Seo />
@@ -25,25 +24,6 @@ export default function Home({ popularThemes, latestSets }: Props) {
       </section>
 
       <hr className="section-divider studs studs--muted" />
-
-      <section aria-labelledby="themes-title" className="home-section">
-        <div className="home-section__header">
-          <h2 id="themes-title">{t('home.popularThemes')}</h2>
-          <Link href="/themes">{t('home.allThemes')}</Link>
-        </div>
-        <ul className="chip-list chip-list--large">
-          {popularThemes.map((theme) => (
-            <li key={theme.url}>
-              <Link href={theme.url} className="chip">
-                {theme.name}{' '}
-                <span className="chip__count" aria-label={tc('count.sets', theme.count)}>
-                  {theme.count}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       <section aria-labelledby="latest-title" className="home-section">
         <div className="home-section__header">

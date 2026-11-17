@@ -232,13 +232,10 @@ test.group('Catalogue: themes and home', (group) => {
     response.assertStatus(404)
   })
 
-  test('the home page shows popular themes and the latest released sets', async ({
-    client,
-    assert,
-  }) => {
+  test('the home page shows the latest released sets', async ({ client, assert }) => {
     const response = await client.get('/').withInertia()
     response.assertStatus(200)
-    assert.equal(response.inertiaProps.popularThemes[0].name, 'Star Wars')
+    assert.notProperty(response.inertiaProps, 'popularThemes')
     assert.deepEqual(setNums({ sets: response.inertiaProps.latestSets }), ['75192-1'])
   })
 })

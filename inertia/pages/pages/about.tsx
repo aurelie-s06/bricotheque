@@ -133,16 +133,6 @@ export default function About({ contact, catalogueUpdates }: Props) {
             ? 'Liste d’envies : les sets et minifigs que vous aimeriez avoir.'
             : 'The sets and minifigs you would like to have.'}
         </dd>
-        <dt>
-          <abbr title={fr ? 'Valeurs séparées par des virgules' : 'Comma-separated values'}>
-            CSV
-          </abbr>
-        </dt>
-        <dd>
-          {fr
-            ? 'Format de fichier tableur utilisé pour l’export de la collection.'
-            : 'Spreadsheet file format used to export the collection.'}
-        </dd>
       </dl>
 
       <h2 id="qualite">{fr ? 'Qualité et accessibilité' : 'Quality and accessibility'}</h2>

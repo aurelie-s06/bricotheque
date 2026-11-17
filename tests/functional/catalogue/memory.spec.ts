@@ -2,9 +2,6 @@ import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { seedCatalogue } from '#tests/helpers/catalogue'
 
-/** Origin of the test server, for same-site Referer headers */
-const origin = () => `http://${process.env.HOST}:${process.env.PORT}`
-
 test.group('Catalogue: remembered filters', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
   group.each.setup(() => seedCatalogue())
@@ -46,31 +43,15 @@ test.group('Catalogue: remembered filters', (group) => {
     assert.equal(tampered.inertiaProps.catalogueUrls.sets, '/sets')
   })
 
-  test('a detail page reached from a list links back to it', async ({ client, assert }) => {
-    const fromList = await client
+  test('the breadcrumb of a detail page goes back to the remembered list', async ({
+    client,
+    assert,
+  }) => {
+    const response = await client
       .get('/sets/75192-1-millennium-falcon')
-      .header('referer', `${origin()}/sets?theme=star-wars&page=2`)
+      .withSession({ catalogue: { sets: '/sets?theme=star-wars&page=2' } })
       .withInertia()
-    assert.equal(fromList.inertiaProps.backUrl, '/sets?theme=star-wars&page=2')
-
-    const fromSearch = await client
-      .get('/minifigs/fig-000001-han-solo')
-      .header('referer', `${origin()}/recherche?q=solo`)
-      .withInertia()
-    assert.equal(fromSearch.inertiaProps.backUrl, '/recherche?q=solo')
-  })
-
-  test('no back link from another page or another website', async ({ client, assert }) => {
-    for (const referer of [
-      `${origin()}/sets/8880-1-super-car`,
-      'https://evil.example/sets?q=x',
-      'not a url',
-    ]) {
-      const response = await client
-        .get('/sets/75192-1-millennium-falcon')
-        .header('referer', referer)
-        .withInertia()
-      assert.isNull(response.inertiaProps.backUrl, referer)
-    }
+    assert.equal(response.inertiaProps.catalogueUrls.sets, '/sets?theme=star-wars&page=2')
+    assert.notProperty(response.inertiaProps, 'backUrl')
   })
 })

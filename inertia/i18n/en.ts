@@ -21,7 +21,6 @@ const en: Record<keyof typeof fr, string> = {
   'nav.logout': 'Log out',
   'nav.menu': 'Menu',
   'nav.accountMenu': 'Account menu',
-  'nav.backToResults': 'Back to results',
   'language.label': 'Language',
   'language.fr': 'Français',
   'language.en': 'English',
@@ -35,8 +34,6 @@ const en: Record<keyof typeof fr, string> = {
   'home.title': 'Every set and minifig, one collection',
   'home.lead':
     'Find any set or minifig, past or present, and keep track of your collection and your wishlist.',
-  'home.popularThemes': 'Popular themes',
-  'home.allThemes': 'All themes',
   'home.latestSets': 'Latest releases',
   'home.allSets': 'Full catalogue',
 
@@ -152,7 +149,6 @@ const en: Record<keyof typeof fr, string> = {
 
   // Themes
   'themes.title': 'Themes',
-  'themes.biggest': 'Biggest themes',
   'themes.all': 'All themes from A to Z',
   'themes.filterLabel': 'Filter themes',
   'themes.filterPlaceholder': 'Filter (e.g. Ninjago, Castle…)',
@@ -363,12 +359,6 @@ const en: Record<keyof typeof fr, string> = {
   'shared.empty': 'This wishlist is empty for now.',
   'collection.noMatch': 'No result with these filters.',
   'collection.browse': 'Browse the catalogue',
-  'collection.export': 'Export my collection',
-  'wishlist.export': 'Export my wishlist',
-  'wishlist.exportInfo':
-    'CSV file (spreadsheet), {size} KB, named “briquotheque-wishlist-date.csv”.',
-  'collection.exportInfo':
-    'CSV file (spreadsheet), {size} KB, named “briquotheque-collection-date.csv”.',
   'wishlist.total': 'Estimated price of the wishlist: {price}',
   'wishlist.totalUnknown_one': '{count} item without a known price is not counted.',
   'wishlist.totalUnknown_other': '{count} items without a known price are not counted.',

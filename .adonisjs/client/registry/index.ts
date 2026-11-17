@@ -224,18 +224,6 @@ const routes = {
     tokens: [[0,"ma-collection"]],
     types: placeholder as Registry['collection.index']['types'],
   },
-  'collection.export': {
-    methods: ["GET","HEAD"],
-    pattern: '/ma-collection/export.csv',
-    tokens: [[0,"ma-collection"],[0,"export.csv"]],
-    types: placeholder as Registry['collection.export']['types'],
-  },
-  'wishlist.export': {
-    methods: ["GET","HEAD"],
-    pattern: '/ma-wishlist/export.csv',
-    tokens: [[0,"ma-wishlist"],[0,"export.csv"]],
-    types: placeholder as Registry['wishlist.export']['types'],
-  },
   'wishlist.index': {
     methods: ["GET","HEAD"],
     pattern: '/ma-wishlist',

@@ -282,9 +282,6 @@ test.group('Collection: privacy between users', (group) => {
       alicePage.inertiaProps.sets.map((set: { setNum: string }) => set.setNum),
       ['75192-1']
     )
-
-    const bobExport = await client.get('/ma-collection/export.csv').loginAs(bob)
-    assert.notInclude(bobExport.text(), '75192-1')
   })
 
   test('a user cannot change the collection of another user', async ({ client, assert }) => {
@@ -462,69 +459,6 @@ test.group('Collection pages', (group) => {
       ['fig-000003']
     )
     assert.deepInclude(response.inertiaProps.counts, { minifigs: 1, minifigCopies: 2 })
-  })
-
-  test('exports the collection as CSV', async ({ client, assert }) => {
-    const user = await createUser()
-    await UserSet.create({
-      userId: user.id,
-      setId: await setId('75192-1'),
-      status: 'owned',
-      quantity: 2,
-      condition: 'sealed',
-      purchasePrice: 799.5,
-      note: '=HYPERLINK("x")',
-    })
-    await UserSet.create({ userId: user.id, setId: await setId('8880-1'), status: 'wanted' })
-    await UserMinifig.create({
-      userId: user.id,
-      minifigId: await minifigId('fig-000001'),
-      status: 'owned',
-    })
-
-    const response = await client.get('/ma-collection/export.csv').loginAs(user)
-    response.assertStatus(200)
-    response.assertHeader('content-type', 'text/csv; charset=utf-8')
-    assert.match(
-      response.header('content-disposition') ?? '',
-      /attachment; filename="briquotheque-collection-\d{4}-\d{2}-\d{2}\.csv"/
-    )
-
-    const lines = response
-      .text()
-      .replace(/^\uFEFF/, '')
-      .trim()
-      .split('\r\n')
-    assert.lengthOf(lines, 3) // header + 1 set + 1 minifig (the wishlist is not exported)
-    assert.match(lines[0], /^Type;Numéro;Nom;Thème/)
-    assert.equal(
-      lines[1],
-      'Set;75192-1;Millennium Falcon™;Ultimate Collector Series;2017;7541;2;Neuf scellé;799,50;;849,99;\'=HYPERLINK(""x"")'.replace(
-        '\'=HYPERLINK(""x"")',
-        '"\'=HYPERLINK(""x"")"'
-      )
-    )
-    assert.match(lines[2], /^Minifig;fig-000001;Han Solo;Star Wars;1994;4;1;/)
-  })
-
-  test('exports the wishlist in the same format', async ({ client, assert }) => {
-    const user = await createUser()
-    await UserSet.create({ userId: user.id, setId: await setId('8880-1'), status: 'wanted' })
-    await UserSet.create({ userId: user.id, setId: await setId('75192-1'), status: 'owned' })
-
-    const response = await client.get('/ma-wishlist/export.csv').loginAs(user)
-    response.assertStatus(200)
-    assert.match(
-      response.header('content-disposition') ?? '',
-      /filename="briquotheque-wishlist-\d{4}-\d{2}-\d{2}\.csv"/
-    )
-    const lines = response
-      .text()
-      .replace(/^\uFEFF/, '')
-      .trim()
-      .split('\r\n')
-    assert.lengthOf(lines, 2)
-    assert.match(lines[1], /^Set;8880-1;/)
   })
 
   test('the preference to add minifigs is saved from the account page', async ({

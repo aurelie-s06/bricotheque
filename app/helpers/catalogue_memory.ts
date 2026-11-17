@@ -24,28 +24,3 @@ export function catalogueUrls(ctx: Partial<HttpContext>): Record<Catalogue, stri
   }
   return { sets: read('sets'), minifigs: read('minifigs') }
 }
-
-/** Lists that lead to a set or minifig page */
-const LIST_PATHS = [/^\/sets$/, /^\/minifigs$/, /^\/themes\/[\w-]+$/, /^\/recherche$/]
-
-/**
- * URL of the list the visitor comes from (same site only), for the
- * "Back to results" link of a detail page; null otherwise.
- */
-export function listReferer(ctx: HttpContext): string | null {
-  const referer = ctx.request.header('referer')
-  if (!referer) {
-    return null
-  }
-  try {
-    const url = new URL(referer)
-    if (url.host !== ctx.request.host()) {
-      return null
-    }
-    return LIST_PATHS.some((pattern) => pattern.test(url.pathname))
-      ? `${url.pathname}${url.search}`
-      : null
-  } catch {
-    return null
-  }
-}

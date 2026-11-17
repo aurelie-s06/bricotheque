@@ -1,7 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { DateTime } from 'luxon'
 import string from '@adonisjs/core/helpers/string'
-import db from '@adonisjs/lucid/services/db'
 import { Exception } from '@adonisjs/core/exceptions'
 import User from '#models/user'
 import {
@@ -12,7 +10,6 @@ import {
 } from '#services/collection_lists'
 import { resolveLocale } from '#helpers/locale'
 import { serverMessage } from '#helpers/server_messages'
-import { toCsv } from '#helpers/csv'
 
 type Tab = 'sets' | 'minifigs'
 const tabOf = (value: unknown): Tab => (value === 'minifigs' ? 'minifigs' : 'sets')
@@ -43,8 +40,6 @@ export default class MyCollectionController {
       ...(await listProps(user.id, 'owned', request.qs())),
       wishlistTotal: null,
       shareUrl: null,
-      /** Size of the CSV export, shown on the download link (Opquast rule 148) */
-      exportSize: Buffer.byteLength(await this.#csv(user.id, resolveLocale(request), 'owned')),
     })
   }
 
@@ -57,7 +52,6 @@ export default class MyCollectionController {
       ...(await listProps(user.id, 'wanted', request.qs())),
       wishlistTotal: await wishlistTotal(user.id),
       shareUrl: user.wishlistShareToken ? this.#shareUrl(request, user.wishlistShareToken) : null,
-      exportSize: Buffer.byteLength(await this.#csv(user.id, resolveLocale(request), 'wanted')),
     })
   }
 
@@ -73,7 +67,6 @@ export default class MyCollectionController {
       ...(await listProps(owner.id, 'wanted', request.qs())),
       wishlistTotal: await wishlistTotal(owner.id),
       shareUrl: null,
-      exportSize: null,
     })
   }
 
@@ -95,139 +88,6 @@ export default class MyCollectionController {
     await user.save()
     session.flash('success', serverMessage(resolveLocale(request), 'wishlist.unshared'))
     return response.redirect().toRoute('wishlist.index')
-  }
-
-  /**
-   * GET /ma-collection/export.csv: the whole collection, sets then
-   * minifigs. Semicolon-separated with a BOM, so Excel opens it directly.
-   */
-  async export({ auth, request, response }: HttpContext) {
-    const user = auth.getUserOrFail()
-    const filename = `briquotheque-collection-${DateTime.utc().toISODate()}.csv`
-    response.header('Content-Type', 'text/csv; charset=utf-8')
-    response.header('Content-Disposition', `attachment; filename="${filename}"`)
-    return response.send(await this.#csv(user.id, resolveLocale(request), 'owned'))
-  }
-
-  /** GET /ma-wishlist/export.csv: same format for the wishlist (Opquast rule 21) */
-  async exportWishlist({ auth, request, response }: HttpContext) {
-    const user = auth.getUserOrFail()
-    const filename = `briquotheque-wishlist-${DateTime.utc().toISODate()}.csv`
-    response.header('Content-Type', 'text/csv; charset=utf-8')
-    response.header('Content-Disposition', `attachment; filename="${filename}"`)
-    return response.send(await this.#csv(user.id, resolveLocale(request), 'wanted'))
-  }
-
-  /** CSV of the owned or wanted sets and minifigs (UTF-8 with BOM, ";" for spreadsheets) */
-  async #csv(userId: number, locale: 'fr' | 'en', status: 'owned' | 'wanted') {
-    const sets = await db
-      .from('user_sets')
-      .join('sets', 'sets.id', 'user_sets.set_id')
-      .join('themes', 'themes.id', 'sets.theme_id')
-      .where({ 'user_sets.user_id': userId, 'user_sets.status': status })
-      .orderBy('sets.set_num')
-      .select(
-        'sets.set_num',
-        'sets.name',
-        'themes.name as theme',
-        'sets.year',
-        'sets.num_parts',
-        'user_sets.quantity',
-        'user_sets.condition',
-        'user_sets.purchase_price',
-        db.raw("DATE_FORMAT(user_sets.purchase_date, '%Y-%m-%d') as purchase_date"),
-        'sets.rrp_eur',
-        'user_sets.note'
-      )
-    const minifigs = await db
-      .from('user_minifigs')
-      .join('minifigs', 'minifigs.id', 'user_minifigs.minifig_id')
-      .leftJoin('themes', 'themes.id', 'minifigs.main_theme_id')
-      .where({ 'user_minifigs.user_id': userId, 'user_minifigs.status': status })
-      .orderBy('minifigs.fig_num')
-      .select(
-        'minifigs.fig_num',
-        'minifigs.name',
-        'themes.name as theme',
-        'minifigs.year_first',
-        'minifigs.num_parts',
-        'user_minifigs.quantity',
-        'user_minifigs.note'
-      )
-
-    const fr = locale === 'fr'
-    const header = fr
-      ? [
-          'Type',
-          'Numéro',
-          'Nom',
-          'Thème',
-          'Année',
-          'Pièces',
-          'Quantité',
-          'État',
-          'Prix d’achat (€)',
-          'Date d’achat',
-          'Prix d’origine (€)',
-          'Note',
-        ]
-      : [
-          'Type',
-          'Number',
-          'Name',
-          'Theme',
-          'Year',
-          'Pieces',
-          'Quantity',
-          'Condition',
-          'Purchase price (€)',
-          'Purchase date',
-          'Original price (€)',
-          'Note',
-        ]
-    const conditions: Record<string, string> = fr
-      ? { built: 'Monté', in_box: 'En boîte', sealed: 'Neuf scellé', partial: 'Incomplet' }
-      : { built: 'Built', in_box: 'In box', sealed: 'Sealed', partial: 'Incomplete' }
-    const decimal = (value: unknown) =>
-      value === null || value === undefined
-        ? ''
-        : fr
-          ? String(value).replace('.', ',')
-          : String(value)
-
-    const rows = [
-      header,
-      ...sets.map((set) => [
-        'Set',
-        set.set_num,
-        set.name,
-        set.theme,
-        set.year,
-        set.num_parts,
-        set.quantity,
-        set.condition ? conditions[set.condition] : '',
-        decimal(set.purchase_price),
-        set.purchase_date ?? '',
-        decimal(set.rrp_eur),
-        set.note ?? '',
-      ]),
-      ...minifigs.map((minifig) => [
-        'Minifig',
-        minifig.fig_num,
-        minifig.name,
-        minifig.theme ?? '',
-        minifig.year_first ?? '',
-        minifig.num_parts,
-        minifig.quantity,
-        '',
-        '',
-        '',
-        '',
-        minifig.note ?? '',
-      ]),
-    ]
-
-    return `\uFEFF${toCsv(rows, ';')}`
   }
 
   #shareUrl(request: HttpContext['request'], token: string) {

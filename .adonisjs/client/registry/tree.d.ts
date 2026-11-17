@@ -61,7 +61,6 @@ export interface ApiDefinition {
   dashboard: typeof routes['dashboard']
   collection: {
     index: typeof routes['collection.index']
-    export: typeof routes['collection.export']
     acquire: typeof routes['collection.acquire']
     addSetMinifigs: typeof routes['collection.add_set_minifigs']
     setDetails: typeof routes['collection.set_details']
@@ -69,7 +68,6 @@ export interface ApiDefinition {
     toggle: typeof routes['collection.toggle']
   }
   wishlist: {
-    export: typeof routes['wishlist.export']
     index: typeof routes['wishlist.index']
     share: typeof routes['wishlist.share']
     unshare: typeof routes['wishlist.unshare']

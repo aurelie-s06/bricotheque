@@ -11,9 +11,6 @@ type ThemeEntry = { name: string; url: string; count: number }
 type RootTheme = ThemeEntry & { subthemes: ThemeEntry[] }
 type Props = InertiaProps<{ themes: RootTheme[] }>
 
-/** Themes shown as tiles at the top of the page */
-const BIGGEST = 8
-
 /** "Ça" → "ca": comparison without case or accents */
 const fold = (text: string) => text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
@@ -40,8 +37,8 @@ function ThemeEntryItem({ theme }: { theme: RootTheme }) {
 }
 
 /**
- * Main themes: the biggest ones as tiles, then an A–Z directory (number of
- * sets and of subthemes; the subthemes are on each theme page). With
+ * Main themes as an A–Z directory (number of sets and of subthemes; the
+ * subthemes are on each theme page). With
  * JavaScript, a field filters the list as you type.
  */
 export default function ThemesIndex({ themes }: Props) {
@@ -52,11 +49,6 @@ export default function ThemesIndex({ themes }: Props) {
     () => () => {},
     () => true,
     () => false
-  )
-
-  const biggest = useMemo(
-    () => [...themes].sort((a, b) => b.count - a.count).slice(0, BIGGEST),
-    [themes]
   )
 
   // Filter on the names of the main themes
@@ -86,20 +78,6 @@ export default function ThemesIndex({ themes }: Props) {
         <h1>{t('themes.title')}</h1>
         <p className="text-muted">{tc('themes.roots', themes.length)}</p>
       </div>
-
-      <section aria-labelledby="biggest-title" className="themes-biggest">
-        <h2 id="biggest-title">{t('themes.biggest')}</h2>
-        <ul className="theme-tiles">
-          {biggest.map((theme) => (
-            <li key={theme.url}>
-              <Link href={theme.url} className="theme-tile">
-                <span className="theme-tile__name">{theme.name}</span>
-                <span className="theme-tile__count">{tc('count.sets', theme.count)}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       <section aria-labelledby="all-title">
         <div className="themes-directory__header">
