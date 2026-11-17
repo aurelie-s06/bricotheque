@@ -153,8 +153,11 @@ test.group('Catalogue: /sets/:ref', (group) => {
   test('the HTML has a title, a description and the breadcrumb', async ({ client }) => {
     const response = await client.get('/sets/75192-1-millennium-falcon')
     response.assertTextIncludes(
-      '<title data-inertia="">75192-1 Millennium Falcon™ – Briquothèque</title>'
+      '<title data-inertia="">75192 Millennium Falcon™ – Briquothèque</title>'
     )
+    // Only the "-1" of the first version is hidden: the variant keeps its suffix
+    const variant = await client.get('/sets/75192-2') // redirects to the canonical URL
+    variant.assertTextIncludes('<title data-inertia="">75192-2 ')
     response.assertTextIncludes('name="description"')
     response.assertTextIncludes('Fil d’Ariane')
   })

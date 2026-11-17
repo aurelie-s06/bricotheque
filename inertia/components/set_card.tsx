@@ -4,6 +4,7 @@ import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import CollectionButtons from '~/components/collection_buttons'
 import { useI18n } from '~/i18n'
+import { displaySetNum } from '~/lib/set_number'
 
 export type CollectionEntry = { quantity: number; condition: string | null }
 
@@ -34,12 +35,12 @@ export default function SetCard({
       <div className="set-card__media">
         <SetImage
           src={set.imgUrl}
-          alt={t('image.set', { setNum: set.setNum, name: set.name })}
+          alt={t('image.set', { setNum: displaySetNum(set.setNum), name: set.name })}
           thumb
         />
       </div>
       <div className="set-card__body">
-        <p className="set-card__number">{set.setNum}</p>
+        <p className="set-card__number">{displaySetNum(set.setNum)}</p>
         <Heading className="set-card__title">
           <Link href={set.url} className="set-card__link">
             {set.name}
@@ -62,7 +63,7 @@ export default function SetCard({
           <CollectionButtons
             kind="sets"
             id={set.id}
-            name={`${set.setNum} ${set.name}`}
+            name={`${displaySetNum(set.setNum)} ${set.name}`}
             reload={reload}
             showAcquire={showAcquire}
           />

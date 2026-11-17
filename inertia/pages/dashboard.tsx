@@ -8,6 +8,7 @@ import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
+import { displaySetNum } from '~/lib/set_number'
 
 type Props = InertiaProps<{
   figures: {
@@ -51,7 +52,7 @@ function SetList({
         <li key={set.id} className="set-list__item">
           <SetImage
             src={set.imgUrl}
-            alt={t('image.set', { setNum: set.setNum, name: set.name })}
+            alt={t('image.set', { setNum: displaySetNum(set.setNum), name: set.name })}
             className="set-list__image"
             thumb
           />
@@ -60,7 +61,7 @@ function SetList({
               {set.name}
             </Link>
             <span className="text-muted set-list__meta">
-              {set.setNum} · {detail(set)}
+              {displaySetNum(set.setNum)} · {detail(set)}
             </span>
           </div>
         </li>

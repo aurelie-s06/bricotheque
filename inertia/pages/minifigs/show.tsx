@@ -12,6 +12,7 @@ import { usePage } from '@inertiajs/react'
 import ExternalLink from '~/components/external_link'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
+import { displaySetNum } from '~/lib/set_number'
 
 type MinifigDetail = Data.Minifig.Variants['forDetail']
 type Props = InertiaProps<{
@@ -152,12 +153,12 @@ export default function MinifigShow({ minifig, themeChain, backUrl, ownedEntry }
                   <div className="set-card__media">
                     <SetImage
                       src={set.imgUrl}
-                      alt={t('image.set', { setNum: set.setNum, name: set.name })}
+                      alt={t('image.set', { setNum: displaySetNum(set.setNum), name: set.name })}
                       thumb
                     />
                   </div>
                   <div className="set-card__body">
-                    <p className="set-card__number">{set.setNum}</p>
+                    <p className="set-card__number">{displaySetNum(set.setNum)}</p>
                     <h3 className="set-card__title">
                       <Link href={set.url} className="set-card__link">
                         {set.name}

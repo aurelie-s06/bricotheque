@@ -12,6 +12,7 @@ import { usePage } from '@inertiajs/react'
 import ExternalLink from '~/components/external_link'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
+import { displaySetNum } from '~/lib/set_number'
 
 type SetDetail = Data.BrickSet.Variants['forDetail']
 type Props = InertiaProps<{
@@ -148,14 +149,14 @@ export default function SetShow({
   const lastTheme = themeChain.at(-1)
   const showSubtheme = set.subtheme && set.subtheme !== lastTheme?.name
   const hasEstimate = set.estimatedValueNew !== null || set.estimatedValueUsed !== null
-  const imageAlt = t('image.set', { setNum: set.setNum, name: set.name })
+  const imageAlt = t('image.set', { setNum: displaySetNum(set.setNum), name: set.name })
 
   return (
     <>
       <Seo
-        title={`${set.setNum} ${set.name}`}
+        title={`${displaySetNum(set.setNum)} ${set.name}`}
         description={t('set.metaDescription', {
-          setNum: set.setNum,
+          setNum: displaySetNum(set.setNum),
           name: set.name,
           text: metaText(set, locale, fallbackDescription),
         })}
@@ -167,7 +168,7 @@ export default function SetShow({
           { name: t('breadcrumb.home'), url: '/' },
           { name: t('nav.sets'), url: props.catalogueUrls.sets },
           ...themeChain,
-          { name: `${set.setNum} ${set.name}` },
+          { name: `${displaySetNum(set.setNum)} ${set.name}` },
         ]}
       />
 
@@ -177,7 +178,9 @@ export default function SetShow({
         </div>
 
         <div className="set-detail__info">
-          <p className="set-card__number">{t('set.number', { setNum: set.setNum })}</p>
+          <p className="set-card__number">
+            {t('set.number', { setNum: displaySetNum(set.setNum) })}
+          </p>
           <h1>{set.name}</h1>
           <p>
             <StatusBadge status={set.availabilityStatus} />
@@ -185,7 +188,7 @@ export default function SetShow({
           <CollectionButtons
             kind="sets"
             id={set.id}
-            name={`${set.setNum} ${set.name}`}
+            name={`${displaySetNum(set.setNum)} ${set.name}`}
             reload="page"
             showAcquire
             size="md"
