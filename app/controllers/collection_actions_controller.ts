@@ -75,7 +75,7 @@ export default class CollectionActionsController {
     return response.redirect().back()
   }
 
-  /** PUT /collection/sets/:id/details: quantity, condition, price, date, note */
+  /** PUT /collection/sets/:id/details: quantity and condition */
   async updateSetDetails({ params, request, auth, session, response }: HttpContext) {
     const locale = resolveLocale(request)
     const entry = await new Collection(auth.getUserOrFail()).ownedSet(Number(params.id))
@@ -85,20 +85,14 @@ export default class CollectionActionsController {
     const data = await request.validateUsing(setDetailsValidator, {
       messagesProvider: validationMessages(locale),
     })
-    entry.merge({
-      quantity: data.quantity,
-      condition: data.condition ?? null,
-      purchasePrice: data.purchasePrice ?? null,
-      purchaseDate: data.purchaseDate ?? null,
-      note: data.note || null,
-    })
+    entry.merge({ quantity: data.quantity, condition: data.condition ?? null })
     await entry.save()
     const name = await itemName('sets', entry.setId)
     session.flash('success', serverMessage(locale, 'collection.detailsSaved', { name }))
     return response.redirect().back()
   }
 
-  /** PUT /collection/minifigs/:id/details: quantity, note */
+  /** PUT /collection/minifigs/:id/details: quantity */
   async updateMinifigDetails({ params, request, auth, session, response }: HttpContext) {
     const locale = resolveLocale(request)
     const entry = await new Collection(auth.getUserOrFail()).ownedMinifig(Number(params.id))
@@ -108,7 +102,7 @@ export default class CollectionActionsController {
     const data = await request.validateUsing(minifigDetailsValidator, {
       messagesProvider: validationMessages(locale),
     })
-    entry.merge({ quantity: data.quantity, note: data.note || null })
+    entry.merge({ quantity: data.quantity })
     await entry.save()
     const name = await itemName('minifigs', entry.minifigId)
     session.flash('success', serverMessage(locale, 'collection.detailsSaved', { name }))

@@ -67,15 +67,7 @@ export default class SetsController {
     return inertia.render('sets/show', {
       set: BrickSetTransformer.transform(set).useVariant('forDetail'),
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
-      ownedEntry: owned
-        ? {
-            quantity: owned.quantity,
-            condition: owned.condition,
-            purchasePrice: owned.purchasePrice,
-            purchaseDate: owned.purchaseDate?.toISODate() ?? null,
-            note: owned.note,
-          }
-        : null,
+      ownedEntry: owned ? { quantity: owned.quantity, condition: owned.condition } : null,
       fallbackDescription: set.description
         ? null
         : fallbackDescription(

@@ -17,7 +17,7 @@ type MinifigDetail = Data.Minifig.Variants['forDetail']
 type Props = InertiaProps<{
   minifig: MinifigDetail
   themeChain: { name: string; url: string }[]
-  ownedEntry: { quantity: number; note: string | null } | null
+  ownedEntry: { quantity: number } | null
 }>
 
 function EstimatedValue({ minifig }: { minifig: MinifigDetail }) {

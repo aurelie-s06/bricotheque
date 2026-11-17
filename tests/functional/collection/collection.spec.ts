@@ -200,7 +200,7 @@ test.group('Collection: details of an owned item', (group) => {
   group.each.setup(() => resetRateLimits())
   group.each.setup(() => seedCatalogue())
 
-  test('quantity, condition, price, date and note of an owned set', async ({ client, assert }) => {
+  test('quantity and condition of an owned set', async ({ client, assert }) => {
     const user = await createUser()
     const id = await setId('75192-1')
     await UserSet.create({ userId: user.id, setId: id, status: 'owned' })
@@ -208,13 +208,7 @@ test.group('Collection: details of an owned item', (group) => {
     const response = await client
       .put(`/collection/sets/${id}/details`)
       .loginAs(user)
-      .form({
-        quantity: '2',
-        condition: 'sealed',
-        purchasePrice: '799.5',
-        purchaseDate: '2023-11-24',
-        note: 'Cadeau',
-      })
+      .form({ quantity: '2', condition: 'sealed', purchasePrice: '799.5' }) // extra field ignored
       .withCsrfToken()
       .redirects(0)
     response.assertFlashMessage(
@@ -222,16 +216,11 @@ test.group('Collection: details of an owned item', (group) => {
       'Les informations de « Millennium Falcon™ » sont enregistrées.'
     )
     const entry = await UserSet.query().where({ userId: user.id, setId: id }).firstOrFail()
-    assert.deepInclude(entry.serialize(), {
-      quantity: 2,
-      condition: 'sealed',
-      purchasePrice: 799.5,
-      note: 'Cadeau',
-    })
-    assert.equal(entry.purchaseDate?.toISODate(), '2023-11-24')
+    assert.deepInclude(entry.serialize(), { quantity: 2, condition: 'sealed' })
+    assert.notProperty(entry.serialize(), 'purchasePrice')
 
     const page = await client.get('/sets/75192-1-millennium-falcon').loginAs(user).withInertia()
-    assert.deepInclude(page.inertiaProps.ownedEntry, { quantity: 2, purchaseDate: '2023-11-24' })
+    assert.deepEqual(page.inertiaProps.ownedEntry, { quantity: 2, condition: 'sealed' })
   })
 
   test('the details are validated', async ({ client, assert }) => {
@@ -242,14 +231,29 @@ test.group('Collection: details of an owned item', (group) => {
     const response = await client
       .put(`/collection/sets/${id}/details`)
       .loginAs(user)
-      .form({ quantity: '0', condition: 'broken', purchasePrice: '-3', purchaseDate: '2999-01-01' })
+      .form({ quantity: '0', condition: 'broken' })
       .withCsrfToken()
       .redirects(0)
     const errors = formErrors(response)
     assert.match(firstError(errors.quantity)!, /entre 1 et 999/)
     assert.equal(firstError(errors.condition), 'Choisis une valeur dans la liste.')
-    assert.match(firstError(errors.purchasePrice)!, /entre 0 et 100000/)
-    assert.equal(firstError(errors.purchaseDate), 'La date ne peut pas être dans le futur.')
+  })
+
+  test('quantity of an owned minifig', async ({ client, assert }) => {
+    const user = await createUser()
+    const id = await minifigId('fig-000001')
+    await UserMinifig.create({ userId: user.id, minifigId: id, status: 'owned' })
+
+    await client
+      .put(`/collection/minifigs/${id}/details`)
+      .loginAs(user)
+      .form({ quantity: '3' })
+      .withCsrfToken()
+    const entry = await UserMinifig.query().where({ userId: user.id, minifigId: id }).firstOrFail()
+    assert.equal(entry.quantity, 3)
+
+    const page = await client.get('/minifigs/fig-000001-han-solo').loginAs(user).withInertia()
+    assert.deepEqual(page.inertiaProps.ownedEntry, { quantity: 3 })
   })
 
   test('details of a set that is not owned return 404', async ({ client }) => {

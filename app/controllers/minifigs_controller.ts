@@ -80,7 +80,7 @@ export default class MinifigsController {
     return inertia.render('minifigs/show', {
       minifig: MinifigTransformer.transform(minifig).useVariant('forDetail'),
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
-      ownedEntry: owned ? { quantity: owned.quantity, note: owned.note } : null,
+      ownedEntry: owned ? { quantity: owned.quantity } : null,
     })
   }
 }

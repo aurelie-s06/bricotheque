@@ -105,8 +105,6 @@ test.group('Models and relations', (group) => {
       setId: falcon.id,
       status: 'owned',
       condition: 'sealed',
-      purchasePrice: 799.5,
-      purchaseDate: DateTime.fromISO('2023-11-24'),
     })
     await UserSet.create({ userId: user.id, setId: falcon.id, status: 'wanted' })
     await UserMinifig.create({ userId: user.id, minifigId: han.id, status: 'owned', quantity: 2 })
@@ -119,8 +117,7 @@ test.group('Models and relations', (group) => {
       ['owned', 'wanted']
     )
     assert.equal(user.userSets[0].set.name, 'Millennium Falcon')
-    assert.strictEqual(user.userSets[0].purchasePrice, 799.5)
-    assert.equal(user.userSets[0].purchaseDate?.toISODate(), '2023-11-24')
+    assert.equal(user.userSets[0].condition, 'sealed')
     assert.equal(user.userMinifigs[0].minifig.figNum, 'fig-000001')
   })
 

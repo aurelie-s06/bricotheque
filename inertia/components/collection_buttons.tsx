@@ -102,10 +102,10 @@ export default function CollectionButtons({
             <button
               type="submit"
               className="collection-button collection-button--acquire"
-              aria-label={t('collection.acquireLabel', { name })}
               disabled={busy}
             >
               <PartyPopper size={16} aria-hidden="true" /> {t('collection.acquire')}
+              <span className="visually-hidden"> {t('collection.acquireLabel', { name })}</span>
             </button>
           )}
         </ActionForm>
@@ -120,10 +120,10 @@ export default function CollectionButtons({
             type="submit"
             className="collection-button collection-button--own"
             aria-pressed={owned}
-            aria-label={t('collection.ownLabel', { name })}
             disabled={busy}
           >
             <Check size={16} aria-hidden="true" /> {t('collection.own')}
+            <span className="visually-hidden"> {t('collection.ownLabel', { name })}</span>
           </button>
         )}
       </ActionForm>
@@ -137,11 +137,11 @@ export default function CollectionButtons({
             type="submit"
             className="collection-button collection-button--want"
             aria-pressed={wanted}
-            aria-label={t('collection.wantLabel', { name })}
             disabled={busy}
           >
             <Heart size={16} aria-hidden="true" fill={wanted ? 'currentColor' : 'none'} />{' '}
             {t('collection.want')}
+            <span className="visually-hidden"> {t('collection.wantLabel', { name })}</span>
           </button>
         )}
       </ActionForm>

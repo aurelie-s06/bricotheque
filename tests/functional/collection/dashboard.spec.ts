@@ -44,7 +44,6 @@ test.group('Dashboard', (group) => {
       userId: user.id,
       setId: await setId('75192-1'),
       status: 'owned',
-      purchasePrice: 700,
     })
     await UserSet.create({
       userId: user.id,
@@ -56,7 +55,6 @@ test.group('Dashboard', (group) => {
       userId: user.id,
       setId: await setId('75192-2'),
       status: 'owned',
-      purchasePrice: 10,
       quantity: 3,
     })
     await UserSet.create({ userId: user.id, setId: await setId('0003977811-1'), status: 'wanted' }) // not counted

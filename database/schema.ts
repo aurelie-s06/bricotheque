@@ -182,7 +182,7 @@ export class ThemeSchema extends BaseModel {
 }
 
 export class UserMinifigSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'minifigId', 'note', 'quantity', 'status', 'updatedAt', 'userId'] as const
+  static $columns = ['createdAt', 'id', 'minifigId', 'quantity', 'status', 'updatedAt', 'userId'] as const
   $columns = UserMinifigSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -190,8 +190,6 @@ export class UserMinifigSchema extends BaseModel {
   declare id: number
   @column()
   declare minifigId: number
-  @column()
-  declare note: string | null
   @column()
   declare quantity: number
   @column()
@@ -203,7 +201,7 @@ export class UserMinifigSchema extends BaseModel {
 }
 
 export class UserSetSchema extends BaseModel {
-  static $columns = ['condition', 'createdAt', 'id', 'note', 'purchaseDate', 'purchasePrice', 'quantity', 'setId', 'status', 'updatedAt', 'userId'] as const
+  static $columns = ['condition', 'createdAt', 'id', 'quantity', 'setId', 'status', 'updatedAt', 'userId'] as const
   $columns = UserSetSchema.$columns
   @column()
   declare condition: 'built' | 'in_box' | 'sealed' | 'partial' | null
@@ -211,12 +209,6 @@ export class UserSetSchema extends BaseModel {
   declare createdAt: DateTime
   @column({ isPrimary: true })
   declare id: number
-  @column()
-  declare note: string | null
-  @column.date()
-  declare purchaseDate: DateTime | null
-  @decimalColumn()
-  declare purchasePrice: number | null
   @column()
   declare quantity: number
   @column()

@@ -786,6 +786,8 @@ a:hover {
   color: var(--ink-muted);
 }
 
+/* Common form controls: every text field, number field and select of the
+   site uses .field__input or .input (same height, border, font, radius) */
 .field__input,
 .input {
   width: 100%;
@@ -794,7 +796,38 @@ a:hover {
   background: var(--surface);
   border: 1px solid #8a8f98;
   border-radius: var(--radius);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
   transition: border-color var(--duration) ease;
+}
+
+/* Selects drawn by the site: Safari ignores the height of native ones */
+select.field__input,
+select.input {
+  height: 44px;
+  padding-right: 40px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231f2328' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  cursor: pointer;
+}
+
+/* Number fields without the spin arrows (the keyboard arrows still work) */
+input[type='number'].field__input,
+input[type='number'].input {
+  appearance: textfield;
+}
+
+input[type='number'].field__input::-webkit-inner-spin-button,
+input[type='number'].field__input::-webkit-outer-spin-button,
+input[type='number'].input::-webkit-inner-spin-button,
+input[type='number'].input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
 }
 
 .field__input:focus-visible,
@@ -852,7 +885,11 @@ a:hover {
   box-shadow: 0 var(--space-1) var(--space-3) rgb(31 35 40 / 0.14);
   color: var(--ink);
   pointer-events: auto;
-  animation: toast-in 200ms ease-out;
+  animation: toast-in 250ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.toast--leaving {
+  animation: toast-out 200ms ease-in forwards;
 }
 
 .toast--info {
@@ -902,10 +939,34 @@ a:hover {
   color: var(--ink);
 }
 
+/* Desktop: slides in from the right; mobile: drops from the top */
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateX(24px);
+  }
+}
+
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+@media (max-width: 639px) {
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
+  }
+
+  @keyframes toast-out {
+    to {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
   }
 }
 
@@ -920,7 +981,8 @@ a:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .toast {
+  .toast,
+  .toast--leaving {
     animation: none;
   }
 }
@@ -1017,8 +1079,6 @@ a:hover {
 
 .filter-bar__search .input {
   padding-right: 48px;
-  border-radius: 999px;
-  padding-left: var(--space-2);
 }
 
 .filter-bar__search-button {
@@ -1031,7 +1091,7 @@ a:hover {
   width: 36px;
   height: 36px;
   border: 0;
-  border-radius: 50%;
+  border-radius: calc(var(--radius) - 2px);
   background: var(--brick-yellow);
   color: var(--ink);
   cursor: pointer;
@@ -1055,7 +1115,7 @@ a:hover {
 
 .filter-bar__sort select {
   width: auto;
-  appearance: auto;
+  min-width: 200px;
 }
 
 .filter-bar__more > summary {
@@ -1071,6 +1131,18 @@ a:hover {
   align-items: center;
   gap: var(--space-1);
   cursor: pointer;
+}
+
+/* Every button of the filters has the height of the fields */
+.filter-bar .btn {
+  height: 44px;
+  min-height: 44px;
+  padding-block: 0 var(--brick-edge);
+  font-size: 1rem;
+}
+
+.filter-bar .btn--secondary {
+  border-color: #8a8f98;
 }
 
 .filter-bar__more[open] .filter-bar__toggle {
@@ -1202,10 +1274,10 @@ a:hover {
 .pill span {
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
-  padding: var(--half) 14px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
+  min-height: 44px;
+  padding: var(--half) var(--space-2);
+  border: 1px solid #8a8f98;
+  border-radius: var(--radius);
   background: var(--surface);
   font-weight: 600;
   transition:
@@ -1289,10 +1361,6 @@ a:hover {
   .filter-bar > .pill-group .pill {
     flex: none;
   }
-}
-
-select.field__input {
-  appearance: auto;
 }
 
 /* ---------- Card grid ---------- */
@@ -2337,10 +2405,6 @@ a:not([class]):visited {
   }
 }
 
-.collection-button__lock {
-  color: var(--ink-muted);
-}
-
 .info-page ul + p,
 .info-page dl + p,
 .info-page table + p {
@@ -2477,4 +2541,8 @@ a:not([class]):visited {
 .check-email__lead svg {
   flex: none;
   color: var(--brick-green);
+}
+
+.collection-button__lock {
+  color: var(--ink-muted);
 }

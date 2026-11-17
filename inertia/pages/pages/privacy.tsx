@@ -73,8 +73,8 @@ export default function Privacy({ contact, host }: Props) {
         </li>
         <li>
           {fr
-            ? 'votre collection et votre wishlist (sets, minifigs, quantités, état, prix et date d’achat, notes).'
-            : 'your collection and wishlist (sets, minifigs, quantities, condition, purchase price and date, notes).'}
+            ? 'votre collection et votre wishlist (sets, minifigs, quantités, état).'
+            : 'your collection and wishlist (sets, minifigs, quantities, condition).'}
         </li>
       </ul>
       <p>

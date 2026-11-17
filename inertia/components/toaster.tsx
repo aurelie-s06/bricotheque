@@ -5,7 +5,11 @@ import { notify, onNotify, type Toast, type ToastType } from '~/lib/notify'
 import { useI18n } from '~/i18n'
 
 /** Time on screen of the success and info toasts (errors stay until closed) */
-const DURATION_MS = 5000
+const DURATION_MS = 3000
+/** Length of the exit animation (see .toast--leaving in app.css) */
+const EXIT_MS = 200
+
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const ICONS = { success: CircleCheck, info: Info, error: CircleAlert }
 
@@ -15,12 +19,20 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: (id: number) => 
   const timer = useRef<number | null>(null)
   const remaining = useRef(DURATION_MS)
   const startedAt = useRef(0)
+  const [leaving, setLeaving] = useState(false)
+
+  // Plays the exit animation, then removes the toast
+  const leave = useCallback(() => {
+    if (reducedMotion()) return onClose(toast.id)
+    setLeaving(true)
+    window.setTimeout(() => onClose(toast.id), EXIT_MS)
+  }, [toast, onClose])
 
   const start = useCallback(() => {
     if (toast.type === 'error') return
     startedAt.current = Date.now()
-    timer.current = window.setTimeout(() => onClose(toast.id), remaining.current)
-  }, [toast, onClose])
+    timer.current = window.setTimeout(leave, remaining.current)
+  }, [toast, leave])
 
   // Paused while hovered or focused, so the message can be read
   const pause = useCallback(() => {
@@ -39,7 +51,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: (id: number) => 
 
   return (
     <li
-      className={`toast toast--${toast.type}`}
+      className={`toast toast--${toast.type}${leaving ? ' toast--leaving' : ''}`}
       onMouseEnter={pause}
       onMouseLeave={start}
       onFocus={pause}
@@ -49,12 +61,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: (id: number) => 
     >
       <Icon size={20} aria-hidden="true" className="toast__icon" />
       <p className="toast__message">{toast.message}</p>
-      <button
-        type="button"
-        className="toast__close"
-        onClick={() => onClose(toast.id)}
-        title={t('toast.close')}
-      >
+      <button type="button" className="toast__close" onClick={leave} title={t('toast.close')}>
         <X size={18} aria-hidden="true" />
         <span className="visually-hidden">{t('toast.close')}</span>
       </button>
