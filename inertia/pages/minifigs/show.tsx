@@ -5,6 +5,8 @@ import Seo from '~/components/seo'
 import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
+import BackLink from '~/components/back_link'
+import { usePage } from '@inertiajs/react'
 import ExternalLink from '~/components/external_link'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
@@ -13,6 +15,7 @@ type MinifigDetail = Data.Minifig.Variants['forDetail']
 type Props = InertiaProps<{
   minifig: MinifigDetail
   themeChain: { name: string; url: string }[]
+  backUrl: string | null
 }>
 
 function EstimatedValue({ minifig }: { minifig: MinifigDetail }) {
@@ -42,7 +45,8 @@ function EstimatedValue({ minifig }: { minifig: MinifigDetail }) {
   )
 }
 
-export default function MinifigShow({ minifig, themeChain }: Props) {
+export default function MinifigShow({ minifig, themeChain, backUrl }: Props) {
+  const { props } = usePage()
   const { t, tc, formatNumber } = useI18n()
   const sets = minifig.sets ?? []
   const imageAlt = t('image.minifig', { figNum: minifig.figNum, name: minifig.name })
@@ -62,10 +66,11 @@ export default function MinifigShow({ minifig, themeChain }: Props) {
         }
       />
 
+      <BackLink href={backUrl} />
       <Breadcrumb
         items={[
           { name: t('breadcrumb.home'), url: '/' },
-          { name: t('nav.minifigs'), url: '/minifigs' },
+          { name: t('nav.minifigs'), url: props.catalogueUrls.minifigs },
           { name: `${minifig.figNum} ${minifig.name}` },
         ]}
       />

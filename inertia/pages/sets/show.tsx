@@ -5,6 +5,8 @@ import Seo from '~/components/seo'
 import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
+import BackLink from '~/components/back_link'
+import { usePage } from '@inertiajs/react'
 import ExternalLink from '~/components/external_link'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
@@ -13,6 +15,7 @@ type SetDetail = Data.BrickSet.Variants['forDetail']
 type Props = InertiaProps<{
   set: SetDetail
   themeChain: { name: string; url: string }[]
+  backUrl: string | null
   fallbackDescription: string | null
 }>
 
@@ -130,7 +133,8 @@ function metaText(set: SetDetail, locale: string, fallback: string | null) {
   return flat.length > 155 ? `${flat.slice(0, 155)}…` : flat
 }
 
-export default function SetShow({ set, themeChain, fallbackDescription }: Props) {
+export default function SetShow({ set, themeChain, backUrl, fallbackDescription }: Props) {
+  const { props } = usePage()
   const { t, formatNumber, locale } = useI18n()
   const lastTheme = themeChain.at(-1)
   const showSubtheme = set.subtheme && set.subtheme !== lastTheme?.name
@@ -148,10 +152,11 @@ export default function SetShow({ set, themeChain, fallbackDescription }: Props)
         })}
       />
 
+      <BackLink href={backUrl} />
       <Breadcrumb
         items={[
           { name: t('breadcrumb.home'), url: '/' },
-          { name: t('nav.sets'), url: '/sets' },
+          { name: t('nav.sets'), url: props.catalogueUrls.sets },
           ...themeChain,
           { name: `${set.setNum} ${set.name}` },
         ]}

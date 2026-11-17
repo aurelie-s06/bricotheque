@@ -10,12 +10,15 @@ import {
 } from '#services/catalogue/minifig_query'
 import MinifigTransformer from '#transformers/minifig_transformer'
 import { minifigPath, setNumCandidates, themePath } from '#helpers/urls'
+import { listReferer, rememberListUrl } from '#helpers/catalogue_memory'
 
 export default class MinifigsController {
   /**
    * GET /minifigs: search by name or number, filters by main theme and year.
    */
-  async index({ request, inertia }: HttpContext) {
+  async index(ctx: HttpContext) {
+    const { request, inertia } = ctx
+    rememberListUrl(ctx, 'minifigs')
     const filters = parseMinifigFilters(request.qs())
     const themes = await ThemeTree.load()
     const counts = await themes.minifigCounts()
@@ -46,7 +49,8 @@ export default class MinifigsController {
    * GET /minifigs/:ref, e.g. /minifigs/fig-000001-toy-store-employee.
    * Outdated or partial URLs redirect to the canonical one.
    */
-  async show({ params, request, response, inertia }: HttpContext) {
+  async show(ctx: HttpContext) {
+    const { params, request, response, inertia } = ctx
     const ref = String(params.ref).toLowerCase()
     const candidates = await Minifig.query().whereIn('fig_num', setNumCandidates(ref))
     const minifig = candidates.sort((a, b) => b.figNum.length - a.figNum.length)[0]
@@ -73,6 +77,7 @@ export default class MinifigsController {
     return inertia.render('minifigs/show', {
       minifig: MinifigTransformer.transform(minifig).useVariant('forDetail'),
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
+      backUrl: listReferer(ctx),
     })
   }
 }

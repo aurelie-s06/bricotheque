@@ -37,12 +37,20 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           <nav className="site-nav" aria-label={t('site.mainMenu')}>
             <ul className="site-nav__list">
               <li>
-                <NavLink route="sets.index" className="site-nav__link">
+                <NavLink
+                  route="sets.index"
+                  href={props.catalogueUrls.sets}
+                  className="site-nav__link"
+                >
                   {t('nav.sets')}
                 </NavLink>
               </li>
               <li>
-                <NavLink route="minifigs.index" className="site-nav__link">
+                <NavLink
+                  route="minifigs.index"
+                  href={props.catalogueUrls.minifigs}
+                  className="site-nav__link"
+                >
                   {t('nav.minifigs')}
                 </NavLink>
               </li>

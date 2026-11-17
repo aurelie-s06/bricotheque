@@ -3,6 +3,7 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import { resolveLocale } from '#helpers/locale'
+import { catalogueUrls } from '#helpers/catalogue_memory'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {
@@ -24,6 +25,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
       locale: ctx.inertia.always(resolveLocale(request)),
+      catalogueUrls: ctx.inertia.always(catalogueUrls(ctx)),
     }
   }
 

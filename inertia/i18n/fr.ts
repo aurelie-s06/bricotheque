@@ -17,6 +17,7 @@ const fr = {
   'nav.login': 'Connexion',
   'nav.signup': 'Inscription',
   'nav.logout': 'Déconnexion',
+  'nav.backToResults': 'Retour aux résultats',
   'language.label': 'Langue',
   'language.fr': 'Français',
   'language.en': 'English',

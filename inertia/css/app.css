@@ -1166,3 +1166,9 @@ select.field__input {
 .search-section + .search-section {
   margin-top: var(--space-6);
 }
+
+/* ---------- Back to results ---------- */
+.back-link {
+  margin-bottom: var(--space-1);
+  font-weight: 600;
+}

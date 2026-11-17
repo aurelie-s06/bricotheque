@@ -20,22 +20,31 @@ export type NavItem = {
  */
 export default function NavLink({
   route,
+  href,
   exact = false,
   className,
   children,
 }: {
   route: NavRoute
+  /** Overrides the link target (e.g. the remembered filtered list); the active state still follows `route` */
+  href?: string
   exact?: boolean
   className?: string
   children: ReactNode
 }) {
   const { url } = usePage()
-  const href = urlFor(route)
+  const routePath = urlFor(route)
   const path = url.split('?')[0]
-  const isActive = exact ? path === href : path === href || path.startsWith(`${href}/`)
+  const isActive = exact
+    ? path === routePath
+    : path === routePath || path.startsWith(`${routePath}/`)
 
   return (
-    <Link href={href} className={className} aria-current={isActive ? 'page' : undefined}>
+    <Link
+      href={href ?? routePath}
+      className={className}
+      aria-current={isActive ? 'page' : undefined}
+    >
       {children}
     </Link>
   )

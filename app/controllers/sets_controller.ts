@@ -8,13 +8,16 @@ import { fallbackDescription } from '#services/set_description'
 import BrickSetTransformer from '#transformers/brick_set_transformer'
 import { setNumCandidates, setPath, themePath } from '#helpers/urls'
 import { resolveLocale } from '#helpers/locale'
+import { listReferer, rememberListUrl } from '#helpers/catalogue_memory'
 
 export default class SetsController {
   /**
    * GET /sets: catalogue with search, filters, sort and pagination.
    * Every filter lives in the query string, so a filtered list can be shared.
    */
-  async index({ request, inertia }: HttpContext) {
+  async index(ctx: HttpContext) {
+    const { request, inertia } = ctx
+    rememberListUrl(ctx, 'sets')
     const filters = parseSetFilters(request.qs())
     const themes = await ThemeTree.load()
     const counts = await themes.setCounts()
@@ -38,7 +41,8 @@ export default class SetsController {
    * GET /sets/:ref, e.g. /sets/75192-1-millennium-falcon.
    * Outdated or partial URLs ("/sets/75192-1") redirect to the canonical one.
    */
-  async show({ params, request, response, inertia }: HttpContext) {
+  async show(ctx: HttpContext) {
+    const { params, request, response, inertia } = ctx
     const ref = String(params.ref).toLowerCase()
     const candidates = await BrickSet.query().whereIn('set_num', setNumCandidates(ref))
     const set = candidates.sort((a, b) => b.setNum.length - a.setNum.length)[0]
@@ -60,6 +64,7 @@ export default class SetsController {
     return inertia.render('sets/show', {
       set: BrickSetTransformer.transform(set).useVariant('forDetail'),
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
+      backUrl: listReferer(ctx),
       fallbackDescription: set.description
         ? null
         : fallbackDescription(
