@@ -8,6 +8,7 @@ const en: Record<keyof typeof fr, string> = {
   'site.defaultTitle': 'Briquothèque – Set and minifig catalogue',
   'site.defaultDescription':
     'Briquothèque: the catalogue of every brick set and minifig, to manage your collection and your wishlist.',
+  'toast.close': 'Close the notification',
   'site.skipLink': 'Skip to content',
   'site.homeLabel': 'Briquothèque – Home',
   'site.mainMenu': 'Main menu',
@@ -230,6 +231,8 @@ const en: Record<keyof typeof fr, string> = {
   'auth.noAccount': 'No account yet?',
   'auth.createAccount': 'Create an account',
   'auth.checkEmailTitle': 'Confirm your email address',
+  'auth.checkEmailLead':
+    'Open the email we sent you and click the link inside to activate your account (valid for 24 hours).',
   'auth.resendTitle': 'Nothing received?',
   'auth.resendLead':
     'Check your spam folder, or ask for a new activation link (valid for 24 hours).',
@@ -368,6 +371,7 @@ const en: Record<keyof typeof fr, string> = {
   'wishlist.shareButton': 'Create a share link',
   'wishlist.shareLink': 'Share link',
   'wishlist.copy': 'Copy the link',
+  'wishlist.copyFailed': 'Could not copy: select the link and copy it by hand.',
   'wishlist.copied': 'Link copied',
   'wishlist.unshareButton': 'Turn off sharing',
   'filters.condition': 'Condition (owned sets)',

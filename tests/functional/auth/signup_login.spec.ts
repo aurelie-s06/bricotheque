@@ -308,12 +308,14 @@ test.group('Private pages', (group) => {
     response.assertHeader('location', '/mon-compte')
   })
 
-  test('the login page explains why the visitor must log in', async ({ client, assert }) => {
-    const response = await client
-      .get('/connexion')
-      .withSession({ auth: { intended: '/mon-compte' } })
-      .withInertia()
-    assert.equal(response.inertiaProps.notice, 'Connecte-toi pour accéder à cette page.')
+  test('a notification explains why the visitor must log in', async ({ client }) => {
+    const privatePage = await client.get('/mon-compte').redirects(0)
+    privatePage.assertFlashMessage('info', 'Connecte-toi pour accéder à cette page.')
+
+    // Buttons of visitors: the page is remembered, the URL is cleaned
+    const button = await client.get('/connexion').qs({ retour: '/sets' }).redirects(0)
+    button.assertHeader('location', '/connexion')
+    button.assertFlashMessage('info', 'Connecte-toi pour accéder à cette page.')
   })
 
   test('login and signup pages send logged-in users to the home page', async ({ client }) => {

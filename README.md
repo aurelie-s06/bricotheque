@@ -157,6 +157,15 @@ node ace translate:descriptions --yes --wait   # sans confirmation, attend la fi
 
 - **E-mails** : en local, `MAIL_MAILER=log` écrit chaque e-mail en HTML dans `tmp/mails/` (le chemin s'affiche dans les logs du serveur). En production, `MAIL_MAILER=smtp` avec `SMTP_HOST`, `SMTP_PORT` (465), `SMTP_USERNAME`, `SMTP_PASSWORD` et `MAIL_FROM_ADDRESS` (une adresse de ton domaine sur o2switch). Les e-mails sont envoyés dans la langue du visiteur.
 
+## Notifications
+
+Les confirmations s'affichent en notifications (« toasts ») : en haut à droite sur ordinateur, en haut en pleine largeur sur mobile. Succès et informations disparaissent après 5 s (pause au survol et au focus), les erreurs restent jusqu'à leur fermeture. Elles sont annoncées aux lecteurs d'écran (`role="status"`, `role="alert"` pour les erreurs).
+
+- Côté serveur : `session.flash('success' | 'info' | 'error', message)` avant une redirection.
+- Côté navigateur, pour une action sans rechargement : `notify('Lien copié')` ou `notify(message, 'error')` (`inertia/lib/notify.ts`).
+
+Les erreurs de formulaire restent affichées à côté des champs.
+
 ## Collection et wishlist
 
 | URL                                  | Rôle                                                                                                                                                                                                                                                               |

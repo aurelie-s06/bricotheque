@@ -20,17 +20,16 @@ const loginLimiter = () =>
   limiter.use({ requests: 5, duration: '15 mins', blockDuration: '15 mins' })
 
 export default class SessionController {
-  async create({ inertia, session, request }: HttpContext) {
-    // "?retour=/sets/…": buttons of visitors who are not logged in
+  async create({ inertia, session, request, response }: HttpContext) {
+    // "?retour=/sets/…": buttons of visitors who are not logged in. The page
+    // is remembered, then the login page is shown with a notification.
     const returnTo = request.input('retour')
     if (returnTo && safeReturnPath(returnTo) === returnTo) {
       session.put(INTENDED_URL_KEY, returnTo)
+      session.flash('info', serverMessage(resolveLocale(request), 'auth.loginRequired'))
+      return response.redirect().clearQs().toRoute('session.create')
     }
-    return inertia.render('auth/login', {
-      notice: session.has(INTENDED_URL_KEY)
-        ? serverMessage(resolveLocale(request), 'auth.loginRequired')
-        : null,
-    })
+    return inertia.render('auth/login', {})
   }
 
   async store(ctx: HttpContext) {

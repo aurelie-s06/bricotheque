@@ -4,13 +4,9 @@ import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import FormField from '~/components/form_field'
 import FormAlert from '~/components/form_alert'
-import FlashNotice from '~/components/flash_notice'
-import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 
-type Props = InertiaProps<{ notice: string | null }>
-
-export default function Login({ notice }: Props) {
+export default function Login() {
   const { t } = useI18n()
   return (
     <>
@@ -22,12 +18,6 @@ export default function Login({ notice }: Props) {
         <h1>{t('auth.loginTitle')}</h1>
         <p className="text-muted">{t('auth.loginLead')}</p>
         <p className="field__hint">{t('auth.sessionNotice')}</p>
-        <FlashNotice />
-        {notice && (
-          <div className="form-alert" role="status">
-            {notice}
-          </div>
-        )}
 
         <Form route="session.store" className="auth-form" resetOnError={['password']}>
           {({ errors, processing }) => (

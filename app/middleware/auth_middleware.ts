@@ -2,6 +2,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import type { Authenticators } from '@adonisjs/auth/types'
 import { INTENDED_URL_KEY } from '#controllers/session_controller'
+import { resolveLocale } from '#helpers/locale'
+import { serverMessage } from '#helpers/server_messages'
 
 /**
  * Private pages: visitors who are not logged in are sent to the login
@@ -24,11 +26,12 @@ export default class AuthMiddleware {
       }
     }
 
-    // Not logged in: remember the page, then ask to log in (the login
-    // page shows a translated notice instead of a generic error)
+    // Not logged in: remember the page, then ask to log in (with a
+    // translated notification instead of a generic error)
     if (ctx.request.method() === 'GET') {
       ctx.session.put(INTENDED_URL_KEY, ctx.request.url(true))
     }
+    ctx.session.flash('info', serverMessage(resolveLocale(ctx.request), 'auth.loginRequired'))
     return ctx.response.redirect(this.redirectTo)
   }
 }

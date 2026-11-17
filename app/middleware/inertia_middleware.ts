@@ -43,9 +43,10 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     const { session } = ctx as Partial<HttpContext>
 
     const success: string | undefined = session?.flashMessages.get('success')
+    const info: string | undefined = session?.flashMessages.get('info')
     const error: string | undefined = session?.flashMessages.get('error')
 
-    return { success, error }
+    return { success, info, error }
   }
 
   async handle(ctx: HttpContext, next: NextFn) {

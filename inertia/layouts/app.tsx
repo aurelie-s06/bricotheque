@@ -6,7 +6,7 @@ import PrimaryNav from '~/components/header/primary_nav'
 import AccountMenu from '~/components/header/account_menu'
 import MobileMenu from '~/components/header/mobile_menu'
 import SearchForm from '~/components/search_form'
-import FlashToasts from '~/components/flash_toasts'
+import Toaster from '~/components/toaster'
 import LanguageSwitcher from '~/components/language_switcher'
 import { useI18n } from '~/i18n'
 
@@ -84,7 +84,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      <FlashToasts />
+      <Toaster />
     </>
   )
 }

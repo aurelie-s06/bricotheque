@@ -7,6 +7,7 @@ const fr = {
   'site.defaultTitle': 'Briquothèque – Catalogue de sets et minifigs',
   'site.defaultDescription':
     'Briquothèque : le catalogue de tous les sets et minifigs de briques, pour gérer ta collection et ta wishlist.',
+  'toast.close': 'Fermer la notification',
   'site.skipLink': 'Aller au contenu',
   'site.homeLabel': 'Briquothèque – Accueil',
   'site.mainMenu': 'Menu principal',
@@ -230,6 +231,8 @@ const fr = {
   'auth.createAccount': 'Créer un compte',
   'auth.hasAccount': 'Déjà un compte ?',
   'auth.checkEmailTitle': 'Confirme ton adresse e-mail',
+  'auth.checkEmailLead':
+    'Ouvre l’e-mail que nous t’avons envoyé et clique sur le lien qu’il contient pour activer ton compte (valable 24 heures).',
   'auth.resendTitle': 'Tu n’as rien reçu ?',
   'auth.resendLead':
     'Vérifie tes courriers indésirables, ou demande un nouveau lien d’activation (valable 24 heures).',
@@ -371,6 +374,7 @@ const fr = {
   'wishlist.shareButton': 'Créer un lien de partage',
   'wishlist.shareLink': 'Lien de partage',
   'wishlist.copy': 'Copier le lien',
+  'wishlist.copyFailed': 'Copie impossible : sélectionne le lien et copie-le à la main.',
   'wishlist.copied': 'Lien copié',
   'wishlist.unshareButton': 'Désactiver le partage',
   'filters.condition': 'État (sets possédés)',

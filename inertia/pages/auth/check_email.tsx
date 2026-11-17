@@ -5,17 +5,16 @@ import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import FormField from '~/components/form_field'
 import FormAlert from '~/components/form_alert'
-import FlashNotice from '~/components/flash_notice'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 
-type Props = InertiaProps<{ message: string | null; email: string }>
+type Props = InertiaProps<{ email: string }>
 
 /**
  * After signup: the confirmation link has been sent. The visitor can ask
  * for a new link (expired or lost email).
  */
-export default function CheckEmail({ message, email }: Props) {
+export default function CheckEmail({ email }: Props) {
   const { t } = useI18n()
   return (
     <>
@@ -29,12 +28,9 @@ export default function CheckEmail({ message, email }: Props) {
       <div className="card auth-card">
         <Seo title={t('auth.checkEmailTitle')} />
         <h1>{t('auth.checkEmailTitle')}</h1>
-        {message && (
-          <div className="form-alert form-alert--success" role="status">
-            <MailCheck size={20} aria-hidden="true" /> {message}
-          </div>
-        )}
-        <FlashNotice />
+        <p className="check-email__lead">
+          <MailCheck size={24} aria-hidden="true" /> {t('auth.checkEmailLead')}
+        </p>
 
         <h2 className="auth-card__subtitle">{t('auth.resendTitle')}</h2>
         <p className="text-muted">{t('auth.resendLead')}</p>

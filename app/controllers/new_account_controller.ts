@@ -41,16 +41,14 @@ export default class NewAccountController {
     }
 
     session.put(PENDING_EMAIL_KEY, email)
+    session.flash('success', serverMessage(locale, 'auth.checkEmail', { email }))
     return response.redirect().toRoute('email.pending')
   }
 
   /** GET /inscription/confirmation: "check your inbox" page, with a resend form */
-  async pending({ inertia, session, request }: HttpContext) {
+  async pending({ inertia, session }: HttpContext) {
     const email = session.get(PENDING_EMAIL_KEY) as string | undefined
-    return inertia.render('auth/check_email', {
-      message: email ? serverMessage(resolveLocale(request), 'auth.checkEmail', { email }) : null,
-      email: email ?? '',
-    })
+    return inertia.render('auth/check_email', { email: email ?? '' })
   }
 
   /** GET /inscription/confirmer/:id (signed link from the email) */

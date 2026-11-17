@@ -4,7 +4,6 @@ import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import FormField from '~/components/form_field'
 import FormAlert from '~/components/form_alert'
-import FlashNotice from '~/components/flash_notice'
 import { useI18n } from '~/i18n'
 
 export default function ForgotPassword() {
@@ -18,7 +17,6 @@ export default function ForgotPassword() {
         <Seo title={t('auth.forgotTitle')} />
         <h1>{t('auth.forgotTitle')}</h1>
         <p className="text-muted">{t('auth.forgotLead')}</p>
-        <FlashNotice />
 
         <Form route="password.send" className="auth-form">
           {({ errors, processing }) => (

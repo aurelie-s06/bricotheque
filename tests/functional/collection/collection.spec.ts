@@ -375,7 +375,12 @@ test.group('Wishlist: total and sharing', (group) => {
     await user.refresh()
     const token = user.wishlistShareToken!
 
-    await client.post('/ma-wishlist/partage/desactiver').loginAs(user).withCsrfToken()
+    const off = await client
+      .post('/ma-wishlist/partage/desactiver')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+    off.assertFlashMessage('success', 'Partage désactivé.')
     await user.refresh()
     assert.isNull(user.wishlistShareToken)
 

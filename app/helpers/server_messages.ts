@@ -33,8 +33,7 @@ const fr = {
   'collection.detailsSaved': 'Les informations de « {name} » sont enregistrées.',
   'collection.preferencesSaved': 'Tes préférences sont enregistrées.',
   'wishlist.shared': 'Ta wishlist est partagée : copie le lien pour l’envoyer.',
-  'wishlist.unshared':
-    'Le partage de ta wishlist est désactivé : l’ancien lien ne fonctionne plus.',
+  'wishlist.unshared': 'Partage désactivé.',
   'mail.resetSubject': 'Réinitialisation de ton mot de passe',
   'mail.resetGreeting': 'Bonjour {username},',
   'mail.resetIntro':
@@ -103,7 +102,7 @@ const en: Record<MessageKey, string> = {
   'collection.detailsSaved': 'The details of “{name}” are saved.',
   'collection.preferencesSaved': 'Your preferences are saved.',
   'wishlist.shared': 'Your wishlist is shared: copy the link to send it.',
-  'wishlist.unshared': 'Sharing is turned off: the previous link no longer works.',
+  'wishlist.unshared': 'Sharing turned off.',
   'mail.resetSubject': 'Reset your password',
   'mail.resetGreeting': 'Hello {username},',
   'mail.resetIntro':

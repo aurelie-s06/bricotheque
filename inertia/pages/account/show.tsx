@@ -2,7 +2,6 @@ import { Form } from '@adonisjs/inertia/react'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
 import FormField from '~/components/form_field'
-import FlashNotice from '~/components/flash_notice'
 import Breadcrumb from '~/components/breadcrumb'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
@@ -27,7 +26,6 @@ export default function AccountShow({ account }: Props) {
           {tn('account.memberSince', { date: dateNode(account.createdAt) })}
         </p>
       </div>
-      <FlashNotice />
       <p className="field__hint">{t('form.requiredNotice')}</p>
 
       <div className="account-sections">

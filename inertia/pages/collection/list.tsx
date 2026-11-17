@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { usePage } from '@inertiajs/react'
 import { Form, Link } from '@adonisjs/inertia/react'
 import { Share2 } from 'lucide-react'
@@ -11,9 +10,9 @@ import MinifigCard from '~/components/minifig_card'
 import SetFilters, { type ThemeOption } from '~/components/set_filters'
 import MinifigFilters from '~/components/minifig_filters'
 import Pagination, { type PaginationData } from '~/components/pagination'
-import FlashNotice from '~/components/flash_notice'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
+import { notify } from '~/lib/notify'
 
 type Props = InertiaProps<{
   mode: 'collection' | 'wishlist' | 'shared'
@@ -32,12 +31,14 @@ type Props = InertiaProps<{
 
 function SharePanel({ shareUrl }: { shareUrl: string | null }) {
   const { t } = useI18n()
-  const [copied, setCopied] = useState(false)
-
   async function copy() {
     if (!shareUrl) return
-    await navigator.clipboard.writeText(shareUrl)
-    setCopied(true)
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      notify(t('wishlist.copied'))
+    } catch {
+      notify(t('wishlist.copyFailed'), 'error')
+    }
   }
 
   return (
@@ -65,9 +66,6 @@ function SharePanel({ shareUrl }: { shareUrl: string | null }) {
                 {t('wishlist.copy')}
               </button>
             </div>
-            <p className="field__hint" role="status">
-              {copied ? t('wishlist.copied') : ''}
-            </p>
           </div>
           <Form route="wishlist.unshare">
             {({ processing }) => (
@@ -140,7 +138,6 @@ export default function CollectionList(props: Props) {
         </p>
         {readOnly && <p>{t('shared.readonly', { username: owner?.username ?? '' })}</p>}
       </div>
-      <FlashNotice />
 
       {props.wishlistTotal && totalItems > 0 && (
         <div className="wishlist-total" role="status">
