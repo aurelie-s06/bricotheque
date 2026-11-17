@@ -5,7 +5,7 @@ import Seo from '~/components/seo'
 import SetCard from '~/components/set_card'
 import SearchForm from '~/components/search_form'
 import { type InertiaProps } from '~/types'
-import { plural } from '~/lib/format'
+import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
   popularThemes: { name: string; url: string; count: number }[]
@@ -13,16 +13,14 @@ type Props = InertiaProps<{
 }>
 
 export default function Home({ popularThemes, latestSets }: Props) {
+  const { t, tc } = useI18n()
   return (
     <>
       <Seo />
 
       <section className="hero" aria-labelledby="hero-title">
-        <h1 id="hero-title">Tous les sets et minifigs, une seule collection</h1>
-        <p className="hero__lead">
-          Retrouve n’importe quel set ou minifig, d’hier comme d’aujourd’hui, et garde la trace de
-          ta collection et de tes envies.
-        </p>
+        <h1 id="hero-title">{t('home.title')}</h1>
+        <p className="hero__lead">{t('home.lead')}</p>
         <SearchForm />
       </section>
 
@@ -30,15 +28,15 @@ export default function Home({ popularThemes, latestSets }: Props) {
 
       <section aria-labelledby="themes-title" className="home-section">
         <div className="home-section__header">
-          <h2 id="themes-title">Thèmes populaires</h2>
-          <Link href="/themes">Tous les thèmes</Link>
+          <h2 id="themes-title">{t('home.popularThemes')}</h2>
+          <Link href="/themes">{t('home.allThemes')}</Link>
         </div>
         <ul className="chip-list chip-list--large">
           {popularThemes.map((theme) => (
             <li key={theme.url}>
               <Link href={theme.url} className="chip">
                 {theme.name}{' '}
-                <span className="chip__count" aria-label={plural(theme.count, 'set')}>
+                <span className="chip__count" aria-label={tc('count.sets', theme.count)}>
                   {theme.count}
                 </span>
               </Link>
@@ -49,8 +47,8 @@ export default function Home({ popularThemes, latestSets }: Props) {
 
       <section aria-labelledby="latest-title" className="home-section">
         <div className="home-section__header">
-          <h2 id="latest-title">Derniers sets sortis</h2>
-          <Link href="/sets">Tout le catalogue</Link>
+          <h2 id="latest-title">{t('home.latestSets')}</h2>
+          <Link href="/sets">{t('home.allSets')}</Link>
         </div>
         <ul className="card-grid">
           {latestSets.map((set) => (

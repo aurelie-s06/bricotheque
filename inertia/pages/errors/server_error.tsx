@@ -1,18 +1,18 @@
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import { useI18n } from '~/i18n'
 
 export default function ServerError() {
+  const { t } = useI18n()
   return (
     <>
-      <Seo title="Erreur du serveur" />
+      <Seo title={t('error.serverPageTitle')} />
       <div className="empty-state">
         <div className="studs" aria-hidden="true" />
-        <h1>Oups, une erreur est survenue</h1>
-        <p className="text-muted">
-          Le serveur a rencontré un problème. Réessaie dans quelques instants.
-        </p>
+        <h1>{t('error.serverTitle')}</h1>
+        <p className="text-muted">{t('error.serverText')}</p>
         <a className="btn" href="/">
-          Retour à l’accueil
+          {t('error.backHome')}
         </a>
       </div>
     </>

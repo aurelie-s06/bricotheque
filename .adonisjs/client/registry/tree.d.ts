@@ -12,6 +12,9 @@ export interface ApiDefinition {
     show: typeof routes['themes.show']
   }
   search: typeof routes['search']
+  locale: {
+    switch: typeof routes['locale.switch']
+  }
   newAccount: {
     create: typeof routes['new_account.create']
     store: typeof routes['new_account.store']

@@ -3,25 +3,21 @@ import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import { type InertiaProps } from '~/types'
-import { plural } from '~/lib/format'
+import { useI18n } from '~/i18n'
 
 type ThemeEntry = { name: string; url: string; count: number }
 type Props = InertiaProps<{ themes: (ThemeEntry & { subthemes: ThemeEntry[] })[] }>
 
 export default function ThemesIndex({ themes }: Props) {
+  const { t, tc } = useI18n()
   return (
     <>
-      <Seo
-        title="Thèmes"
-        description="Tous les thèmes de sets de briques (Star Wars, City, Technic…) avec leurs sous-thèmes et leur nombre de sets."
-      />
-      <Breadcrumb items={[{ name: 'Accueil', url: '/' }, { name: 'Thèmes' }]} />
+      <Seo title={t('themes.title')} description={t('themes.metaDescription')} />
+      <Breadcrumb items={[{ name: t('breadcrumb.home'), url: '/' }, { name: t('themes.title') }]} />
 
       <div className="page-header">
-        <h1>Thèmes</h1>
-        <p className="text-muted">
-          {plural(themes.length, 'thème principal', 'thèmes principaux')}
-        </p>
+        <h1>{t('themes.title')}</h1>
+        <p className="text-muted">{tc('themes.roots', themes.length)}</p>
       </div>
 
       <ul className="theme-grid">
@@ -30,9 +26,9 @@ export default function ThemesIndex({ themes }: Props) {
             <h2 className="theme-card__title">
               <Link href={theme.url}>{theme.name}</Link>
             </h2>
-            <p className="text-muted">{plural(theme.count, 'set')}</p>
+            <p className="text-muted">{tc('count.sets', theme.count)}</p>
             {theme.subthemes.length > 0 && (
-              <ul className="chip-list" aria-label={`Sous-thèmes de ${theme.name}`}>
+              <ul className="chip-list" aria-label={t('themes.subthemesOf', { name: theme.name })}>
                 {theme.subthemes.map((subtheme) => (
                   <li key={subtheme.url}>
                     <Link href={subtheme.url} className="chip">

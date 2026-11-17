@@ -2,7 +2,7 @@ import { Link } from '@adonisjs/inertia/react'
 import { type Data } from '@generated/data'
 import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
-import { formatPrice, plural } from '~/lib/format'
+import { useI18n } from '~/i18n'
 
 export default function SetCard({
   set,
@@ -11,13 +11,16 @@ export default function SetCard({
   set: Data.BrickSet
   headingLevel?: 2 | 3
 }) {
+  const { t, tc, formatPrice } = useI18n()
   const Heading = `h${headingLevel}` as const
-  const meta = [set.year, set.numParts > 0 ? plural(set.numParts, 'pièce') : null].filter(Boolean)
+  const meta = [set.year, set.numParts > 0 ? tc('count.pieces', set.numParts) : null].filter(
+    Boolean
+  )
 
   return (
     <article className="set-card">
       <div className="set-card__media">
-        <SetImage src={set.imgUrl} alt={`Set ${set.setNum} ${set.name}`} />
+        <SetImage src={set.imgUrl} alt={t('image.set', { setNum: set.setNum, name: set.name })} />
       </div>
       <div className="set-card__body">
         <p className="set-card__number">{set.setNum}</p>

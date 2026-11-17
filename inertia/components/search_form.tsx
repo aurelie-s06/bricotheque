@@ -1,6 +1,7 @@
 import { useId, type FormEvent } from 'react'
 import { router } from '@inertiajs/react'
 import { urlFor } from '~/client'
+import { useI18n } from '~/i18n'
 
 /**
  * Search form for sets and minifigs. It is a plain GET form, so it keeps
@@ -16,6 +17,7 @@ export default function SearchForm({
   className?: string
   buttonClassName?: string
 }) {
+  const { t } = useI18n()
   const id = useId()
   const action = urlFor('search')
 
@@ -34,7 +36,7 @@ export default function SearchForm({
       onSubmit={onSubmit}
     >
       <label className="visually-hidden" htmlFor={id}>
-        Rechercher un set ou une minifig
+        {t('search.label')}
       </label>
       <input
         className="input search__input"
@@ -42,10 +44,10 @@ export default function SearchForm({
         id={id}
         name="q"
         defaultValue={defaultValue}
-        placeholder="Nom ou numéro (ex. 75192)"
+        placeholder={t('search.placeholder')}
       />
       <button type="submit" className={buttonClassName}>
-        Rechercher
+        {t('search.submit')}
       </button>
     </form>
   )

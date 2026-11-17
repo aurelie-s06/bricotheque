@@ -50,7 +50,7 @@ export default {
     },
     import_runs: {
       columns: {
-        source: enumOf(['rebrickable', 'brickset', 'bricklink']),
+        source: enumOf(['rebrickable', 'brickset', 'bricklink', 'translation']),
         status: enumOf(['running', 'completed', 'failed', 'interrupted']),
         cursor: json('Record<string, unknown>'),
         stats: json('Record<string, number>'),

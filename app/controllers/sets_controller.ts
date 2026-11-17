@@ -7,6 +7,7 @@ import { SETS_PER_PAGE, setCatalogueQuery } from '#services/catalogue/set_query'
 import { fallbackDescription } from '#services/set_description'
 import BrickSetTransformer from '#transformers/brick_set_transformer'
 import { setNumCandidates, setPath, themePath } from '#helpers/urls'
+import { resolveLocale } from '#helpers/locale'
 
 export default class SetsController {
   /**
@@ -61,13 +62,16 @@ export default class SetsController {
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
       fallbackDescription: set.description
         ? null
-        : fallbackDescription({
-            kind: set.kind,
-            themeName: chain[0]?.name ?? null,
-            year: set.year,
-            numParts: set.numParts,
-            numMinifigs: set.numMinifigs,
-          }),
+        : fallbackDescription(
+            {
+              kind: set.kind,
+              themeName: chain[0]?.name ?? null,
+              year: set.year,
+              numParts: set.numParts,
+              numMinifigs: set.numMinifigs,
+            },
+            resolveLocale(request)
+          ),
     })
   }
 }

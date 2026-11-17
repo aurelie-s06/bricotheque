@@ -43,6 +43,7 @@ export default class BrickSetTransformer extends BaseTransformer<BrickSet> {
         'estimatedValueCurrency',
         'subtheme',
         'description',
+        'descriptionFr',
       ]),
       dateFirstAvailable: set.dateFirstAvailable?.toISODate() ?? null,
       dateLastAvailable: set.dateLastAvailable?.toISODate() ?? null,

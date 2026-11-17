@@ -6,7 +6,7 @@ import SetCard from '~/components/set_card'
 import Pagination, { type PaginationData } from '~/components/pagination'
 import SetFilters, { type ThemeOption } from '~/components/set_filters'
 import { type InertiaProps } from '~/types'
-import { plural } from '~/lib/format'
+import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
   sets: Data.BrickSet[]
@@ -17,12 +17,14 @@ type Props = InertiaProps<{
 }>
 
 export default function SetsIndex({ sets, pagination, query, themeOptions, themeName }: Props) {
+  const { t, tc } = useI18n()
   const title = query.q
-    ? `Recherche « ${query.q} » dans les sets`
+    ? t('sets.titleSearch', { q: query.q })
     : themeName
-      ? `Sets ${themeName}`
-      : 'Catalogue des sets'
-  const pageSuffix = pagination.currentPage > 1 ? ` – page ${pagination.currentPage}` : ''
+      ? t('sets.titleTheme', { theme: themeName })
+      : t('sets.title')
+  const pageSuffix =
+    pagination.currentPage > 1 ? t('sets.pageSuffix', { page: pagination.currentPage }) : ''
 
   // Filters are folded on small screens (results first) and unfolded on
   // large screens, where they sit in a side column
@@ -35,27 +37,24 @@ export default function SetsIndex({ sets, pagination, query, themeOptions, theme
 
   return (
     <>
-      <Seo
-        title={`${title}${pageSuffix}`}
-        description="Tous les sets de briques, anciens, actuels et retirés : recherche par nom ou numéro, filtres par thème, année, pièces, statut et prix."
-      />
+      <Seo title={`${title}${pageSuffix}`} description={t('sets.metaDescription')} />
 
       <div className="page-header">
         <h1>{title}</h1>
         <p className="text-muted" role="status">
-          {plural(pagination.total, 'résultat')}
+          {tc('sets.results', pagination.total)}
           {pagination.lastPage > 1 &&
-            ` · page ${pagination.currentPage} sur ${pagination.lastPage}`}
+            ` · ${t('sets.pageOf', { page: pagination.currentPage, last: pagination.lastPage })}`}
         </p>
       </div>
 
       <div className="catalogue">
         <details className="catalogue__filters" ref={filtersPanel}>
-          <summary className="catalogue__filters-toggle">Filtres et tri</summary>
+          <summary className="catalogue__filters-toggle">{t('sets.filtersToggle')}</summary>
           <SetFilters query={query} themeOptions={themeOptions} />
         </details>
 
-        <section className="catalogue__results" aria-label="Résultats">
+        <section className="catalogue__results" aria-label={t('sets.resultsLabel')}>
           {sets.length ? (
             <ul className="card-grid">
               {sets.map((set) => (
@@ -67,10 +66,10 @@ export default function SetsIndex({ sets, pagination, query, themeOptions, theme
           ) : (
             <div className="empty-state">
               <div className="studs" aria-hidden="true" />
-              <h2>Aucun set ne correspond</h2>
-              <p className="text-muted">Essaie avec moins de filtres ou un autre mot-clé.</p>
+              <h2>{t('sets.empty')}</h2>
+              <p className="text-muted">{t('sets.emptyHint')}</p>
               <a className="btn btn--secondary" href="/sets">
-                Voir tous les sets
+                {t('sets.seeAll')}
               </a>
             </div>
           )}

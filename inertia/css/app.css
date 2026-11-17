@@ -1114,3 +1114,50 @@ select.field__input {
     transform: none;
   }
 }
+
+/* ---------- Language switcher ---------- */
+.language-switcher {
+  display: flex;
+  gap: var(--half);
+  list-style: none;
+  padding: 0;
+}
+
+.language-switcher__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.language-switcher__link:hover {
+  border-color: var(--ink-muted);
+  color: var(--ink);
+}
+
+.language-switcher__link[aria-current='true'] {
+  background: var(--brick-yellow);
+  border-color: var(--brick-yellow-dark);
+}
+
+/* ---------- Original text (translated descriptions) ---------- */
+.original-text {
+  margin-top: var(--space-2);
+}
+
+.original-text summary {
+  cursor: pointer;
+  color: var(--brick-blue);
+  font-weight: 600;
+}
+
+.original-text[open] summary {
+  margin-bottom: var(--space-1);
+}

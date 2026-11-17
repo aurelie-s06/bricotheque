@@ -20,7 +20,7 @@ export class ImportRunSchema extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
   @column()
-  declare source: 'rebrickable' | 'brickset' | 'bricklink'
+  declare source: 'rebrickable' | 'brickset' | 'bricklink' | 'translation'
   @column.dateTime()
   declare startedAt: DateTime
   @jsonColumn()
@@ -87,7 +87,7 @@ export class SetMinifigSchema extends BaseModel {
 }
 
 export class SetSchema extends BaseModel {
-  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgUrl', 'kind', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
+  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgUrl', 'kind', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
   $columns = SetSchema.$columns
   @column()
   declare availabilityStatus: 'available' | 'retired' | 'unknown'
@@ -103,6 +103,12 @@ export class SetSchema extends BaseModel {
   declare dateLastAvailable: DateTime | null
   @column()
   declare description: string | null
+  @column()
+  declare descriptionFr: string | null
+  @column()
+  declare descriptionFrSourceHash: string | null
+  @column.dateTime()
+  declare descriptionFrTranslatedAt: DateTime | null
   @column()
   declare estimatedValueCurrency: string | null
   @decimalColumn()

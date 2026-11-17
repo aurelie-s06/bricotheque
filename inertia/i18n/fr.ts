@@ -1,0 +1,182 @@
+/**
+ * French interface texts (source of truth: en.ts must have the same keys).
+ * Placeholders: {name}. Plurals: keys ending with _one / _other.
+ */
+const fr = {
+  // Site
+  'site.defaultTitle': 'Briquothèque – Catalogue de sets et minifigs',
+  'site.defaultDescription':
+    'Briquothèque : le catalogue de tous les sets et minifigs de briques, pour gérer ta collection et ta wishlist.',
+  'site.skipLink': 'Aller au contenu',
+  'site.homeLabel': 'Briquothèque – Accueil',
+  'site.mainMenu': 'Menu principal',
+  'site.legal':
+    'LEGO® est une marque du groupe LEGO, qui ne parraine ni n’approuve ce site. Données : Rebrickable, Brickset.',
+  'nav.sets': 'Sets',
+  'nav.themes': 'Thèmes',
+  'nav.login': 'Connexion',
+  'nav.signup': 'Inscription',
+  'nav.logout': 'Déconnexion',
+  'language.label': 'Langue',
+  'language.fr': 'Français',
+  'language.en': 'English',
+
+  // Search
+  'search.label': 'Rechercher un set ou une minifig',
+  'search.placeholder': 'Nom ou numéro (ex. 75192)',
+  'search.submit': 'Rechercher',
+
+  // Home
+  'home.title': 'Tous les sets et minifigs, une seule collection',
+  'home.lead':
+    'Retrouve n’importe quel set ou minifig, d’hier comme d’aujourd’hui, et garde la trace de ta collection et de tes envies.',
+  'home.popularThemes': 'Thèmes populaires',
+  'home.allThemes': 'Tous les thèmes',
+  'home.latestSets': 'Derniers sets sortis',
+  'home.allSets': 'Tout le catalogue',
+
+  // Catalogue
+  'sets.title': 'Catalogue des sets',
+  'sets.titleSearch': 'Recherche « {q} » dans les sets',
+  'sets.titleTheme': 'Sets {theme}',
+  'sets.metaDescription':
+    'Tous les sets de briques, anciens, actuels et retirés : recherche par nom ou numéro, filtres par thème, année, pièces, statut et prix.',
+  'sets.results_one': '{count} résultat',
+  'sets.results_other': '{count} résultats',
+  'sets.pageOf': 'page {page} sur {last}',
+  'sets.pageSuffix': ' – page {page}',
+  'sets.resultsLabel': 'Résultats',
+  'sets.filtersToggle': 'Filtres et tri',
+  'sets.empty': 'Aucun set ne correspond',
+  'sets.emptyHint': 'Essaie avec moins de filtres ou un autre mot-clé.',
+  'sets.seeAll': 'Voir tous les sets',
+
+  // Filters
+  'filters.q': 'Nom ou numéro',
+  'filters.qPlaceholder': 'ex. 75192 ou Falcon',
+  'filters.theme': 'Thème (sous-thèmes inclus)',
+  'filters.allThemes': 'Tous les thèmes',
+  'filters.year': 'Année',
+  'filters.yearMin': 'Année minimum',
+  'filters.yearMax': 'Année maximum',
+  'filters.parts': 'Nombre de pièces',
+  'filters.partsMin': 'Nombre de pièces minimum',
+  'filters.partsMax': 'Nombre de pièces maximum',
+  'filters.price': 'Prix d’origine (€)',
+  'filters.priceMin': 'Prix minimum en euros',
+  'filters.priceMax': 'Prix maximum en euros',
+  'filters.from': 'de',
+  'filters.to': 'à',
+  'filters.status': 'Statut',
+  'filters.allStatuses': 'Tous',
+  'filters.type': 'Type de produit',
+  'filters.sort': 'Trier par',
+  'filters.relevance': 'Pertinence',
+  'filters.submit': 'Filtrer',
+  'filters.reset': 'Réinitialiser',
+  'sort.recent': 'Plus récents',
+  'sort.oldest': 'Plus anciens',
+  'sort.name': 'Nom (A → Z)',
+  'sort.parts_desc': 'Plus de pièces',
+  'sort.parts_asc': 'Moins de pièces',
+  'sort.price_asc': 'Prix croissant',
+  'sort.price_desc': 'Prix décroissant',
+  'status.available': 'En vente',
+  'status.retired': 'Retiré',
+  'status.unknown': 'Statut inconnu',
+  'kind.set': 'Sets',
+  'kind.book': 'Livres',
+  'kind.gear': 'Produits dérivés',
+  'kind.parts': 'Lots de pièces',
+  'kind.bundle': 'Lots de sets',
+  'kind.all': 'Tout',
+
+  // Cards and counts
+  'count.pieces_one': '{count} pièce',
+  'count.pieces_other': '{count} pièces',
+  'count.sets_one': '{count} set',
+  'count.sets_other': '{count} sets',
+  'count.products_one': '{count} produit',
+  'count.products_other': '{count} produits',
+  'image.set': 'Set {setNum} {name}',
+  'image.minifig': 'Minifig {figNum} {name}',
+
+  // Set page
+  'set.number': 'Set n° {setNum}',
+  'set.theme': 'Thème',
+  'set.subtheme': 'Sous-thème',
+  'set.year': 'Année',
+  'set.pieces': 'Pièces',
+  'set.minifigs': 'Minifigs',
+  'set.originalPrice': 'Prix d’origine',
+  'set.unknownPrice': 'Inconnu',
+  'set.noLongerSold': ' – Plus vendu, prix d’origine',
+  'set.estimatedValue': 'Valeur estimée',
+  'set.estimateNew': '~{price} (neuf)',
+  'set.estimateUsed': '~{price} (occasion)',
+  'set.estimateSource': ' – BrickLink',
+  'set.estimateUpdated': ', mis à jour le {date}',
+  'set.status': 'Statut',
+  'set.availability': 'Commercialisation',
+  'set.availableFromTo': 'du {from} au {to}',
+  'set.availableFrom': 'depuis le {from}',
+  'set.availableUntil': 'jusqu’au {to}',
+  'set.onRebrickable': 'Voir sur Rebrickable',
+  'set.onBrickset': 'Voir sur Brickset',
+  'set.description': 'Description',
+  'set.descriptionTranslated':
+    'Traduction automatique (Claude) de la description anglaise fournie par Brickset (LEGO.com).',
+  'set.descriptionOriginal': 'Description fournie par Brickset (LEGO.com), en anglais.',
+  'set.showOriginal': 'Voir le texte original en anglais',
+  'set.minifigsTitle': 'Minifigs du set ({count})',
+  'set.metaDescription': 'Set {setNum} {name} : {text}',
+
+  // Themes
+  'themes.title': 'Thèmes',
+  'themes.metaDescription':
+    'Tous les thèmes de sets de briques (Star Wars, City, Technic…) avec leurs sous-thèmes et leur nombre de sets.',
+  'themes.roots_one': '{count} thème principal',
+  'themes.roots_other': '{count} thèmes principaux',
+  'themes.subthemesOf': 'Sous-thèmes de {name}',
+  'theme.title': 'Thème {name}',
+  'theme.metaDescription': 'Les sets du thème {name}, classés par année.',
+  'theme.productsWithSets': '{products}, dont {sets}',
+  'theme.subthemes': 'Sous-thèmes',
+  'theme.unknownYear': 'Année inconnue',
+
+  // Navigation helpers
+  'breadcrumb.label': 'Fil d’Ariane',
+  'breadcrumb.home': 'Accueil',
+  'pagination.label': 'Pagination',
+  'pagination.previous': 'Précédente',
+  'pagination.next': 'Suivante',
+  'pagination.page': 'Page {page}',
+  'external.label': '(site externe)',
+
+  // Errors
+  'error.notFoundTitle': 'Page introuvable',
+  'error.notFoundText': 'La page demandée n’existe pas ou a été déplacée.',
+  'error.serverTitle': 'Oups, une erreur est survenue',
+  'error.serverPageTitle': 'Erreur du serveur',
+  'error.serverText': 'Le serveur a rencontré un problème. Réessaie dans quelques instants.',
+  'error.backHome': 'Retour à l’accueil',
+
+  // Auth (reworked in step 7)
+  'auth.loginTitle': 'Connexion',
+  'auth.loginLead': 'Retrouve ta collection et ta wishlist.',
+  'auth.signupTitle': 'Inscription',
+  'auth.signupLead': 'Crée ton compte pour gérer ta collection.',
+  'auth.email': 'Adresse e-mail',
+  'auth.password': 'Mot de passe',
+  'auth.passwordConfirmation': 'Confirmer le mot de passe',
+  'auth.username': 'Pseudo',
+  'auth.login': 'Se connecter',
+  'auth.loggingIn': 'Connexion…',
+  'auth.signup': 'Créer mon compte',
+  'auth.signingUp': 'Création…',
+  'auth.noAccount': 'Pas encore de compte ?',
+  'auth.createAccount': 'Créer un compte',
+  'auth.hasAccount': 'Déjà un compte ?',
+} as const
+
+export default fr

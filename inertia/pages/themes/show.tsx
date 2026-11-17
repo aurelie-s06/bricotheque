@@ -6,7 +6,7 @@ import SetCard from '~/components/set_card'
 import Breadcrumb from '~/components/breadcrumb'
 import Pagination, { type PaginationData } from '~/components/pagination'
 import { type InertiaProps } from '~/types'
-import { plural } from '~/lib/format'
+import { useI18n } from '~/i18n'
 
 type ThemeEntry = { name: string; url: string; count: number }
 type Props = InertiaProps<{
@@ -32,18 +32,20 @@ function byYear(sets: Data.BrickSet[]) {
 }
 
 export default function ThemeShow({ theme, themeChain, subthemes, sets, pagination }: Props) {
-  const pageSuffix = pagination.currentPage > 1 ? ` – page ${pagination.currentPage}` : ''
+  const { t, tc } = useI18n()
+  const pageSuffix =
+    pagination.currentPage > 1 ? t('sets.pageSuffix', { page: pagination.currentPage }) : ''
 
   return (
     <>
       <Seo
-        title={`Thème ${theme.name}${pageSuffix}`}
-        description={`Les ${plural(pagination.total, 'set')} du thème ${theme.name}, classés par année.`}
+        title={`${t('theme.title', { name: theme.name })}${pageSuffix}`}
+        description={t('theme.metaDescription', { name: theme.name })}
       />
       <Breadcrumb
         items={[
-          { name: 'Accueil', url: '/' },
-          { name: 'Thèmes', url: '/themes' },
+          { name: t('breadcrumb.home'), url: '/' },
+          { name: t('themes.title'), url: '/themes' },
           ...themeChain.slice(0, -1),
           { name: theme.name },
         ]}
@@ -53,16 +55,19 @@ export default function ThemeShow({ theme, themeChain, subthemes, sets, paginati
         <h1>{theme.name}</h1>
         <p className="text-muted">
           {pagination.total === theme.count
-            ? plural(theme.count, 'set')
-            : `${plural(pagination.total, 'produit')}, dont ${plural(theme.count, 'set')}`}
+            ? tc('count.sets', theme.count)
+            : t('theme.productsWithSets', {
+                products: tc('count.products', pagination.total),
+                sets: tc('count.sets', theme.count),
+              })}
           {pagination.lastPage > 1 &&
-            ` · page ${pagination.currentPage} sur ${pagination.lastPage}`}
+            ` · ${t('sets.pageOf', { page: pagination.currentPage, last: pagination.lastPage })}`}
         </p>
       </div>
 
       {subthemes.length > 0 && (
         <section aria-labelledby="subthemes-title" className="subthemes">
-          <h2 id="subthemes-title">Sous-thèmes</h2>
+          <h2 id="subthemes-title">{t('theme.subthemes')}</h2>
           <ul className="chip-list">
             {subthemes.map((subtheme) => (
               <li key={subtheme.url}>
@@ -78,7 +83,7 @@ export default function ThemeShow({ theme, themeChain, subthemes, sets, paginati
       {byYear(sets).map((group) => (
         <section key={group.year ?? 'unknown'} aria-labelledby={`year-${group.year ?? 'unknown'}`}>
           <h2 id={`year-${group.year ?? 'unknown'}`} className="year-heading">
-            {group.year ?? 'Année inconnue'}
+            {group.year ?? t('theme.unknownYear')}
           </h2>
           <ul className="card-grid">
             {group.sets.map((set) => (

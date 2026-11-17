@@ -1,18 +1,67 @@
 import { type FormEvent } from 'react'
 import { router } from '@inertiajs/react'
-import { KIND_LABELS, STATUS_LABELS } from '~/lib/format'
+import { useI18n, type MessageKey } from '~/i18n'
 
 export type ThemeOption = { slug: string; name: string; depth: number }
 
-const SORT_LABELS = {
-  recent: 'Plus récents',
-  oldest: 'Plus anciens',
-  name: 'Nom (A → Z)',
-  parts_desc: 'Plus de pièces',
-  parts_asc: 'Moins de pièces',
-  price_asc: 'Prix croissant',
-  price_desc: 'Prix décroissant',
-} as const
+const SORTS = [
+  'recent',
+  'oldest',
+  'name',
+  'parts_desc',
+  'parts_asc',
+  'price_asc',
+  'price_desc',
+] as const
+const STATUSES = ['available', 'retired', 'unknown'] as const
+const TYPES = ['set', 'book', 'gear', 'parts', 'bundle', 'all'] as const
+
+/** Two number inputs (min / max) under one legend */
+function Range({
+  name,
+  legend,
+  minLabel,
+  maxLabel,
+  query,
+  step,
+  min,
+  max,
+}: {
+  name: 'year' | 'parts' | 'price'
+  legend: string
+  minLabel: string
+  maxLabel: string
+  query: Record<string, string>
+  step?: string
+  min?: number
+  max?: number
+}) {
+  const { t } = useI18n()
+  return (
+    <fieldset className="filters__range">
+      <legend className="field__label">{legend}</legend>
+      {(['min', 'max'] as const).map((bound) => (
+        <span key={bound}>
+          <label className="visually-hidden" htmlFor={`filter-${name}-${bound}`}>
+            {bound === 'min' ? minLabel : maxLabel}
+          </label>
+          <input
+            className="field__input"
+            id={`filter-${name}-${bound}`}
+            name={`${name}_${bound}`}
+            type="number"
+            inputMode={step ? 'decimal' : 'numeric'}
+            min={min}
+            max={max}
+            step={step}
+            placeholder={t(bound === 'min' ? 'filters.from' : 'filters.to')}
+            defaultValue={query[`${name}_${bound}`] ?? ''}
+          />
+        </span>
+      ))}
+    </fieldset>
+  )
+}
 
 /**
  * Catalogue filters. A plain GET form (works without JavaScript); with
@@ -27,6 +76,8 @@ export default function SetFilters({
   themeOptions: ThemeOption[]
   action?: string
 }) {
+  const { t } = useI18n()
+
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const params: Record<string, string> = {}
@@ -44,7 +95,7 @@ export default function SetFilters({
     <form className="filters" action={action} method="get" onSubmit={onSubmit}>
       <div className="field">
         <label className="field__label" htmlFor="filter-q">
-          Nom ou numéro
+          {t('filters.q')}
         </label>
         <input
           className="field__input"
@@ -52,13 +103,13 @@ export default function SetFilters({
           name="q"
           type="search"
           defaultValue={value('q')}
-          placeholder="ex. 75192 ou Faucon"
+          placeholder={t('filters.qPlaceholder')}
         />
       </div>
 
       <div className="field">
         <label className="field__label" htmlFor="filter-theme">
-          Thème (sous-thèmes inclus)
+          {t('filters.theme')}
         </label>
         <select
           className="field__input"
@@ -66,7 +117,7 @@ export default function SetFilters({
           name="theme"
           defaultValue={value('theme')}
         >
-          <option value="">Tous les thèmes</option>
+          <option value="">{t('filters.allThemes')}</option>
           {themeOptions.map((theme) => (
             <option key={theme.slug} value={theme.slug}>
               {`${'  '.repeat(theme.depth)}${theme.depth ? '– ' : ''}${theme.name}`}
@@ -75,103 +126,36 @@ export default function SetFilters({
         </select>
       </div>
 
-      <fieldset className="filters__range">
-        <legend className="field__label">Année</legend>
-        <label className="visually-hidden" htmlFor="filter-year-min">
-          Année minimum
-        </label>
-        <input
-          className="field__input"
-          id="filter-year-min"
-          name="year_min"
-          type="number"
-          inputMode="numeric"
-          min={1949}
-          max={2100}
-          placeholder="de"
-          defaultValue={value('year_min')}
-        />
-        <label className="visually-hidden" htmlFor="filter-year-max">
-          Année maximum
-        </label>
-        <input
-          className="field__input"
-          id="filter-year-max"
-          name="year_max"
-          type="number"
-          inputMode="numeric"
-          min={1949}
-          max={2100}
-          placeholder="à"
-          defaultValue={value('year_max')}
-        />
-      </fieldset>
-
-      <fieldset className="filters__range">
-        <legend className="field__label">Nombre de pièces</legend>
-        <label className="visually-hidden" htmlFor="filter-parts-min">
-          Nombre de pièces minimum
-        </label>
-        <input
-          className="field__input"
-          id="filter-parts-min"
-          name="parts_min"
-          type="number"
-          inputMode="numeric"
-          min={0}
-          placeholder="de"
-          defaultValue={value('parts_min')}
-        />
-        <label className="visually-hidden" htmlFor="filter-parts-max">
-          Nombre de pièces maximum
-        </label>
-        <input
-          className="field__input"
-          id="filter-parts-max"
-          name="parts_max"
-          type="number"
-          inputMode="numeric"
-          min={0}
-          placeholder="à"
-          defaultValue={value('parts_max')}
-        />
-      </fieldset>
-
-      <fieldset className="filters__range">
-        <legend className="field__label">Prix d’origine (€)</legend>
-        <label className="visually-hidden" htmlFor="filter-price-min">
-          Prix minimum en euros
-        </label>
-        <input
-          className="field__input"
-          id="filter-price-min"
-          name="price_min"
-          type="number"
-          inputMode="decimal"
-          min={0}
-          step="any"
-          placeholder="de"
-          defaultValue={value('price_min')}
-        />
-        <label className="visually-hidden" htmlFor="filter-price-max">
-          Prix maximum en euros
-        </label>
-        <input
-          className="field__input"
-          id="filter-price-max"
-          name="price_max"
-          type="number"
-          inputMode="decimal"
-          min={0}
-          step="any"
-          placeholder="à"
-          defaultValue={value('price_max')}
-        />
-      </fieldset>
+      <Range
+        name="year"
+        legend={t('filters.year')}
+        minLabel={t('filters.yearMin')}
+        maxLabel={t('filters.yearMax')}
+        query={query}
+        min={1949}
+        max={2100}
+      />
+      <Range
+        name="parts"
+        legend={t('filters.parts')}
+        minLabel={t('filters.partsMin')}
+        maxLabel={t('filters.partsMax')}
+        query={query}
+        min={0}
+      />
+      <Range
+        name="price"
+        legend={t('filters.price')}
+        minLabel={t('filters.priceMin')}
+        maxLabel={t('filters.priceMax')}
+        query={query}
+        min={0}
+        step="any"
+      />
 
       <div className="field">
         <label className="field__label" htmlFor="filter-status">
-          Statut
+          {t('filters.status')}
         </label>
         <select
           className="field__input"
@@ -179,10 +163,10 @@ export default function SetFilters({
           name="status"
           defaultValue={value('status')}
         >
-          <option value="">Tous</option>
-          {(['available', 'retired', 'unknown'] as const).map((status) => (
+          <option value="">{t('filters.allStatuses')}</option>
+          {STATUSES.map((status) => (
             <option key={status} value={status}>
-              {STATUS_LABELS[status]}
+              {t(`status.${status}`)}
             </option>
           ))}
         </select>
@@ -190,7 +174,7 @@ export default function SetFilters({
 
       <div className="field">
         <label className="field__label" htmlFor="filter-type">
-          Type de produit
+          {t('filters.type')}
         </label>
         <select
           className="field__input"
@@ -198,9 +182,9 @@ export default function SetFilters({
           name="type"
           defaultValue={value('type') || 'set'}
         >
-          {(['set', 'book', 'gear', 'parts', 'bundle', 'all'] as const).map((type) => (
+          {TYPES.map((type) => (
             <option key={type} value={type}>
-              {KIND_LABELS[type]}
+              {t(`kind.${type}`)}
             </option>
           ))}
         </select>
@@ -208,13 +192,13 @@ export default function SetFilters({
 
       <div className="field">
         <label className="field__label" htmlFor="filter-sort">
-          Trier par
+          {t('filters.sort')}
         </label>
         <select className="field__input" id="filter-sort" name="sort" defaultValue={value('sort')}>
-          <option value="">{value('q') ? 'Pertinence' : 'Plus récents'}</option>
-          {Object.entries(SORT_LABELS).map(([key, label]) => (
-            <option key={key} value={key}>
-              {label}
+          <option value="">{value('q') ? t('filters.relevance') : t('sort.recent')}</option>
+          {SORTS.map((sort) => (
+            <option key={sort} value={sort}>
+              {t(`sort.${sort}` as MessageKey)}
             </option>
           ))}
         </select>
@@ -222,10 +206,10 @@ export default function SetFilters({
 
       <div className="filters__actions">
         <button type="submit" className="btn">
-          Filtrer
+          {t('filters.submit')}
         </button>
         <a className="btn btn--secondary" href={action}>
-          Réinitialiser
+          {t('filters.reset')}
         </a>
       </div>
     </form>

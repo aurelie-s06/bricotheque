@@ -44,6 +44,12 @@ const routes = {
     tokens: [[0,"recherche"]],
     types: placeholder as Registry['search']['types'],
   },
+  'locale.switch': {
+    methods: ["GET","HEAD"],
+    pattern: '/langue/:locale',
+    tokens: [[0,"langue"],[1,"locale"]],
+    types: placeholder as Registry['locale.switch']['types'],
+  },
   'new_account.create': {
     methods: ["GET","HEAD"],
     pattern: '/inscription',

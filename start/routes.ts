@@ -10,6 +10,7 @@
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
+import { isLocale, LOCALE_COOKIE, safeReturnPath } from '#helpers/locale'
 
 router.get('/', [controllers.Home, 'index']).as('home')
 
@@ -30,6 +31,27 @@ router
     return response.redirect().toRoute('sets.index', {}, { qs: q ? { q } : {} })
   })
   .as('search')
+
+/**
+ * Language switcher: remembers the choice in a cookie for one year, then
+ * goes back to the page. A GET link, so it works without JavaScript.
+ */
+router
+  .get('langue/:locale', ({ params, request, response }) => {
+    if (isLocale(params.locale)) {
+      response.plainCookie(LOCALE_COOKIE, params.locale, {
+        maxAge: '1y',
+        sameSite: 'lax',
+        httpOnly: true,
+      })
+    }
+    // clearQs: the return URL has its own query string, do not forward ours
+    return response
+      .redirect()
+      .clearQs()
+      .toPath(safeReturnPath(request.input('retour')))
+  })
+  .as('locale.switch')
 
 /**
  * Authentication (reworked in step 7)

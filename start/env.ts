@@ -40,6 +40,9 @@ export default await Env.create(new URL('../', import.meta.url), {
   // Max getSets calls per day allowed by Brickset (the importer keeps a small margin)
   BRICKSET_DAILY_LIMIT: Env.schema.number.optional(),
 
+  // Claude API (Anthropic): French translation of the Brickset descriptions
+  ANTHROPIC_API_KEY: Env.schema.secret.optional(),
+
   // BrickLink API (OAuth 1.0, optional)
   BRICKLINK_CONSUMER_KEY: Env.schema.string.optional(),
   BRICKLINK_CONSUMER_SECRET: Env.schema.secret.optional(),

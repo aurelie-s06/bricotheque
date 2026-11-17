@@ -113,6 +113,29 @@ node ace import:brickset --refresh        # ignore le cache des réponses
   4. sinon (pas encore sorti, aucune donnée) → `unknown`.
 - Sans description Brickset, l'affichage génère un texte de remplacement (`app/services/set_description.ts`), jamais enregistré en base.
 
+## Langues (français / anglais)
+
+- Tout le site existe en français et en anglais. La langue vient du cookie `locale` (posé par le sélecteur FR/EN du header, lien `/langue/fr` ou `/langue/en`), sinon de la langue du navigateur si elle est anglaise, sinon le français.
+- Les textes de l'interface sont dans `inertia/i18n/fr.ts` (référence) et `inertia/i18n/en.ts` (TypeScript refuse une clé manquante). Dans un composant : `const { t, tc, formatPrice, formatDate } = useI18n()`.
+- Les noms des sets, minifigs et thèmes restent ceux de Rebrickable (anglais).
+
+## Traduction des descriptions (Claude)
+
+Brickset ne fournit les descriptions qu'en anglais. La commande les traduit en français avec Claude Opus 5.5 via l'API Batches (-50 %) et les stocke dans `sets.description_fr`. Les visiteurs francophones lisent la traduction (l'original reste accessible), les anglophones l'original.
+
+```bash
+node ace translate:descriptions --dry-run      # nombre de descriptions et coût estimé, n'envoie rien
+node ace translate:descriptions --set=75192-1  # un seul set, tout de suite (pour juger la qualité)
+node ace translate:descriptions                # envoie un lot (confirmation demandée)
+node ace translate:descriptions                # plus tard : enregistre les traductions du lot terminé
+node ace translate:descriptions --yes --wait   # sans confirmation, attend la fin (cron)
+```
+
+- Clé API dans `.env` : `ANTHROPIC_API_KEY` (https://platform.claude.com/settings/keys).
+- Seules les descriptions nouvelles ou modifiées depuis leur dernière traduction sont envoyées (empreinte SHA-1 du texte anglais dans `description_fr_source_hash`).
+- Chaque lot est suivi dans `import_runs` (source `translation`).
+- Coût du stock initial (9 573 descriptions) : estimé entre 45 et 85 $ ; ensuite quelques centimes par import hebdomadaire.
+
 ## Base de données
 
 | Table                        | Modèle                   | Contenu                                                                  |

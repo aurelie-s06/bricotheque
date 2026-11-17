@@ -1,20 +1,22 @@
 import { Form, Link } from '@adonisjs/inertia/react'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import { useI18n } from '~/i18n'
 
 export default function Login() {
+  const { t } = useI18n()
   return (
     <div className="card auth-card">
-      <Seo title="Connexion" />
-      <h1>Connexion</h1>
-      <p className="text-muted">Retrouve ta collection et ta wishlist.</p>
+      <Seo title={t('auth.loginTitle')} />
+      <h1>{t('auth.loginTitle')}</h1>
+      <p className="text-muted">{t('auth.loginLead')}</p>
 
       <Form route="session.store" style={{ marginTop: 'var(--space-3)' }}>
         {({ errors, processing }) => (
           <>
             <div className="field">
               <label className="field__label" htmlFor="email">
-                Adresse e-mail
+                {t('auth.email')}
               </label>
               <input
                 id="email"
@@ -35,7 +37,7 @@ export default function Login() {
 
             <div className="field">
               <label className="field__label" htmlFor="password">
-                Mot de passe
+                {t('auth.password')}
               </label>
               <input
                 id="password"
@@ -56,7 +58,7 @@ export default function Login() {
 
             <div className="form-actions">
               <button type="submit" className="btn btn--block" disabled={processing}>
-                {processing ? 'Connexion…' : 'Se connecter'}
+                {processing ? t('auth.loggingIn') : t('auth.login')}
               </button>
             </div>
           </>
@@ -64,7 +66,7 @@ export default function Login() {
       </Form>
 
       <p className="auth-card__foot">
-        Pas encore de compte ? <Link route="new_account.create">Créer un compte</Link>
+        {t('auth.noAccount')} <Link route="new_account.create">{t('auth.createAccount')}</Link>
       </p>
     </div>
   )

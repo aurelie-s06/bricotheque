@@ -7,7 +7,7 @@ import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
 import ExternalLink from '~/components/external_link'
 import { type InertiaProps } from '~/types'
-import { formatDate, formatNumber, formatPrice, STATUS_LABELS } from '~/lib/format'
+import { useI18n } from '~/i18n'
 
 type SetDetail = Data.BrickSet.Variants['forDetail']
 type Props = InertiaProps<{
@@ -16,22 +16,24 @@ type Props = InertiaProps<{
   fallbackDescription: string | null
 }>
 
-function metaDescription(set: SetDetail, fallback: string | null) {
-  const text = set.description ?? fallback ?? ''
-  const short = text.replace(/\s+/g, ' ').slice(0, 155)
-  return `Set ${set.setNum} ${set.name} : ${short}${text.length > 155 ? '…' : ''}`
-}
+const paragraphsOf = (text: string | null) => (text ?? '').split(/\n{2,}/).filter(Boolean)
 
 function Prices({ set }: { set: SetDetail }) {
+  const { t, formatPrice } = useI18n()
   const prices = [
     formatPrice(set.rrpEur, 'EUR'),
     formatPrice(set.rrpUsd, 'USD'),
     formatPrice(set.rrpGbp, 'GBP'),
   ].filter(Boolean)
-  return prices.length ? <>{prices.join(' · ')}</> : <span className="text-muted">Inconnu</span>
+  return prices.length ? (
+    <>{prices.join(' · ')}</>
+  ) : (
+    <span className="text-muted">{t('set.unknownPrice')}</span>
+  )
 }
 
 function EstimatedValue({ set }: { set: SetDetail }) {
+  const { t, formatPrice, formatDate } = useI18n()
   const currency = set.estimatedValueCurrency ?? 'EUR'
   const newValue = formatPrice(set.estimatedValueNew, currency)
   const usedValue = formatPrice(set.estimatedValueUsed, currency)
@@ -39,42 +41,117 @@ function EstimatedValue({ set }: { set: SetDetail }) {
     return null
   }
   const parts = [
-    newValue ? `~${newValue} (neuf)` : null,
-    usedValue ? `~${usedValue} (occasion)` : null,
+    newValue ? t('set.estimateNew', { price: newValue }) : null,
+    usedValue ? t('set.estimateUsed', { price: usedValue }) : null,
   ].filter(Boolean)
   return (
     <>
-      <dt>Valeur estimée</dt>
+      <dt>{t('set.estimatedValue')}</dt>
       <dd>
         {parts.join(' / ')}
         <span className="text-muted">
-          {' '}
-          – BrickLink
+          {t('set.estimateSource')}
           {set.estimatedValueUpdatedAt &&
-            `, mis à jour le ${formatDate(set.estimatedValueUpdatedAt)}`}
+            t('set.estimateUpdated', { date: formatDate(set.estimatedValueUpdatedAt)! })}
         </span>
       </dd>
     </>
   )
 }
 
+function Availability({ set }: { set: SetDetail }) {
+  const { t, formatDate } = useI18n()
+  const from = formatDate(set.dateFirstAvailable)
+  const to = formatDate(set.dateLastAvailable)
+  if (!from && !to) {
+    return null
+  }
+  return (
+    <>
+      <dt>{t('set.availability')}</dt>
+      <dd>
+        {from && to
+          ? t('set.availableFromTo', { from, to })
+          : from
+            ? t('set.availableFrom', { from })
+            : t('set.availableUntil', { to: to! })}
+      </dd>
+    </>
+  )
+}
+
+/**
+ * French visitors read the machine translation (with the original one
+ * click away); English visitors read the original.
+ */
+function Description({ set, fallback }: { set: SetDetail; fallback: string | null }) {
+  const { t, locale } = useI18n()
+  const original = paragraphsOf(set.description)
+  const translated = locale === 'fr' ? paragraphsOf(set.descriptionFr) : []
+
+  if (!original.length) {
+    return <p>{fallback}</p>
+  }
+
+  if (translated.length) {
+    return (
+      <>
+        {translated.map((paragraph, index) => (
+          <p key={index}>{paragraph}</p>
+        ))}
+        <p className="text-muted">{t('set.descriptionTranslated')}</p>
+        <details className="original-text">
+          <summary>{t('set.showOriginal')}</summary>
+          {original.map((paragraph, index) => (
+            <p key={index} lang="en">
+              {paragraph}
+            </p>
+          ))}
+        </details>
+      </>
+    )
+  }
+
+  return (
+    <>
+      {original.map((paragraph, index) => (
+        <p key={index} lang="en">
+          {paragraph}
+        </p>
+      ))}
+      <p className="text-muted">{t('set.descriptionOriginal')}</p>
+    </>
+  )
+}
+
+function metaText(set: SetDetail, locale: string, fallback: string | null) {
+  const text = (locale === 'fr' && set.descriptionFr) || set.description || fallback || ''
+  const flat = text.replace(/\s+/g, ' ')
+  return flat.length > 155 ? `${flat.slice(0, 155)}…` : flat
+}
+
 export default function SetShow({ set, themeChain, fallbackDescription }: Props) {
+  const { t, formatNumber, locale } = useI18n()
   const lastTheme = themeChain.at(-1)
   const showSubtheme = set.subtheme && set.subtheme !== lastTheme?.name
   const hasEstimate = set.estimatedValueNew !== null || set.estimatedValueUsed !== null
-  const paragraphs = (set.description ?? '').split(/\n{2,}/).filter(Boolean)
+  const imageAlt = t('image.set', { setNum: set.setNum, name: set.name })
 
   return (
     <>
       <Seo
         title={`${set.setNum} ${set.name}`}
-        description={metaDescription(set, fallbackDescription)}
+        description={t('set.metaDescription', {
+          setNum: set.setNum,
+          name: set.name,
+          text: metaText(set, locale, fallbackDescription),
+        })}
       />
 
       <Breadcrumb
         items={[
-          { name: 'Accueil', url: '/' },
-          { name: 'Sets', url: '/sets' },
+          { name: t('breadcrumb.home'), url: '/' },
+          { name: t('nav.sets'), url: '/sets' },
           ...themeChain,
           { name: `${set.setNum} ${set.name}` },
         ]}
@@ -82,18 +159,18 @@ export default function SetShow({ set, themeChain, fallbackDescription }: Props)
 
       <article className="set-detail">
         <div className="set-detail__media">
-          <SetImage src={set.imgUrl} alt={`Set ${set.setNum} ${set.name}`} eager />
+          <SetImage src={set.imgUrl} alt={imageAlt} eager />
         </div>
 
         <div className="set-detail__info">
-          <p className="set-card__number">Set n° {set.setNum}</p>
+          <p className="set-card__number">{t('set.number', { setNum: set.setNum })}</p>
           <h1>{set.name}</h1>
           <p>
             <StatusBadge status={set.availabilityStatus} />
           </p>
 
           <dl className="facts">
-            <dt>Thème</dt>
+            <dt>{t('set.theme')}</dt>
             <dd>
               {themeChain.map((theme, index) => (
                 <span key={theme.url}>
@@ -105,56 +182,47 @@ export default function SetShow({ set, themeChain, fallbackDescription }: Props)
 
             {showSubtheme && (
               <>
-                <dt>Sous-thème</dt>
+                <dt>{t('set.subtheme')}</dt>
                 <dd>{set.subtheme}</dd>
               </>
             )}
 
             {set.year && (
               <>
-                <dt>Année</dt>
+                <dt>{t('set.year')}</dt>
                 <dd>{set.year}</dd>
               </>
             )}
 
-            <dt>Pièces</dt>
+            <dt>{t('set.pieces')}</dt>
             <dd>{formatNumber(set.numParts)}</dd>
 
-            <dt>Minifigs</dt>
+            <dt>{t('set.minifigs')}</dt>
             <dd>{formatNumber(set.numMinifigs)}</dd>
 
-            <dt>Prix d’origine</dt>
+            <dt>{t('set.originalPrice')}</dt>
             <dd>
               <Prices set={set} />
               {set.availabilityStatus === 'retired' && !hasEstimate && set.rrpEur !== null && (
-                <span className="text-muted"> – Plus vendu, prix d’origine</span>
+                <span className="text-muted">{t('set.noLongerSold')}</span>
               )}
             </dd>
 
             <EstimatedValue set={set} />
 
-            <dt>Statut</dt>
-            <dd>{STATUS_LABELS[set.availabilityStatus]}</dd>
+            <dt>{t('set.status')}</dt>
+            <dd>{t(`status.${set.availabilityStatus}`)}</dd>
 
-            {(set.dateFirstAvailable || set.dateLastAvailable) && (
-              <>
-                <dt>Commercialisation</dt>
-                <dd>
-                  {set.dateFirstAvailable && `du ${formatDate(set.dateFirstAvailable)}`}
-                  {set.dateLastAvailable &&
-                    ` ${set.dateFirstAvailable ? 'au' : 'jusqu’au'} ${formatDate(set.dateLastAvailable)}`}
-                </dd>
-              </>
-            )}
+            <Availability set={set} />
           </dl>
 
           <ul className="link-list">
             <li>
-              <ExternalLink href={set.rebrickableUrl}>Voir sur Rebrickable</ExternalLink>
+              <ExternalLink href={set.rebrickableUrl}>{t('set.onRebrickable')}</ExternalLink>
             </li>
             {set.bricksetUrl && (
               <li>
-                <ExternalLink href={set.bricksetUrl}>Voir sur Brickset</ExternalLink>
+                <ExternalLink href={set.bricksetUrl}>{t('set.onBrickset')}</ExternalLink>
               </li>
             )}
           </ul>
@@ -164,30 +232,21 @@ export default function SetShow({ set, themeChain, fallbackDescription }: Props)
       <hr className="section-divider studs studs--muted" />
 
       <section aria-labelledby="description-title" className="prose">
-        <h2 id="description-title">Description</h2>
-        {paragraphs.length ? (
-          <>
-            {paragraphs.map((paragraph, index) => (
-              <p key={index} lang="en">
-                {paragraph}
-              </p>
-            ))}
-            <p className="text-muted">Description en anglais fournie par Brickset (LEGO.com).</p>
-          </>
-        ) : (
-          <p>{fallbackDescription}</p>
-        )}
+        <h2 id="description-title">{t('set.description')}</h2>
+        <Description set={set} fallback={fallbackDescription} />
       </section>
 
       {set.minifigs && set.minifigs.length > 0 && (
         <section aria-labelledby="minifigs-title" className="set-minifigs">
-          <h2 id="minifigs-title">Minifigs du set ({formatNumber(set.numMinifigs)})</h2>
+          <h2 id="minifigs-title">
+            {t('set.minifigsTitle', { count: formatNumber(set.numMinifigs) })}
+          </h2>
           <ul className="minifig-grid">
             {set.minifigs.map((minifig) => (
               <li key={minifig.id} className="minifig-card">
                 <SetImage
                   src={minifig.imgUrl}
-                  alt={`Minifig ${minifig.figNum} ${minifig.name}`}
+                  alt={t('image.minifig', { figNum: minifig.figNum, name: minifig.name })}
                   className="minifig-card__image"
                 />
                 <div>

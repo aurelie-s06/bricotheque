@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import { useI18n } from '~/i18n'
 
 export type PaginationData = {
   currentPage: number
@@ -33,6 +34,7 @@ export default function Pagination({
   path: string
   query?: Record<string, string>
 }) {
+  const { t } = useI18n()
   const { currentPage, lastPage } = pagination
   if (lastPage <= 1) {
     return null
@@ -48,16 +50,16 @@ export default function Pagination({
   }
 
   return (
-    <nav className="pagination" aria-label="Pagination">
+    <nav className="pagination" aria-label={t('pagination.label')}>
       <ul className="pagination__list">
         <li>
           {currentPage > 1 ? (
             <Link href={href(currentPage - 1)} className="pagination__link" rel="prev">
-              <span aria-hidden="true">←</span> Précédente
+              <span aria-hidden="true">←</span> {t('pagination.previous')}
             </Link>
           ) : (
             <span className="pagination__link pagination__link--disabled">
-              <span aria-hidden="true">←</span> Précédente
+              <span aria-hidden="true">←</span> {t('pagination.previous')}
             </span>
           )}
         </li>
@@ -72,7 +74,7 @@ export default function Pagination({
                 href={href(page)}
                 className="pagination__link"
                 aria-current={page === currentPage ? 'page' : undefined}
-                aria-label={`Page ${page}`}
+                aria-label={t('pagination.page', { page })}
               >
                 {page}
               </Link>
@@ -82,11 +84,11 @@ export default function Pagination({
         <li>
           {currentPage < lastPage ? (
             <Link href={href(currentPage + 1)} className="pagination__link" rel="next">
-              Suivante <span aria-hidden="true">→</span>
+              {t('pagination.next')} <span aria-hidden="true">→</span>
             </Link>
           ) : (
             <span className="pagination__link pagination__link--disabled">
-              Suivante <span aria-hidden="true">→</span>
+              {t('pagination.next')} <span aria-hidden="true">→</span>
             </span>
           )}
         </li>

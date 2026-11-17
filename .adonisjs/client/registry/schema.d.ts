@@ -86,6 +86,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<unknown>
     }
   }
+  'locale.switch': {
+    methods: ["GET","HEAD"]
+    pattern: '/langue/:locale'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { locale: ParamValue }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+      rawResponse: ExtractRawResponse<unknown>
+    }
+  }
   'new_account.create': {
     methods: ["GET","HEAD"]
     pattern: '/inscription'
