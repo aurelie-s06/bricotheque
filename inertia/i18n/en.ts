@@ -58,6 +58,8 @@ const en: Record<keyof typeof fr, string> = {
   // Filters
   'filters.q': 'Name or number',
   'filters.qPlaceholder': 'e.g. 75192 or Falcon',
+  'filters.subtheme': 'Subtheme',
+  'filters.allSubthemes': 'All of {name}',
   'filters.theme': 'Theme (subthemes included)',
   'filters.allThemes': 'All themes',
   'filters.year': 'Year',
@@ -150,6 +152,16 @@ const en: Record<keyof typeof fr, string> = {
 
   // Themes
   'themes.title': 'Themes',
+  'themes.biggest': 'Biggest themes',
+  'themes.all': 'All themes from A to Z',
+  'themes.filterLabel': 'Filter themes',
+  'themes.filterPlaceholder': 'Filter (e.g. Ninjago, Castle…)',
+  'themes.filterResults_one': '{count} theme matches.',
+  'themes.filterResults_other': '{count} themes match.',
+  'themes.filterEmpty': 'No theme matches.',
+  'themes.letterIndex': 'Alphabetical index',
+  'themes.subthemesCount_one': '{count} subtheme',
+  'themes.subthemesCount_other': '{count} subthemes',
   'themes.metaDescription':
     'Every brick set theme (Star Wars, City, Technic…) with its subthemes and number of sets.',
   'themes.roots_one': '{count} main theme',

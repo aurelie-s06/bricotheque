@@ -92,7 +92,8 @@ export function parseSetFilters(query: Query): SetFilters {
 
   return {
     q: text(query.q, 100),
-    theme: text(query.theme, 255),
+    // The filter form sends the subtheme apart; it is more precise than the theme
+    theme: text(query.subtheme, 255) ?? text(query.theme, 255),
     yearMin,
     yearMax,
     partsMin,

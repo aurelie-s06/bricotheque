@@ -1,3 +1,4 @@
+import ThemePicker from '~/components/theme_picker'
 import FilterBar, { PillGroup, Range, rangeLabel, type ActiveFilter } from '~/components/filter_bar'
 import { useI18n, type MessageKey } from '~/i18n'
 
@@ -42,7 +43,7 @@ export default function SetFilters({
   if (query.theme) {
     const theme = themeOptions.find((option) => option.slug === query.theme)
     active.push({
-      keys: ['theme'],
+      keys: ['theme', 'subtheme'],
       label: t('filters.chip', {
         name: t('filters.themeShort'),
         value: theme?.name ?? query.theme,
@@ -113,19 +114,7 @@ export default function SetFilters({
         />
       }
     >
-      <div className="field filter-bar__wide">
-        <label className="field__label" htmlFor="filter-theme">
-          {t('filters.theme')}
-        </label>
-        <select className="input" id="filter-theme" name="theme" defaultValue={value('theme')}>
-          <option value="">{t('filters.allThemes')}</option>
-          {themeOptions.map((theme) => (
-            <option key={theme.slug} value={theme.slug}>
-              {`${'  '.repeat(theme.depth)}${theme.depth ? '– ' : ''}${theme.name}`}
-            </option>
-          ))}
-        </select>
-      </div>
+      <ThemePicker options={themeOptions} value={value('theme')} />
 
       <Range
         name="year"

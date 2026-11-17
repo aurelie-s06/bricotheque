@@ -59,6 +59,15 @@ test.group('Catalogue: /sets', (group) => {
     assert.lengthOf(unknown.inertiaProps.sets, 0)
   })
 
+  test('the subtheme of the filter form wins over the main theme', async ({ client, assert }) => {
+    const response = await client
+      .get('/sets')
+      .qs({ theme: 'star-wars', subtheme: 'ultimate-collector-series' })
+      .withInertia()
+    assert.equal(response.inertiaProps.themeName, 'Ultimate Collector Series')
+    assert.deepEqual(response.inertiaProps.query, { theme: 'ultimate-collector-series' })
+  })
+
   test('filters by year, pieces, status and price', async ({ client, assert }) => {
     const byYear = await client.get('/sets').qs({ year_max: '2000' }).withInertia()
     assert.deepEqual(setNums(byYear.inertiaProps), ['8880-1'])

@@ -58,6 +58,8 @@ const fr = {
   'filters.q': 'Nom ou numéro',
   'filters.qPlaceholder': 'ex. 75192 ou Falcon',
   'filters.theme': 'Thème (sous-thèmes inclus)',
+  'filters.subtheme': 'Sous-thème',
+  'filters.allSubthemes': 'Tout {name}',
   'filters.allThemes': 'Tous les thèmes',
   'filters.year': 'Année',
   'filters.yearMin': 'Année minimum',
@@ -149,6 +151,16 @@ const fr = {
 
   // Themes
   'themes.title': 'Thèmes',
+  'themes.biggest': 'Les plus grands thèmes',
+  'themes.all': 'Tous les thèmes de A à Z',
+  'themes.filterLabel': 'Filtrer les thèmes',
+  'themes.filterPlaceholder': 'Filtrer (ex. Ninjago, Castle…)',
+  'themes.filterResults_one': '{count} thème correspond.',
+  'themes.filterResults_other': '{count} thèmes correspondent.',
+  'themes.filterEmpty': 'Aucun thème ne correspond.',
+  'themes.letterIndex': 'Index alphabétique',
+  'themes.subthemesCount_one': '{count} sous-thème',
+  'themes.subthemesCount_other': '{count} sous-thèmes',
   'themes.metaDescription':
     'Tous les thèmes de sets de briques (Star Wars, City, Technic…) avec leurs sous-thèmes et leur nombre de sets.',
   'themes.roots_one': '{count} thème principal',
