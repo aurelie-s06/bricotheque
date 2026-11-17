@@ -8,7 +8,9 @@ export default class MinifigTransformer extends BaseTransformer<Minifig> {
   toObject() {
     const quantity = this.resource.$extras.pivot_quantity
     return {
-      ...this.pick(this.resource, ['id', 'figNum', 'name', 'imgUrl', 'numParts', 'yearFirst']),
+      ...this.pick(this.resource, ['id', 'figNum', 'name', 'numParts', 'yearFirst']),
+      // A picture pasted in the back office wins over the imported one
+      imgUrl: this.resource.imgUrlManual ?? this.resource.imgUrl,
       url: minifigPath(this.resource),
       /** quantity in a set, when loaded through a set's minifigs */
       quantity: quantity === undefined ? null : Number(quantity),

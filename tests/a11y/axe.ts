@@ -6,7 +6,7 @@
  *   A11Y_BASE_URL=https://… npm run test:a11y
  *
  * The member pages are checked too when A11Y_EMAIL and A11Y_PASSWORD give
- * an activated account. Exits with an error on "serious" or "critical"
+ * an activated account (and the back office with A11Y_ADMIN=1). Exits with an error on "serious" or "critical"
  * violations.
  */
 import { chromium, type Page } from 'playwright'
@@ -48,6 +48,10 @@ async function main() {
     '/cette-page-nexiste-pas',
   ]
   const memberPages = ['/mon-compte', '/ma-collection', '/ma-wishlist', '/tableau-de-bord']
+  // Back office: checked when the account is an administrator (A11Y_ADMIN=1)
+  if (process.env.A11Y_ADMIN) {
+    memberPages.push('/admin', '/admin/images', '/admin/mises-a-jour', '/admin/utilisateurs')
+  }
 
   let failures = 0
   async function check(path: string) {

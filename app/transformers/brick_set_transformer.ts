@@ -20,10 +20,11 @@ export default class BrickSetTransformer extends BaseTransformer<BrickSet> {
         'kind',
         'numParts',
         'numMinifigs',
-        'imgUrl',
         'availabilityStatus',
         'rrpEur',
       ]),
+      // A picture pasted in the back office wins over the imported one
+      imgUrl: this.resource.imgUrlManual ?? this.resource.imgUrl,
       url: setPath(this.resource),
     }
   }

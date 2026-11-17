@@ -37,6 +37,7 @@ export default function SetCard({
           src={set.imgUrl}
           alt={t('image.set', { setNum: displaySetNum(set.setNum), name: set.name })}
           thumb
+          item={{ kind: 'sets', id: set.id }}
         />
       </div>
       <div className="set-card__body">

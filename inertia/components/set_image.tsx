@@ -1,4 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { usePage } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
+import { ImageUp } from 'lucide-react'
+import { useI18n } from '~/i18n'
 
 const PLACEHOLDER = '/images/placeholder-set.svg'
 const REBRICKABLE = 'https://cdn.rebrickable.com/media/sets/'
@@ -25,19 +29,26 @@ export default function SetImage({
   className = '',
   eager = false,
   thumb = false,
+  item,
 }: {
   src: string | null
   alt: string
   className?: string
   eager?: boolean
   thumb?: boolean
+  /** Set or minifig shown: a broken picture is reported to the back office */
+  item?: { kind: 'sets' | 'minifigs'; id: number }
 }) {
+  const { props } = usePage()
+  const isAdmin = props.user?.isAdmin === true
   const thumbnail = thumb ? thumbnailOf(src) : null
   // 0: thumbnail (or full picture), 1: full picture, 2: placeholder
   const [stage, setStage] = useState(thumbnail ? 0 : 1)
   const image = useRef<HTMLImageElement>(null)
 
-  const next = () => setStage((current) => (current === 0 ? 1 : 2))
+  const reported = useRef(false)
+
+  const next = useCallback(() => setStage((current) => (current === 0 ? 1 : 2)), [])
 
   // The error event can fire before hydration: check the image once mounted
   useEffect(() => {
@@ -45,7 +56,18 @@ export default function SetImage({
     if (element && element.complete && element.naturalWidth === 0 && src) {
       next()
     }
-  }, [src])
+  }, [src, next])
+
+  // Neither the thumbnail nor the picture loads: an administrator's browser
+  // reports it, so the item appears in the back office list
+  useEffect(() => {
+    if (stage !== 2 || !src || !item || !isAdmin || reported.current) return
+    reported.current = true
+    void fetch(`/admin/images/${item.kind}/${item.id}/cassee`, {
+      method: 'POST',
+      headers: { 'X-CSRF-TOKEN': props.csrfToken },
+    })
+  }, [stage, src, item, isAdmin, props.csrfToken])
 
   const current = !src || stage === 2 ? PLACEHOLDER : stage === 0 && thumbnail ? thumbnail : src
   const srcSet =
@@ -62,5 +84,19 @@ export default function SetImage({
       decoding="async"
       onError={next}
     />
+  )
+}
+
+/** "Change the picture" link under the main picture, for administrators only */
+export function AdminImageLink({ kind, id }: { kind: 'sets' | 'minifigs'; id: number }) {
+  const { props } = usePage()
+  const { t } = useI18n()
+  if (!props.user?.isAdmin) return null
+  return (
+    <p className="admin-image-link">
+      <Link href={`/admin/images/${kind}/${id}`} className="btn btn--secondary btn--sm">
+        <ImageUp size={16} aria-hidden="true" /> {t('admin.image.change')}
+      </Link>
+    </p>
   )
 }

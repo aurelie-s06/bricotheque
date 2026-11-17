@@ -74,4 +74,16 @@ export interface ApiDefinition {
     unshare: typeof routes['wishlist.unshare']
     shared: typeof routes['wishlist.shared']
   }
+  admin: {
+    dashboard: typeof routes['admin.dashboard']
+    users: typeof routes['admin.users']
+    images: typeof routes['admin.images'] & {
+      edit: typeof routes['admin.images.edit']
+      update: typeof routes['admin.images.update']
+      broken: typeof routes['admin.images.broken']
+    }
+    updates: typeof routes['admin.updates'] & {
+      store: typeof routes['admin.updates.store']
+    }
+  }
 }

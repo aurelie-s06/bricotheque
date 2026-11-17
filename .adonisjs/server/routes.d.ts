@@ -50,6 +50,14 @@ export type ScannedRoutes = {
     'collection.minifig_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'admin.dashboard': { paramsTuple?: []; params?: {} }
+    'admin.users': { paramsTuple?: []; params?: {} }
+    'admin.images': { paramsTuple?: []; params?: {} }
+    'admin.images.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'admin.images.update': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'admin.images.broken': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'admin.updates': { paramsTuple?: []; params?: {} }
+    'admin.updates.store': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
@@ -80,6 +88,11 @@ export type ScannedRoutes = {
     'collection.index': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'admin.dashboard': { paramsTuple?: []; params?: {} }
+    'admin.users': { paramsTuple?: []; params?: {} }
+    'admin.images': { paramsTuple?: []; params?: {} }
+    'admin.images.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'admin.updates': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -110,6 +123,11 @@ export type ScannedRoutes = {
     'collection.index': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'admin.dashboard': { paramsTuple?: []; params?: {} }
+    'admin.users': { paramsTuple?: []; params?: {} }
+    'admin.images': { paramsTuple?: []; params?: {} }
+    'admin.images.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'admin.updates': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'new_account.store': { paramsTuple?: []; params?: {} }
@@ -123,6 +141,8 @@ export type ScannedRoutes = {
     'collection.acquire': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'collection.add_set_minifigs': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
+    'admin.images.broken': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'admin.updates.store': { paramsTuple?: []; params?: {} }
   }
   PUT: {
     'account.update_username': { paramsTuple?: []; params?: {} }
@@ -131,6 +151,7 @@ export type ScannedRoutes = {
     'account.update_preferences': { paramsTuple?: []; params?: {} }
     'collection.set_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.minifig_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.images.update': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
   }
   DELETE: {
     'account.destroy': { paramsTuple?: []; params?: {} }

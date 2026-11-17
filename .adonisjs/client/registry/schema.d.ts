@@ -606,6 +606,110 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['shared']>>>
     }
   }
+  'admin.dashboard': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/admin_controller').default['dashboard']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/admin_controller').default['dashboard']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/admin_controller').default['dashboard']>>>
+    }
+  }
+  'admin.users': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/utilisateurs'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/admin_controller').default['users']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/admin_controller').default['users']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/admin_controller').default['users']>>>
+    }
+  }
+  'admin.images': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/images'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['index']>>>
+    }
+  }
+  'admin.images.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/images/:kind/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['edit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['edit']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['edit']>>>
+    }
+  }
+  'admin.images.update': {
+    methods: ["PUT"]
+    pattern: '/admin/images/:kind/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['update']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['update']>>>
+    }
+  }
+  'admin.images.broken': {
+    methods: ["POST"]
+    pattern: '/admin/images/:kind/:id/cassee'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['reportBroken']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['reportBroken']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['reportBroken']>>>
+    }
+  }
+  'admin.updates': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/mises-a-jour'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/updates_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/updates_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/updates_controller').default['index']>>>
+    }
+  }
+  'admin.updates.store': {
+    methods: ["POST"]
+    pattern: '/admin/mises-a-jour'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/updates_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/updates_controller').default['store']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/updates_controller').default['store']>>>
+    }
+  }
 }
 
 export namespace Route {

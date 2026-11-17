@@ -2,7 +2,7 @@ import { Link } from '@adonisjs/inertia/react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
-import SetImage from '~/components/set_image'
+import SetImage, { AdminImageLink } from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
 import CollectionButtons from '~/components/collection_buttons'
@@ -164,7 +164,8 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
 
       <article className="set-detail">
         <div className="set-detail__media">
-          <SetImage src={set.imgUrl} alt={imageAlt} eager />
+          <SetImage src={set.imgUrl} alt={imageAlt} eager item={{ kind: 'sets', id: set.id }} />
+          <AdminImageLink kind="sets" id={set.id} />
         </div>
 
         <div className="set-detail__info">

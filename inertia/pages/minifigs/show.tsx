@@ -2,7 +2,7 @@ import { Link } from '@adonisjs/inertia/react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
-import SetImage from '~/components/set_image'
+import SetImage, { AdminImageLink } from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
 import CollectionButtons from '~/components/collection_buttons'
@@ -77,7 +77,13 @@ export default function MinifigShow({ minifig, themeChain, ownedEntry }: Props) 
 
       <article className="set-detail">
         <div className="set-detail__media">
-          <SetImage src={minifig.imgUrl} alt={imageAlt} eager />
+          <SetImage
+            src={minifig.imgUrl}
+            alt={imageAlt}
+            eager
+            item={{ kind: 'minifigs', id: minifig.id }}
+          />
+          <AdminImageLink kind="minifigs" id={minifig.id} />
         </div>
 
         <div className="set-detail__info">

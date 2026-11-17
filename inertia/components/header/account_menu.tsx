@@ -1,6 +1,6 @@
 import { usePage } from '@inertiajs/react'
 import { Form, Link } from '@adonisjs/inertia/react'
-import { ChartBar, ChevronDown, Heart, LibraryBig, LogOut, UserRound } from 'lucide-react'
+import { ChartBar, ChevronDown, Heart, LibraryBig, LogOut, Settings, UserRound } from 'lucide-react'
 import { useI18n } from '~/i18n'
 import { useDismissableDetails } from '~/components/header/use_dismiss'
 
@@ -61,6 +61,14 @@ export default function AccountMenu() {
               {t('nav.account')}
             </Link>
           </li>
+          {props.user.isAdmin && (
+            <li>
+              <Link route="admin.dashboard" className="dropdown__item">
+                <Settings size={18} aria-hidden="true" />
+                {t('admin.title')}
+              </Link>
+            </li>
+          )}
           <li>
             <Form route="session.destroy">
               <button type="submit" className="dropdown__item">

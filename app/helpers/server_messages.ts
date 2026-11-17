@@ -5,6 +5,14 @@ import type { Locale } from '#helpers/locale'
  * in both languages. Placeholders: {name}.
  */
 const fr = {
+  'admin.image.https': 'L’adresse doit commencer par https://.',
+  'admin.image.host': 'Cette adresse n’est pas un site public.',
+  'admin.image.unreachable': 'Impossible de charger cette adresse : vérifie qu’elle est correcte.',
+  'admin.image.notImage': 'Cette adresse ne pointe pas vers une image.',
+  'admin.image.saved': 'L’image de « {name} » est enregistrée.',
+  'admin.update.queued':
+    'Mise à jour demandée : elle démarre dans la minute qui suit (tâche planifiée).',
+  'admin.update.alreadyRunning': 'Une mise à jour est déjà en attente ou en cours.',
   'auth.invalidCredentials': 'Adresse e-mail ou mot de passe incorrect.',
   'auth.tooManyAttempts': 'Trop de tentatives. Pour ta sécurité, réessaie dans {minutes} min.',
   'auth.loginRequired': 'Connecte-toi pour accéder à cette page.',
@@ -75,6 +83,13 @@ const fr = {
 type MessageKey = keyof typeof fr
 
 const en: Record<MessageKey, string> = {
+  'admin.image.https': 'The address must start with https://.',
+  'admin.image.host': 'This address is not a public website.',
+  'admin.image.unreachable': 'This address cannot be loaded: check that it is correct.',
+  'admin.image.notImage': 'This address does not point to a picture.',
+  'admin.image.saved': 'The picture of “{name}” is saved.',
+  'admin.update.queued': 'Update requested: it starts within a minute (scheduled task).',
+  'admin.update.alreadyRunning': 'An update is already pending or running.',
   'auth.invalidCredentials': 'Incorrect email address or password.',
   'auth.tooManyAttempts': 'Too many attempts. For your security, try again in {minutes} min.',
   'auth.loginRequired': 'Please log in to access this page.',

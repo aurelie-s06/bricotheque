@@ -31,8 +31,37 @@ export class ImportRunSchema extends BaseModel {
   declare type: string
 }
 
+export class JobSchema extends BaseModel {
+  static $columns = ['createdAt', 'error', 'finishedAt', 'heartbeatAt', 'id', 'progress', 'requestedBy', 'result', 'startedAt', 'status', 'type', 'updatedAt'] as const
+  $columns = JobSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare error: string | null
+  @column.dateTime()
+  declare finishedAt: DateTime | null
+  @column.dateTime()
+  declare heartbeatAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @jsonColumn()
+  declare progress: { step: number; steps: number; label: string; message: string } | null
+  @column()
+  declare requestedBy: number | null
+  @jsonColumn()
+  declare result: { newSets: string[]; newMinifigs: string[] } | null
+  @column.dateTime()
+  declare startedAt: DateTime | null
+  @column()
+  declare status: 'pending' | 'running' | 'completed' | 'failed'
+  @column()
+  declare type: 'sync'
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class MinifigSchema extends BaseModel {
-  static $columns = ['createdAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'figNum', 'id', 'imgUrl', 'mainThemeId', 'name', 'numParts', 'slug', 'updatedAt', 'yearFirst'] as const
+  static $columns = ['createdAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'figNum', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'mainThemeId', 'name', 'numParts', 'slug', 'updatedAt', 'yearFirst'] as const
   $columns = MinifigSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -48,8 +77,12 @@ export class MinifigSchema extends BaseModel {
   declare figNum: string
   @column({ isPrimary: true })
   declare id: number
+  @column.dateTime()
+  declare imgBrokenAt: DateTime | null
   @column()
   declare imgUrl: string | null
+  @column()
+  declare imgUrlManual: string | null
   @column()
   declare mainThemeId: number | null
   @column()
@@ -102,7 +135,7 @@ export class SetMinifigSchema extends BaseModel {
 }
 
 export class SetSchema extends BaseModel {
-  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgUrl', 'kind', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
+  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'kind', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
   $columns = SetSchema.$columns
   @column()
   declare availabilityStatus: 'available' | 'retired' | 'unknown'
@@ -134,8 +167,12 @@ export class SetSchema extends BaseModel {
   declare estimatedValueUsed: number | null
   @column({ isPrimary: true })
   declare id: number
+  @column.dateTime()
+  declare imgBrokenAt: DateTime | null
   @column()
   declare imgUrl: string | null
+  @column()
+  declare imgUrlManual: string | null
   @column()
   declare kind: 'set' | 'book' | 'gear' | 'parts' | 'bundle'
   @column()
@@ -222,7 +259,7 @@ export class UserSetSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['autoAddMinifigs', 'createdAt', 'email', 'emailVerifiedAt', 'id', 'password', 'updatedAt', 'username', 'wishlistShareToken'] as const
+  static $columns = ['autoAddMinifigs', 'createdAt', 'email', 'emailVerifiedAt', 'id', 'isAdmin', 'password', 'updatedAt', 'username', 'wishlistShareToken'] as const
   $columns = UserSchema.$columns
   @booleanColumn()
   declare autoAddMinifigs: boolean
@@ -234,6 +271,8 @@ export class UserSchema extends BaseModel {
   declare emailVerifiedAt: DateTime | null
   @column({ isPrimary: true })
   declare id: number
+  @booleanColumn()
+  declare isAdmin: boolean
   @column({ serializeAs: null })
   declare password: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })

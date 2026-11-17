@@ -34,6 +34,7 @@ export default function MinifigCard({
           src={minifig.imgUrl}
           alt={t('image.minifig', { figNum: minifig.figNum, name: minifig.name })}
           thumb
+          item={{ kind: 'minifigs', id: minifig.id }}
         />
       </div>
       <div className="set-card__body">

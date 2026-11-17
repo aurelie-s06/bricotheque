@@ -22,7 +22,8 @@ const shieldConfig = defineConfig({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", '@nonce'],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'https://cdn.rebrickable.com'],
+      // Pictures: Rebrickable, and any https site for the pictures pasted in the back office
+      imgSrc: ["'self'", 'data:', 'https:'],
       fontSrc: ["'self'"],
       connectSrc: app.inProduction ? ["'self'"] : ["'self'", 'ws:', 'wss:'],
       objectSrc: ["'none'"],

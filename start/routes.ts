@@ -159,3 +159,22 @@ router
  * Shared wishlist (public, read-only)
  */
 router.get('wishlist/:token', [controllers.MyCollection, 'shared']).as('wishlist.shared')
+
+/**
+ * Back office (administrators only: 404 for everyone else)
+ */
+router
+  .group(() => {
+    router.get('/', [controllers.admin.Admin, 'dashboard']).as('admin.dashboard')
+    router.get('utilisateurs', [controllers.admin.Admin, 'users']).as('admin.users')
+    router.get('images', [controllers.admin.Images, 'index']).as('admin.images')
+    router.get('images/:kind/:id', [controllers.admin.Images, 'edit']).as('admin.images.edit')
+    router.put('images/:kind/:id', [controllers.admin.Images, 'update']).as('admin.images.update')
+    router
+      .post('images/:kind/:id/cassee', [controllers.admin.Images, 'reportBroken'])
+      .as('admin.images.broken')
+    router.get('mises-a-jour', [controllers.admin.Updates, 'index']).as('admin.updates')
+    router.post('mises-a-jour', [controllers.admin.Updates, 'store']).as('admin.updates.store')
+  })
+  .prefix('admin')
+  .use([middleware.auth(), middleware.admin()])

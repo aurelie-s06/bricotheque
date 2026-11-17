@@ -230,6 +230,35 @@ Les classes de colonnes sont générées dans `database/schema.ts` (ne pas modif
 - **Pages d'erreur** 403, 404 et 500 personnalisées en production et en test (en développement, la page de débogage d'AdonisJS reste affichée).
 - **Test d'accessibilité** : `npm run test:a11y` passe axe-core (WCAG 2.2 A/AA) sur les pages types de `http://localhost:3333` (ou `A11Y_BASE_URL`). Avec `A11Y_EMAIL` et `A11Y_PASSWORD` (compte activé), il teste aussi les pages du compte. Il échoue en cas de violation « serious » ou « critical ».
 
+## Backoffice (administration)
+
+Réservé aux administrateurs : les autres comptes reçoivent une 404 sur `/admin/*` et ne voient aucun lien.
+
+```bash
+node ace user:make-admin ton@adresse.fr            # donner les droits
+node ace user:make-admin ton@adresse.fr --remove   # les retirer
+```
+
+| URL                   | Contenu                                                                                                                                                                                                                                                                                |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/admin`              | Chiffres : sets, minifigs, utilisateurs, éléments sans image, descriptions non traduites, date de la dernière mise à jour                                                                                                                                                              |
+| `/admin/images`       | Sets / minifigs sans image ou dont l'image est cassée (signalée par le navigateur d'un administrateur). URL collée à la main avec aperçu, vérifiée (https + image), prioritaire et jamais écrasée par les imports (`img_url_manual`). Aussi via « Modifier l'image » sur chaque fiche. |
+| `/admin/mises-a-jour` | Bouton « Mettre à jour les LEGO », état en direct (en attente, en cours, terminé, erreur), nouveautés ajoutées, historique des imports (`import_runs`)                                                                                                                                 |
+| `/admin/utilisateurs` | Pseudo, e-mail, date d'inscription, nombre de sets possédés                                                                                                                                                                                                                            |
+
+### Mises à jour en arrière-plan (sans Redis)
+
+Le bouton n'exécute rien lui-même : il ajoute une ligne « en attente » dans la table `jobs`. Le cron lance chaque minute `node ace jobs:work`, qui prend le job, enchaîne `import:rebrickable` puis `import:brickset --resume` (ou un nouveau passage s'il n'y a rien à reprendre) et enregistre la progression. Un seul job à la fois ; un job sans nouvelles depuis 10 minutes est marqué en erreur.
+
+`node ace sync:all` fait la même chose immédiatement (même verrou) : c'est la commande de la mise à jour automatique de la nuit.
+
+Tâches cron à créer dans cPanel (adapter le chemin) :
+
+```
+* * * * *   cd ~/briquotheque && node ace jobs:work >> tmp/jobs.log 2>&1
+30 3 * * *  cd ~/briquotheque && node ace sync:all >> tmp/sync.log 2>&1
+```
+
 ## Import du catalogue (Rebrickable)
 
 ```bash

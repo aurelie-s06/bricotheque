@@ -5,6 +5,11 @@
 
 export const controllers = {
   Account: () => import('#controllers/account_controller'),
+  admin: {
+    Admin: () => import('#controllers/admin/admin_controller'),
+    Images: () => import('#controllers/admin/images_controller'),
+    Updates: () => import('#controllers/admin/updates_controller'),
+  },
   CollectionActions: () => import('#controllers/collection_actions_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),
   Home: () => import('#controllers/home_controller'),

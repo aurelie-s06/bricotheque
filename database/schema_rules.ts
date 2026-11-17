@@ -55,6 +55,19 @@ export default {
         status: collectionStatus,
       },
     },
+    users: {
+      columns: {
+        is_admin: boolean,
+      },
+    },
+    jobs: {
+      columns: {
+        type: enumOf(['sync']),
+        status: enumOf(['pending', 'running', 'completed', 'failed']),
+        progress: json('{ step: number; steps: number; label: string; message: string }'),
+        result: json('{ newSets: string[]; newMinifigs: string[] }'),
+      },
+    },
     import_runs: {
       columns: {
         source: enumOf(['rebrickable', 'brickset', 'bricklink', 'translation']),

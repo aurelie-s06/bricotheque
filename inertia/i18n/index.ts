@@ -62,6 +62,18 @@ export function createI18n(locale: Locale) {
     return dateFormat.format(new Date(`${isoDate.slice(0, 10)}T00:00:00Z`))
   }
 
+  /** "17 novembre 2026, 17:08" from an ISO date-time, in the site language */
+  const dateTimeFormat = new Intl.DateTimeFormat(intlLocale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+  function formatDateTime(iso: string | null | undefined) {
+    return iso ? dateTimeFormat.format(new Date(iso)) : null
+  }
+
   /** Date in a <time> element, readable by programs too (Opquast rule 231) */
   function dateNode(isoDate: string | null | undefined): ReactNode {
     const text = formatDate(isoDate)
@@ -82,7 +94,7 @@ export function createI18n(locale: Locale) {
     )
   }
 
-  return { locale, t, tc, tn, formatNumber, formatPrice, formatDate, dateNode }
+  return { locale, t, tc, tn, formatNumber, formatPrice, formatDate, formatDateTime, dateNode }
 }
 
 /**

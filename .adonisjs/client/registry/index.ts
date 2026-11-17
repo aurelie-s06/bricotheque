@@ -284,6 +284,54 @@ const routes = {
     tokens: [[0,"wishlist"],[1,"token"]],
     types: placeholder as Registry['wishlist.shared']['types'],
   },
+  'admin.dashboard': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin',
+    tokens: [[0,"admin"]],
+    types: placeholder as Registry['admin.dashboard']['types'],
+  },
+  'admin.users': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/utilisateurs',
+    tokens: [[0,"admin"],[0,"utilisateurs"]],
+    types: placeholder as Registry['admin.users']['types'],
+  },
+  'admin.images': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/images',
+    tokens: [[0,"admin"],[0,"images"]],
+    types: placeholder as Registry['admin.images']['types'],
+  },
+  'admin.images.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/images/:kind/:id',
+    tokens: [[0,"admin"],[0,"images"],[1,"kind"],[1,"id"]],
+    types: placeholder as Registry['admin.images.edit']['types'],
+  },
+  'admin.images.update': {
+    methods: ["PUT"],
+    pattern: '/admin/images/:kind/:id',
+    tokens: [[0,"admin"],[0,"images"],[1,"kind"],[1,"id"]],
+    types: placeholder as Registry['admin.images.update']['types'],
+  },
+  'admin.images.broken': {
+    methods: ["POST"],
+    pattern: '/admin/images/:kind/:id/cassee',
+    tokens: [[0,"admin"],[0,"images"],[1,"kind"],[1,"id"],[0,"cassee"]],
+    types: placeholder as Registry['admin.images.broken']['types'],
+  },
+  'admin.updates': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/mises-a-jour',
+    tokens: [[0,"admin"],[0,"mises-a-jour"]],
+    types: placeholder as Registry['admin.updates']['types'],
+  },
+  'admin.updates.store': {
+    methods: ["POST"],
+    pattern: '/admin/mises-a-jour',
+    tokens: [[0,"admin"],[0,"mises-a-jour"]],
+    types: placeholder as Registry['admin.updates.store']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }
