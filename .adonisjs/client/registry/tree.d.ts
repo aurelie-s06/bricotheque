@@ -41,6 +41,7 @@ export interface ApiDefinition {
     destroy: typeof routes['account.destroy']
     updatePreferences: typeof routes['account.update_preferences']
   }
+  dashboard: typeof routes['dashboard']
   collection: {
     index: typeof routes['collection.index']
     export: typeof routes['collection.export']

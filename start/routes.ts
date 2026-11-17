@@ -97,6 +97,7 @@ router
       .as('account.update_preferences')
 
     // Collection and wishlist
+    router.get('tableau-de-bord', [controllers.Dashboard, 'show']).as('dashboard')
     router.get('ma-collection', [controllers.MyCollection, 'collection']).as('collection.index')
     router
       .get('ma-collection/export.csv', [controllers.MyCollection, 'export'])

@@ -27,6 +27,7 @@ export type ScannedRoutes = {
     'account.update_password': { paramsTuple?: []; params?: {} }
     'account.destroy': { paramsTuple?: []; params?: {} }
     'account.update_preferences': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
     'collection.export': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
@@ -54,6 +55,7 @@ export type ScannedRoutes = {
     'password.forgot': { paramsTuple?: []; params?: {} }
     'password.reset': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'account.show': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
     'collection.export': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
@@ -74,6 +76,7 @@ export type ScannedRoutes = {
     'password.forgot': { paramsTuple?: []; params?: {} }
     'password.reset': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'account.show': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
     'collection.export': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }

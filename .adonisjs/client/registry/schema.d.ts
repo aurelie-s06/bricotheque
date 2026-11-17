@@ -307,6 +307,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updatePreferences']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'dashboard': {
+    methods: ["GET","HEAD"]
+    pattern: '/tableau-de-bord'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['show']>>>
+    }
+  }
   'collection.index': {
     methods: ["GET","HEAD"]
     pattern: '/ma-collection'

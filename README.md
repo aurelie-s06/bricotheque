@@ -167,6 +167,15 @@ node ace translate:descriptions --yes --wait   # sans confirmation, attend la fi
 - **Minifigs incluses** : préférence dans « Mon compte » (ajouter automatiquement les minifigs d'un set ajouté à la collection), et bouton à la demande sur la fiche du set. Une minifig déjà possédée n'est pas dupliquée.
 - Chaque action ne touche que la collection de l'utilisateur connecté : aucun identifiant d'entrée n'est transmis par le navigateur (testé dans `tests/functional/collection/`).
 
+## Tableau de bord
+
+`/tableau-de-bord` (menu du compte) résume la collection :
+
+- **Chiffres clés** : sets et minifigs (avec les exemplaires), total de pièces, somme payée (prix d'achat unitaire × quantité ; les sets sans prix sont signalés), valeur estimée (valeur BrickLink — neuf pour un set scellé, occasion sinon — à défaut prix d'origine).
+- **Répartition par thème** (thème principal, 8 premiers + « Autres ») et **par décennie** : graphiques en « briques empilées », construits en HTML/CSS sans bibliothèque. Ce sont de vraies tables (lisibles par les lecteurs d'écran et sans CSS) ; les nombres sont toujours écrits à côté des barres.
+- **Les 5 plus gros sets** et **les 5 plus anciens**.
+- **Wishlist : à ne pas rater** : sets qui quittent la vente dans les 6 mois (`date_last_available`) et sets déjà retirés (`availability_status = retired`).
+
 ## Base de données
 
 | Table                        | Modèle                   | Contenu                                                                  |

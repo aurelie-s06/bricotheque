@@ -146,6 +146,12 @@ const routes = {
     tokens: [[0,"mon-compte"],[0,"preferences"]],
     types: placeholder as Registry['account.update_preferences']['types'],
   },
+  'dashboard': {
+    methods: ["GET","HEAD"],
+    pattern: '/tableau-de-bord',
+    tokens: [[0,"tableau-de-bord"]],
+    types: placeholder as Registry['dashboard']['types'],
+  },
   'collection.index': {
     methods: ["GET","HEAD"],
     pattern: '/ma-collection',

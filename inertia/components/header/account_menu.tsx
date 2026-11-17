@@ -1,6 +1,6 @@
 import { usePage } from '@inertiajs/react'
 import { Form, Link } from '@adonisjs/inertia/react'
-import { ChevronDown, Heart, LibraryBig, LogOut, UserRound } from 'lucide-react'
+import { ChartBar, ChevronDown, Heart, LibraryBig, LogOut, UserRound } from 'lucide-react'
 import { useI18n } from '~/i18n'
 import { useDismissableDetails } from '~/components/header/use_dismiss'
 
@@ -37,6 +37,12 @@ export default function AccountMenu() {
           {username}
         </p>
         <ul className="dropdown__list">
+          <li>
+            <Link route="dashboard" className="dropdown__item">
+              <ChartBar size={18} aria-hidden="true" />
+              {t('nav.dashboard')}
+            </Link>
+          </li>
           <li>
             <Link route="collection.index" className="dropdown__item">
               <LibraryBig size={18} aria-hidden="true" />
