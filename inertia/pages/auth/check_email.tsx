@@ -4,6 +4,7 @@ import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import FormField from '~/components/form_field'
+import RequiredNotice from '~/components/required_notice'
 import FormAlert from '~/components/form_alert'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
@@ -38,6 +39,7 @@ export default function CheckEmail({ email }: Props) {
           {({ errors, processing }) => (
             <>
               <FormAlert errors={errors} />
+              <RequiredNotice />
               <FormField
                 name="email"
                 type="email"

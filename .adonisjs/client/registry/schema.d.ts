@@ -398,17 +398,30 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['show']>>>
     }
   }
-  'account.update_profile': {
+  'account.update_username': {
     methods: ["PUT"]
-    pattern: '/mon-compte/profil'
+    pattern: '/mon-compte/pseudo'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/user').updateProfileValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#validators/user').updateUsernameValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/user').updateProfileValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateProfile']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateProfile']>>> | { status: 422; response: { errors: SimpleError[] } }
-      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateProfile']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').updateUsernameValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateUsername']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateUsername']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateUsername']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'account.update_email': {
+    methods: ["PUT"]
+    pattern: '/mon-compte/email'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/user').updateEmailValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').updateEmailValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateEmail']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateEmail']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updateEmail']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'account.update_password': {

@@ -3,10 +3,14 @@ import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import FormField from '~/components/form_field'
+import RequiredNotice from '~/components/required_notice'
 import FormAlert from '~/components/form_alert'
+import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 
-export default function Login() {
+type Props = InertiaProps<{ email: string }>
+
+export default function Login({ email }: Props) {
   const { t } = useI18n()
   return (
     <>
@@ -23,13 +27,14 @@ export default function Login() {
           {({ errors, processing }) => (
             <>
               <FormAlert errors={errors} />
-              <p className="field__hint">{t('form.requiredNotice')}</p>
+              <RequiredNotice />
               <FormField
                 name="email"
                 type="email"
                 label={t('auth.email')}
                 hint={t('auth.emailHint')}
                 autoComplete="email"
+                defaultValue={email}
                 required
                 error={errors.email}
               />

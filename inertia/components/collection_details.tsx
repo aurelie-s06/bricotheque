@@ -1,5 +1,6 @@
 import { Form } from '@adonisjs/inertia/react'
 import FormField from '~/components/form_field'
+import RequiredNotice from '~/components/required_notice'
 import { useI18n } from '~/i18n'
 
 const CONDITIONS = ['built', 'in_box', 'sealed', 'partial'] as const
@@ -26,7 +27,7 @@ export function SetDetailsForm({
       <Form route="collection.set_details" routeParams={{ id: setId }} className="details-form">
         {({ errors, processing }) => (
           <>
-            <p className="field__hint">{t('form.requiredNotice')}</p>
+            <RequiredNotice />
             <div className="details-form__row">
               <FormField
                 name="quantity"
@@ -105,7 +106,7 @@ export function MinifigDetailsForm({
       >
         {({ errors, processing }) => (
           <>
-            <p className="field__hint">{t('form.requiredNotice')}</p>
+            <RequiredNotice />
             <div className="details-form__row">
               <FormField
                 name="quantity"

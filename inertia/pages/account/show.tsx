@@ -1,16 +1,72 @@
+import { type ReactNode } from 'react'
 import { Form } from '@adonisjs/inertia/react'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
 import FormField from '~/components/form_field'
+import FormAlert from '~/components/form_alert'
+import RequiredNotice from '~/components/required_notice'
+import SharePanel from '~/components/share_panel'
 import Breadcrumb from '~/components/breadcrumb'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
   account: { username: string; email: string; createdAt: string; autoAddMinifigs: boolean }
+  shareUrl: string | null
 }>
 
-export default function AccountShow({ account }: Props) {
+/** One card of the page: a title, an optional text and its own form */
+function AccountCard({
+  id,
+  title,
+  lead,
+  danger = false,
+  children,
+}: {
+  id: string
+  title: string
+  lead?: string
+  danger?: boolean
+  children: ReactNode
+}) {
+  return (
+    <section
+      className={`card account-section${danger ? ' account-section--danger' : ''}`}
+      aria-labelledby={`${id}-title`}
+    >
+      <h2 id={`${id}-title`}>{title}</h2>
+      {lead && <p className="text-muted account-section__lead">{lead}</p>}
+      {children}
+    </section>
+  )
+}
+
+/** Submit button, under the fields it saves */
+function SaveButton({
+  processing,
+  label,
+  danger = false,
+}: {
+  processing: boolean
+  label: string
+  danger?: boolean
+}) {
+  const { t } = useI18n()
+  return (
+    <div className="form-actions account-section__actions">
+      <button type="submit" className={`btn${danger ? ' btn--danger' : ''}`} disabled={processing}>
+        {processing ? t('form.saving') : label}
+      </button>
+    </div>
+  )
+}
+
+/**
+ * Account page: stacked cards, one form per action (username, email,
+ * password, preferences, shared wishlist), then the account deletion,
+ * apart at the bottom and confirmed.
+ */
+export default function AccountShow({ account, shareUrl }: Props) {
   const { t, tn, dateNode } = useI18n()
 
   return (
@@ -26,18 +82,14 @@ export default function AccountShow({ account }: Props) {
           {tn('account.memberSince', { date: dateNode(account.createdAt) })}
         </p>
       </div>
-      <p className="field__hint">{t('form.requiredNotice')}</p>
 
       <div className="account-sections">
-        <section className="card account-section" aria-labelledby="profile-title">
-          <h2 id="profile-title">{t('account.profile')}</h2>
-          <Form
-            route="account.update_profile"
-            className="auth-form"
-            resetOnSuccess={['currentPassword']}
-          >
+        <AccountCard id="username" title={t('account.usernameTitle')}>
+          <Form route="account.update_username" className="account-form">
             {({ errors, processing }) => (
               <>
+                <FormAlert errors={errors} />
+                <RequiredNotice />
                 <FormField
                   name="username"
                   label={t('auth.username')}
@@ -49,6 +101,23 @@ export default function AccountShow({ account }: Props) {
                   required
                   error={errors.username}
                 />
+                <SaveButton processing={processing} label={t('account.saveUsername')} />
+              </>
+            )}
+          </Form>
+        </AccountCard>
+
+        <AccountCard id="email" title={t('account.emailTitle')} lead={t('account.emailLead')}>
+          <Form
+            route="account.update_email"
+            className="account-form"
+            resetOnSuccess={['currentPassword']}
+            resetOnError={['currentPassword']}
+          >
+            {({ errors, processing }) => (
+              <>
+                <FormAlert errors={errors} />
+                <RequiredNotice />
                 <FormField
                   name="email"
                   type="email"
@@ -61,53 +130,30 @@ export default function AccountShow({ account }: Props) {
                 />
                 <FormField
                   name="currentPassword"
-                  id="profile-currentPassword"
+                  id="email-currentPassword"
                   type="password"
                   label={t('account.currentPassword')}
-                  hint={t('account.profileHint')}
                   autoComplete="current-password"
+                  required
                   error={errors.currentPassword}
                 />
-                <div className="form-actions">
-                  <button type="submit" className="btn" disabled={processing}>
-                    {processing ? t('form.saving') : t('account.saveProfile')}
-                  </button>
-                </div>
+                <SaveButton processing={processing} label={t('account.saveEmail')} />
               </>
             )}
           </Form>
-        </section>
+        </AccountCard>
 
-        <section className="card account-section" aria-labelledby="preferences-title">
-          <h2 id="preferences-title">{t('account.preferencesTitle')}</h2>
-          <Form route="account.update_preferences" className="auth-form">
-            {({ processing }) => (
-              <>
-                <div className="field field--checkbox">
-                  <input
-                    type="checkbox"
-                    id="autoAddMinifigs"
-                    name="autoAddMinifigs"
-                    value="true"
-                    defaultChecked={account.autoAddMinifigs}
-                  />
-                  <label htmlFor="autoAddMinifigs">{t('account.autoAddMinifigs')}</label>
-                </div>
-                <div className="form-actions">
-                  <button type="submit" className="btn" disabled={processing}>
-                    {processing ? t('form.saving') : t('account.savePreferences')}
-                  </button>
-                </div>
-              </>
-            )}
-          </Form>
-        </section>
-
-        <section className="card account-section" aria-labelledby="password-title">
-          <h2 id="password-title">{t('account.passwordTitle')}</h2>
-          <Form route="account.update_password" className="auth-form" resetOnSuccess resetOnError>
+        <AccountCard id="password" title={t('account.passwordTitle')}>
+          <Form
+            route="account.update_password"
+            className="account-form"
+            resetOnSuccess
+            resetOnError
+          >
             {({ errors, processing }) => (
               <>
+                <FormAlert errors={errors} />
+                <RequiredNotice />
                 <FormField
                   name="currentPassword"
                   type="password"
@@ -135,54 +181,72 @@ export default function AccountShow({ account }: Props) {
                   required
                   error={errors.passwordConfirmation}
                 />
-                <div className="form-actions">
-                  <button type="submit" className="btn" disabled={processing}>
-                    {processing ? t('form.saving') : t('account.savePassword')}
-                  </button>
-                </div>
+                <SaveButton processing={processing} label={t('account.savePassword')} />
               </>
             )}
           </Form>
-        </section>
+        </AccountCard>
 
-        <section
-          className="card account-section account-section--danger"
-          aria-labelledby="delete-title"
-        >
-          <h2 id="delete-title">{t('account.deleteTitle')}</h2>
-          <p>{t('account.deleteWarning')}</p>
-          <details className="delete-account">
-            <summary>{t('account.deleteTitle')}</summary>
-            <Form route="account.destroy" className="auth-form" resetOnError={['password']}>
-              {({ errors, processing }) => (
-                <>
-                  <div className="field field--checkbox">
-                    <input type="checkbox" id="delete-understand" name="understand" required />
-                    <label htmlFor="delete-understand">{t('account.deleteUnderstand')}</label>
-                  </div>
-                  <FormField
-                    name="password"
-                    id="delete-password"
-                    type="password"
-                    label={t('account.deletePassword')}
-                    autoComplete="current-password"
-                    required
-                    error={
-                      errors.password ??
-                      // set by the server when the password does not match
-                      (errors as Record<string, string | undefined>).deletePassword
-                    }
+        <AccountCard id="preferences" title={t('account.preferencesTitle')}>
+          <Form route="account.update_preferences" className="account-form">
+            {({ processing }) => (
+              <>
+                <div className="field field--checkbox">
+                  <input
+                    type="checkbox"
+                    id="autoAddMinifigs"
+                    name="autoAddMinifigs"
+                    value="true"
+                    defaultChecked={account.autoAddMinifigs}
                   />
-                  <div className="form-actions">
-                    <button type="submit" className="btn btn--danger" disabled={processing}>
-                      {t('account.deleteButton')}
-                    </button>
-                  </div>
-                </>
-              )}
-            </Form>
-          </details>
-        </section>
+                  <label htmlFor="autoAddMinifigs">{t('account.autoAddMinifigs')}</label>
+                </div>
+                <SaveButton processing={processing} label={t('account.savePreferences')} />
+              </>
+            )}
+          </Form>
+        </AccountCard>
+
+        <SharePanel shareUrl={shareUrl} />
+      </div>
+
+      <div className="account-danger-zone">
+        <AccountCard
+          id="delete"
+          title={t('account.deleteTitle')}
+          lead={t('account.deleteWarning')}
+          danger
+        >
+          <Form route="account.destroy" className="account-form" resetOnError={['password']}>
+            {({ errors, processing }) => (
+              <>
+                <FormAlert errors={errors} />
+                <RequiredNotice />
+                <div className="field field--checkbox">
+                  <input type="checkbox" id="delete-understand" name="understand" required />
+                  <label htmlFor="delete-understand">
+                    {t('account.deleteUnderstand')}
+                    <span aria-hidden="true"> *</span>
+                  </label>
+                </div>
+                <FormField
+                  name="password"
+                  id="delete-password"
+                  type="password"
+                  label={t('account.deletePassword')}
+                  autoComplete="current-password"
+                  required
+                  error={
+                    errors.password ??
+                    // set by the server when the password does not match
+                    (errors as Record<string, string | undefined>).deletePassword
+                  }
+                />
+                <SaveButton processing={processing} label={t('account.deleteButton')} danger />
+              </>
+            )}
+          </Form>
+        </AccountCard>
       </div>
     </>
   )

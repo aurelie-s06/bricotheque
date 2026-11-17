@@ -320,11 +320,13 @@ const fr = {
   'auth.resetNewRequest': 'Faire une nouvelle demande',
   'account.title': 'Mon compte',
   'account.memberSince': 'Membre depuis le {date}.',
-  'account.profile': 'Profil',
-  'account.profileHint':
-    'Ton mot de passe actuel n’est demandé que si tu changes d’adresse e-mail.',
+  'account.usernameTitle': 'Pseudo',
+  'account.saveUsername': 'Enregistrer le pseudo',
+  'account.emailTitle': 'Adresse e-mail',
+  'account.emailLead':
+    'Ton mot de passe actuel est demandé pour changer d’adresse ; l’ancienne adresse sera prévenue.',
+  'account.saveEmail': 'Changer l’adresse e-mail',
   'account.currentPassword': 'Mot de passe actuel',
-  'account.saveProfile': 'Enregistrer le profil',
   'account.passwordTitle': 'Mot de passe',
   'account.savePassword': 'Changer le mot de passe',
   'account.deleteTitle': 'Supprimer mon compte',

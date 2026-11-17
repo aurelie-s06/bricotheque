@@ -3,8 +3,9 @@ import hash from '@adonisjs/core/services/hash'
 import { preferencesValidator } from '#validators/collection'
 import {
   deleteAccountValidator,
+  updateEmailValidator,
   updatePasswordValidator,
-  updateProfileValidator,
+  updateUsernameValidator,
 } from '#validators/user'
 import { validationMessages } from '#validators/messages'
 import { resolveLocale } from '#helpers/locale'
@@ -18,7 +19,7 @@ const forgotUrl = () => `${env.get('APP_URL').replace(/\/$/, '')}/mot-de-passe-o
 
 export default class AccountController {
   /** GET /mon-compte */
-  async show({ inertia, auth }: HttpContext) {
+  async show({ inertia, auth, request }: HttpContext) {
     const user = auth.getUserOrFail()
     return inertia.render('account/show', {
       account: {
@@ -27,43 +28,51 @@ export default class AccountController {
         createdAt: user.createdAt.toISODate()!,
         autoAddMinifigs: user.autoAddMinifigs,
       },
+      shareUrl: user.wishlistShareToken
+        ? `${request.protocol()}://${request.host()}/wishlist/${user.wishlistShareToken}`
+        : null,
     })
   }
 
-  /**
-   * PUT /mon-compte/profil: username and email. Changing the email
-   * requires the current password.
-   */
-  async updateProfile(ctx: HttpContext) {
+  /** PUT /mon-compte/pseudo */
+  async updateUsername({ request, auth, session, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const locale = resolveLocale(request)
+    const data = await request.validateUsing(updateUsernameValidator, {
+      meta: { userId: user.id },
+      messagesProvider: validationMessages(locale),
+    })
+    user.username = data.username
+    await user.save()
+    session.flash('success', serverMessage(locale, 'account.usernameUpdated'))
+    return response.redirect().toRoute('account.show')
+  }
+
+  /** PUT /mon-compte/email: needs the current password; the old address is warned */
+  async updateEmail(ctx: HttpContext) {
     const { request, auth, session, response } = ctx
     const user = auth.getUserOrFail()
     const locale = resolveLocale(request)
-    const data = await request.validateUsing(updateProfileValidator, {
+    const data = await request.validateUsing(updateEmailValidator, {
       meta: { userId: user.id },
       messagesProvider: validationMessages(locale),
     })
 
-    if (data.email !== user.email) {
-      if (!data.currentPassword) {
-        return backWithErrors(ctx, {
-          currentPassword: serverMessage(locale, 'account.currentPasswordRequired'),
-        })
-      }
-      if (!(await hash.verify(user.password, data.currentPassword))) {
-        return backWithErrors(ctx, {
-          currentPassword: serverMessage(locale, 'account.wrongPassword'),
-        })
-      }
+    if (!(await hash.verify(user.password, data.currentPassword))) {
+      return backWithErrors(ctx, {
+        currentPassword: serverMessage(locale, 'account.wrongPassword'),
+      })
+    }
+    if (data.email === user.email) {
+      return response.redirect().toRoute('account.show')
     }
 
     const previousEmail = user.email
-    user.merge({ username: data.username, email: data.email })
+    user.email = data.email
     await user.save()
-    if (previousEmail !== user.email) {
-      // Warn the previous address, in case someone else made the change
-      await mail.send(new SecurityAlertMail(previousEmail, user, 'email', forgotUrl(), locale))
-    }
-    session.flash('success', serverMessage(locale, 'account.profileUpdated'))
+    // Warn the previous address, in case someone else made the change
+    await mail.send(new SecurityAlertMail(previousEmail, user, 'email', forgotUrl(), locale))
+    session.flash('success', serverMessage(locale, 'account.emailUpdated'))
     return response.redirect().toRoute('account.show')
   }
 

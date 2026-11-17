@@ -62,6 +62,7 @@ export default class PasswordResetController {
     await PasswordReset.consumeAll(user)
 
     session.flash('success', serverMessage(locale, 'password.resetDone'))
+    session.flash('email', user.email) // pre-filled on the login page
     return response.redirect().toRoute('session.create')
   }
 }

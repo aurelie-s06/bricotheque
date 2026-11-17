@@ -38,10 +38,11 @@ export const resetPasswordValidator = vine.create({
 })
 
 /**
- * Account page: username and email must stay unique, except for the
- * current user (given as metadata).
+ * Account page: the username and the email must stay unique, except for
+ * the current user (given as metadata). Changing the email needs the
+ * current password.
  */
-export const updateProfileValidator = vine.withMetaData<{ userId: number }>().create({
+export const updateUsernameValidator = vine.withMetaData<{ userId: number }>().create({
   username: username().unique({
     table: 'users',
     column: 'username',
@@ -49,6 +50,9 @@ export const updateProfileValidator = vine.withMetaData<{ userId: number }>().cr
       query.whereNot('id', field.meta.userId)
     },
   }),
+})
+
+export const updateEmailValidator = vine.withMetaData<{ userId: number }>().create({
   email: email().unique({
     table: 'users',
     column: 'email',
@@ -56,7 +60,7 @@ export const updateProfileValidator = vine.withMetaData<{ userId: number }>().cr
       query.whereNot('id', field.meta.userId)
     },
   }),
-  currentPassword: vine.string().optional(),
+  currentPassword: vine.string(),
 })
 
 export const updatePasswordValidator = vine.create({

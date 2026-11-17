@@ -8,6 +8,7 @@ import { validationMessages } from '#validators/messages'
 import { resolveLocale, safeReturnPath } from '#helpers/locale'
 import { serverMessage } from '#helpers/server_messages'
 import { backWithErrors } from '#helpers/form_errors'
+import { PENDING_EMAIL_KEY } from '#controllers/new_account_controller'
 
 /** Session key of the page a visitor wanted before being asked to log in */
 export const INTENDED_URL_KEY = 'auth.intended'
@@ -29,7 +30,12 @@ export default class SessionController {
       session.flash('info', serverMessage(resolveLocale(request), 'auth.loginRequired'))
       return response.redirect().clearQs().toRoute('session.create')
     }
-    return inertia.render('auth/login', {})
+    // Email typed before an error, or given at signup
+    const email =
+      (session.flashMessages.get('email') as string | undefined) ??
+      (session.get(PENDING_EMAIL_KEY) as string | undefined) ??
+      ''
+    return inertia.render('auth/login', { email })
   }
 
   async store(ctx: HttpContext) {

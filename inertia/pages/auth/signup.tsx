@@ -3,6 +3,7 @@ import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import FormField from '~/components/form_field'
+import RequiredNotice from '~/components/required_notice'
 import FormAlert from '~/components/form_alert'
 import { useI18n } from '~/i18n'
 
@@ -27,7 +28,7 @@ export default function Signup() {
           {({ errors, processing }) => (
             <>
               <FormAlert errors={errors} />
-              <p className="field__hint">{t('form.requiredNotice')}</p>
+              <RequiredNotice />
               <FormField
                 name="username"
                 label={t('auth.username')}

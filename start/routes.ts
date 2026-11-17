@@ -106,8 +106,9 @@ router
 
     router.get('mon-compte', [controllers.Account, 'show']).as('account.show')
     router
-      .put('mon-compte/profil', [controllers.Account, 'updateProfile'])
-      .as('account.update_profile')
+      .put('mon-compte/pseudo', [controllers.Account, 'updateUsername'])
+      .as('account.update_username')
+    router.put('mon-compte/email', [controllers.Account, 'updateEmail']).as('account.update_email')
     router
       .put('mon-compte/mot-de-passe', [controllers.Account, 'updatePassword'])
       .as('account.update_password')

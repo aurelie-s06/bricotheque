@@ -16,11 +16,10 @@ const fr = {
   'password.resetInvalid':
     'Ce lien de réinitialisation est invalide ou a expiré. Fais une nouvelle demande.',
   'password.resetDone': 'Ton mot de passe a été modifié. Tu peux te connecter.',
-  'account.profileUpdated': 'Ton profil a été mis à jour.',
+  'account.usernameUpdated': 'Ton pseudo a été modifié.',
+  'account.emailUpdated': 'Ton adresse e-mail a été modifiée.',
   'account.passwordUpdated': 'Ton mot de passe a été modifié.',
   'account.wrongPassword': 'Mot de passe incorrect.',
-  'account.currentPasswordRequired':
-    'Saisis ton mot de passe actuel pour changer d’adresse e-mail.',
   'account.deleted': 'Ton compte et ta collection ont été supprimés.',
   'collection.addedOwned': '« {name} » est dans ta collection.',
   'collection.addedOwnedWithMinifigs':
@@ -86,10 +85,10 @@ const en: Record<MessageKey, string> = {
     'If an account exists for this address, an email with a reset link has just been sent. The link is valid for 1 hour.',
   'password.resetInvalid': 'This reset link is invalid or has expired. Please request a new one.',
   'password.resetDone': 'Your password has been changed. You can now log in.',
-  'account.profileUpdated': 'Your profile has been updated.',
+  'account.usernameUpdated': 'Your username has been changed.',
+  'account.emailUpdated': 'Your email address has been changed.',
   'account.passwordUpdated': 'Your password has been changed.',
   'account.wrongPassword': 'Incorrect password.',
-  'account.currentPasswordRequired': 'Enter your current password to change your email address.',
   'account.deleted': 'Your account and your collection have been deleted.',
   'collection.addedOwned': '“{name}” is in your collection.',
   'collection.addedOwnedWithMinifigs':

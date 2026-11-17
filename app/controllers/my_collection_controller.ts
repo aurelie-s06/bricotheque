@@ -78,7 +78,7 @@ export default class MyCollectionController {
       await user.save()
     }
     session.flash('success', serverMessage(resolveLocale(request), 'wishlist.shared'))
-    return response.redirect().toRoute('wishlist.index')
+    return response.redirect().back()
   }
 
   /** POST /ma-wishlist/partage/desactiver: the old link stops working */
@@ -87,7 +87,7 @@ export default class MyCollectionController {
     user.wishlistShareToken = null
     await user.save()
     session.flash('success', serverMessage(resolveLocale(request), 'wishlist.unshared'))
-    return response.redirect().toRoute('wishlist.index')
+    return response.redirect().back()
   }
 
   #shareUrl(request: HttpContext['request'], token: string) {

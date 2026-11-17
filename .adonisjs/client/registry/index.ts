@@ -188,11 +188,17 @@ const routes = {
     tokens: [[0,"mon-compte"]],
     types: placeholder as Registry['account.show']['types'],
   },
-  'account.update_profile': {
+  'account.update_username': {
     methods: ["PUT"],
-    pattern: '/mon-compte/profil',
-    tokens: [[0,"mon-compte"],[0,"profil"]],
-    types: placeholder as Registry['account.update_profile']['types'],
+    pattern: '/mon-compte/pseudo',
+    tokens: [[0,"mon-compte"],[0,"pseudo"]],
+    types: placeholder as Registry['account.update_username']['types'],
+  },
+  'account.update_email': {
+    methods: ["PUT"],
+    pattern: '/mon-compte/email',
+    tokens: [[0,"mon-compte"],[0,"email"]],
+    types: placeholder as Registry['account.update_email']['types'],
   },
   'account.update_password': {
     methods: ["PUT"],

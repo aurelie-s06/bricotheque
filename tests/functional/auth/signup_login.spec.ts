@@ -290,8 +290,8 @@ test.group('Private pages', (group) => {
     assert.equal(page.session()['auth.intended'] ?? page.session().auth?.intended, '/mon-compte')
 
     const update = await client
-      .put('/mon-compte/profil')
-      .form({ username: 'hacker', email: 'h@example.com' })
+      .put('/mon-compte/pseudo')
+      .form({ username: 'hacker' })
       .withCsrfToken()
       .redirects(0)
     update.assertHeader('location', '/connexion')
@@ -306,6 +306,22 @@ test.group('Private pages', (group) => {
       .withCsrfToken()
       .redirects(0)
     response.assertHeader('location', '/mon-compte')
+  })
+
+  test('the login form keeps the email after an error or a signup', async ({ client, assert }) => {
+    const failed = await client
+      .post('/connexion')
+      .form({ email: 'nobody@example.com', password: 'wrong password' })
+      .withCsrfToken()
+      .redirects(0)
+    failed.assertFlashMessage('email', 'nobody@example.com')
+    assert.notProperty(failed.flashMessages(), 'password')
+
+    const afterSignup = await client
+      .get('/connexion')
+      .withSession({ signup: { email: 'new@example.com' } })
+      .withInertia()
+    assert.equal(afterSignup.inertiaProps.email, 'new@example.com')
   })
 
   test('a notification explains why the visitor must log in', async ({ client }) => {

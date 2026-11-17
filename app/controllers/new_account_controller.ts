@@ -10,7 +10,7 @@ import { resolveLocale } from '#helpers/locale'
 import { serverMessage } from '#helpers/server_messages'
 
 /** Session key of the address the confirmation was sent to (for the page) */
-const PENDING_EMAIL_KEY = 'signup.email'
+export const PENDING_EMAIL_KEY = 'signup.email'
 
 export default class NewAccountController {
   async create({ inertia }: HttpContext) {

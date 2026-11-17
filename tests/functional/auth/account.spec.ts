@@ -16,13 +16,13 @@ test.group('My account', (group) => {
   test('changes the username without the password', async ({ client, assert }) => {
     const user = await createUser()
     const response = await client
-      .put('/mon-compte/profil')
+      .put('/mon-compte/pseudo')
       .loginAs(user)
-      .form({ username: 'new_name', email: 'fan@example.com' })
+      .form({ username: 'new_name' })
       .withCsrfToken()
       .redirects(0)
     response.assertHeader('location', '/mon-compte')
-    response.assertFlashMessage('success', 'Ton profil a été mis à jour.')
+    response.assertFlashMessage('success', 'Ton pseudo a été modifié.')
     await user.refresh()
     assert.equal(user.username, 'new_name')
   })
@@ -31,31 +31,30 @@ test.group('My account', (group) => {
     const user = await createUser()
 
     const withoutPassword = await client
-      .put('/mon-compte/profil')
+      .put('/mon-compte/email')
       .loginAs(user)
-      .form({ username: 'fan', email: 'new@example.com' })
+      .form({ email: 'new@example.com' })
       .withCsrfToken()
       .redirects(0)
-    assert.equal(
-      firstError(formErrors(withoutPassword).currentPassword),
-      'Saisis ton mot de passe actuel pour changer d’adresse e-mail.'
-    )
+    assert.match(firstError(formErrors(withoutPassword).currentPassword)!, /obligatoire/)
 
     const wrongPassword = await client
-      .put('/mon-compte/profil')
+      .put('/mon-compte/email')
       .loginAs(user)
-      .form({ username: 'fan', email: 'new@example.com', currentPassword: 'nope nope nope' })
+      .form({ email: 'new@example.com', currentPassword: 'nope nope nope' })
       .withCsrfToken()
       .redirects(0)
     assert.equal(firstError(formErrors(wrongPassword).currentPassword), 'Mot de passe incorrect.')
     await user.refresh()
     assert.equal(user.email, 'fan@example.com')
 
-    await client
-      .put('/mon-compte/profil')
+    const done = await client
+      .put('/mon-compte/email')
       .loginAs(user)
-      .form({ username: 'fan', email: 'New@Example.com', currentPassword: PASSWORD })
+      .form({ email: 'New@Example.com', currentPassword: PASSWORD })
       .withCsrfToken()
+      .redirects(0)
+    done.assertFlashMessage('success', 'Ton adresse e-mail a été modifiée.')
     await user.refresh()
     assert.equal(user.email, 'new@example.com')
   })
@@ -63,17 +62,35 @@ test.group('My account', (group) => {
   test('the username and email of another user cannot be taken', async ({ client, assert }) => {
     await createUser({ email: 'other@example.com', username: 'other' })
     const user = await createUser()
-    const response = await client
-      .put('/mon-compte/profil')
+    const username = await client
+      .put('/mon-compte/pseudo')
       .loginAs(user)
-      .form({ username: 'other', email: 'other@example.com', currentPassword: PASSWORD })
+      .form({ username: 'other' })
       .withCsrfToken()
       .redirects(0)
-    assert.equal(firstError(formErrors(response).username), 'Ce pseudo est déjà pris.')
+    assert.equal(firstError(formErrors(username).username), 'Ce pseudo est déjà pris.')
+
+    const email = await client
+      .put('/mon-compte/email')
+      .loginAs(user)
+      .form({ email: 'other@example.com', currentPassword: PASSWORD })
+      .withCsrfToken()
+      .redirects(0)
     assert.equal(
-      firstError(formErrors(response).email),
+      firstError(formErrors(email).email),
       'Un compte existe déjà avec cette adresse e-mail.'
     )
+  })
+
+  test('the account page gives the share link of the wishlist', async ({ client, assert }) => {
+    const user = await createUser()
+    const before = await client.get('/mon-compte').loginAs(user).withInertia()
+    assert.isNull(before.inertiaProps.shareUrl)
+
+    await client.post('/ma-wishlist/partage').loginAs(user).withCsrfToken()
+    await user.refresh()
+    const after = await client.get('/mon-compte').loginAs(user).withInertia()
+    assert.include(after.inertiaProps.shareUrl, `/wishlist/${user.wishlistShareToken}`)
   })
 
   test('changes the password with the current one', async ({ client, assert }) => {
@@ -163,9 +180,9 @@ test.group('My account: security alerts', (group) => {
     const fake = mail.fake()
     const user = await createUser()
     await client
-      .put('/mon-compte/profil')
+      .put('/mon-compte/email')
       .loginAs(user)
-      .form({ username: 'fan', email: 'new@example.com', currentPassword: PASSWORD })
+      .form({ email: 'new@example.com', currentPassword: PASSWORD })
       .withCsrfToken()
       .redirects(0)
 

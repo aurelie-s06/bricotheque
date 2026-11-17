@@ -6,5 +6,13 @@ import type { HttpContext } from '@adonisjs/core/http'
  */
 export function backWithErrors(ctx: HttpContext, errors: Record<string, string>) {
   ctx.session.flash('inputErrorsBag', errors)
+  // The form shows the values again (never the passwords)
+  ctx.session.flashExcept([
+    '_csrf',
+    '_method',
+    'password',
+    'passwordConfirmation',
+    'currentPassword',
+  ])
   return ctx.response.redirect().back()
 }

@@ -34,7 +34,8 @@ export type ScannedRoutes = {
     'password.update': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'session.destroy': { paramsTuple?: []; params?: {} }
     'account.show': { paramsTuple?: []; params?: {} }
-    'account.update_profile': { paramsTuple?: []; params?: {} }
+    'account.update_username': { paramsTuple?: []; params?: {} }
+    'account.update_email': { paramsTuple?: []; params?: {} }
     'account.update_password': { paramsTuple?: []; params?: {} }
     'account.destroy': { paramsTuple?: []; params?: {} }
     'account.update_preferences': { paramsTuple?: []; params?: {} }
@@ -124,7 +125,8 @@ export type ScannedRoutes = {
     'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
   }
   PUT: {
-    'account.update_profile': { paramsTuple?: []; params?: {} }
+    'account.update_username': { paramsTuple?: []; params?: {} }
+    'account.update_email': { paramsTuple?: []; params?: {} }
     'account.update_password': { paramsTuple?: []; params?: {} }
     'account.update_preferences': { paramsTuple?: []; params?: {} }
     'collection.set_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

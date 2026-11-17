@@ -53,7 +53,8 @@ export interface ApiDefinition {
   }
   account: {
     show: typeof routes['account.show']
-    updateProfile: typeof routes['account.update_profile']
+    updateUsername: typeof routes['account.update_username']
+    updateEmail: typeof routes['account.update_email']
     updatePassword: typeof routes['account.update_password']
     destroy: typeof routes['account.destroy']
     updatePreferences: typeof routes['account.update_preferences']

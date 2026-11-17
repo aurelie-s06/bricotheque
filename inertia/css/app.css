@@ -988,10 +988,18 @@ input[type='number'].input::-webkit-outer-spin-button {
 }
 
 /* ---------- Auth pages ---------- */
+/* Login, signup, password: a centred card, 480 px wide on a computer,
+   full width (with the page margins) on a phone */
 .auth-card {
-  max-width: 440px;
+  max-width: 480px;
   margin-inline: auto;
-  padding: var(--space-4) var(--space-3);
+  padding: var(--space-4);
+}
+
+@media (max-width: 479px) {
+  .auth-card {
+    padding: var(--space-3) var(--space-2);
+  }
 }
 
 .auth-card h1 {
@@ -1853,6 +1861,18 @@ input[type='number'].input::-webkit-outer-spin-button {
   margin-top: var(--space-3);
 }
 
+/* Sits just above the first field of its form */
+.required-notice {
+  margin: 0 0 var(--space-1);
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+.form-alert:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
 .form-alert {
   margin: var(--space-2) 0;
   padding: var(--space-2);
@@ -1910,6 +1930,7 @@ input[type='number'].input::-webkit-outer-spin-button {
   flex-shrink: 0;
 }
 
+/* Account page: stacked cards, one form each, deletion apart below */
 .account-sections {
   display: grid;
   gap: var(--space-3);
@@ -1920,15 +1941,57 @@ input[type='number'].input::-webkit-outer-spin-button {
   padding: var(--space-3);
 }
 
-.account-section--danger {
-  border-color: var(--brick-red);
+.account-section h2,
+.account-sections .share-panel h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-1);
 }
 
-.delete-account summary {
-  margin-top: var(--space-1);
-  color: var(--brick-red);
-  font-weight: 700;
-  cursor: pointer;
+.account-section__lead {
+  margin-bottom: var(--space-2);
+}
+
+.account-form {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.account-form .field + .field {
+  margin-top: 0;
+}
+
+.account-form .required-notice {
+  margin-bottom: calc(var(--space-1) * -1);
+}
+
+.account-section__actions {
+  margin-top: 0;
+}
+
+.account-sections .share-panel {
+  margin: 0;
+}
+
+.account-danger-zone {
+  max-width: 640px;
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--line);
+}
+
+.account-section--danger {
+  border-color: var(--brick-red);
+  border-left: var(--brick-edge) solid var(--brick-red);
+}
+
+.account-section--danger h2 {
+  color: var(--brick-red-dark);
+}
+
+@media (max-width: 479px) {
+  .account-section {
+    padding: var(--space-2);
+  }
 }
 
 /* ---------- Collection buttons ---------- */

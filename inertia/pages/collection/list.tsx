@@ -1,6 +1,5 @@
 import { usePage } from '@inertiajs/react'
-import { Form, Link } from '@adonisjs/inertia/react'
-import { Share2 } from 'lucide-react'
+import { Link } from '@adonisjs/inertia/react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
@@ -11,8 +10,8 @@ import SetFilters, { type ThemeOption } from '~/components/set_filters'
 import MinifigFilters from '~/components/minifig_filters'
 import Pagination, { type PaginationData } from '~/components/pagination'
 import { type InertiaProps } from '~/types'
+import SharePanel from '~/components/share_panel'
 import { useI18n } from '~/i18n'
-import { notify } from '~/lib/notify'
 
 type Props = InertiaProps<{
   mode: 'collection' | 'wishlist' | 'shared'
@@ -28,65 +27,6 @@ type Props = InertiaProps<{
   wishlistTotal: { total: number; unknownPrices: number } | null
   shareUrl: string | null
 }>
-
-function SharePanel({ shareUrl }: { shareUrl: string | null }) {
-  const { t } = useI18n()
-  async function copy() {
-    if (!shareUrl) return
-    try {
-      await navigator.clipboard.writeText(shareUrl)
-      notify(t('wishlist.copied'))
-    } catch {
-      notify(t('wishlist.copyFailed'), 'error')
-    }
-  }
-
-  return (
-    <section className="card share-panel" aria-labelledby="share-title">
-      <h2 id="share-title">
-        <Share2 size={20} aria-hidden="true" /> {t('wishlist.shareTitle')}
-      </h2>
-      <p className="text-muted">{t('wishlist.shareText')}</p>
-      {shareUrl ? (
-        <>
-          <div className="field">
-            <label className="field__label" htmlFor="share-url">
-              {t('wishlist.shareLink')}
-            </label>
-            <div className="share-panel__link">
-              <input
-                id="share-url"
-                className="field__input"
-                type="url"
-                value={shareUrl}
-                readOnly
-                onFocus={(event) => event.currentTarget.select()}
-              />
-              <button type="button" className="btn btn--sm" onClick={copy}>
-                {t('wishlist.copy')}
-              </button>
-            </div>
-          </div>
-          <Form route="wishlist.unshare">
-            {({ processing }) => (
-              <button type="submit" className="btn btn--secondary btn--sm" disabled={processing}>
-                {t('wishlist.unshareButton')}
-              </button>
-            )}
-          </Form>
-        </>
-      ) : (
-        <Form route="wishlist.share">
-          {({ processing }) => (
-            <button type="submit" className="btn btn--sm" disabled={processing}>
-              {t('wishlist.shareButton')}
-            </button>
-          )}
-        </Form>
-      )}
-    </section>
-  )
-}
 
 export default function CollectionList(props: Props) {
   const { mode, owner, tab, counts, sets, minifigs, pagination, query, themeOptions, entries } =
