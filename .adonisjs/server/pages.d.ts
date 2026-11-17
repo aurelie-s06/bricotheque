@@ -13,6 +13,12 @@ type ExtractProps<T> =
 declare module '@adonisjs/inertia/types' {
   export interface InertiaPages {
     'account/show': ExtractProps<(typeof import('../../inertia/pages/account/show.tsx'))['default']>
+    'admin/dashboard': ExtractProps<(typeof import('../../inertia/pages/admin/dashboard.tsx'))['default']>
+    'admin/image_edit': ExtractProps<(typeof import('../../inertia/pages/admin/image_edit.tsx'))['default']>
+    'admin/images': ExtractProps<(typeof import('../../inertia/pages/admin/images.tsx'))['default']>
+    'admin/translations': ExtractProps<(typeof import('../../inertia/pages/admin/translations.tsx'))['default']>
+    'admin/updates': ExtractProps<(typeof import('../../inertia/pages/admin/updates.tsx'))['default']>
+    'admin/users': ExtractProps<(typeof import('../../inertia/pages/admin/users.tsx'))['default']>
     'auth/check_email': ExtractProps<(typeof import('../../inertia/pages/auth/check_email.tsx'))['default']>
     'auth/forgot_password': ExtractProps<(typeof import('../../inertia/pages/auth/forgot_password.tsx'))['default']>
     'auth/login': ExtractProps<(typeof import('../../inertia/pages/auth/login.tsx'))['default']>
@@ -36,11 +42,5 @@ declare module '@adonisjs/inertia/types' {
     'sets/show': ExtractProps<(typeof import('../../inertia/pages/sets/show.tsx'))['default']>
     'themes/index': ExtractProps<(typeof import('../../inertia/pages/themes/index.tsx'))['default']>
     'themes/show': ExtractProps<(typeof import('../../inertia/pages/themes/show.tsx'))['default']>
-    'admin/dashboard': ExtractProps<(typeof import('../../inertia/pages/admin/dashboard.tsx'))['default']>
-    'admin/image_edit': ExtractProps<(typeof import('../../inertia/pages/admin/image_edit.tsx'))['default']>
-    'admin/images': ExtractProps<(typeof import('../../inertia/pages/admin/images.tsx'))['default']>
-    'admin/updates': ExtractProps<(typeof import('../../inertia/pages/admin/updates.tsx'))['default']>
-    'admin/users': ExtractProps<(typeof import('../../inertia/pages/admin/users.tsx'))['default']>
-    '._home': ExtractProps<(typeof import('../../inertia/pages/._home.tsx'))['default']>
   }
 }

@@ -8,7 +8,7 @@ import { useI18n } from '~/i18n'
 const ITEMS = [
   { href: '/admin', label: 'admin.nav.dashboard', icon: LayoutDashboard },
   { href: '/admin/images', label: 'admin.nav.images', icon: Image },
-  { href: null, label: 'admin.nav.translations', icon: Languages },
+  { href: '/admin/traductions', label: 'admin.nav.translations', icon: Languages },
   { href: '/admin/mises-a-jour', label: 'admin.nav.updates', icon: RefreshCw },
   { href: '/admin/utilisateurs', label: 'admin.nav.users', icon: Users },
 ] as const
@@ -29,24 +29,16 @@ export default function AdminShell({ title, children }: { title: string; childre
         <p className="admin__brand">{t('admin.title')}</p>
         <ul>
           {ITEMS.map(({ href, label, icon: Icon }) => {
-            const current = href === '/admin' ? path === '/admin' : href && path.startsWith(href)
+            const current = href === '/admin' ? path === '/admin' : path.startsWith(href)
             return (
               <li key={label}>
-                {href ? (
-                  <Link
-                    href={href}
-                    className="admin__link"
-                    aria-current={current ? 'page' : undefined}
-                  >
-                    <Icon size={18} aria-hidden="true" /> {t(label)}
-                  </Link>
-                ) : (
-                  // Translations come with the next step of the project
-                  <span className="admin__link admin__link--soon">
-                    <Icon size={18} aria-hidden="true" /> {t(label)}{' '}
-                    <span className="admin__soon">{t('admin.soon')}</span>
-                  </span>
-                )}
+                <Link
+                  href={href}
+                  className="admin__link"
+                  aria-current={current ? 'page' : undefined}
+                >
+                  <Icon size={18} aria-hidden="true" /> {t(label)}
+                </Link>
               </li>
             )
           })}

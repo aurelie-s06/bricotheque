@@ -84,8 +84,8 @@ export default function About({ contact, catalogueUpdates }: Props) {
         </li>
         <li>
           {fr
-            ? 'Les descriptions françaises sont des traductions automatiques (Claude, d’Anthropic) des textes de Brickset ; le texte original reste consultable sur chaque fiche.'
-            : 'French descriptions are machine translations (Claude, by Anthropic) of the Brickset texts; the original text is available on each page.'}
+            ? 'Les descriptions françaises sont des traductions des textes de Brickset ; le texte original reste consultable sur chaque fiche. Les descriptions pas encore traduites s’affichent en anglais.'
+            : 'French descriptions are translations of the Brickset texts; the original text is available on each page. Descriptions not translated yet are shown in English.'}
         </li>
       </ul>
       <p>

@@ -8,6 +8,7 @@ export const controllers = {
   admin: {
     Admin: () => import('#controllers/admin/admin_controller'),
     Images: () => import('#controllers/admin/images_controller'),
+    Translations: () => import('#controllers/admin/translations_controller'),
     Updates: () => import('#controllers/admin/updates_controller'),
   },
   CollectionActions: () => import('#controllers/collection_actions_controller'),

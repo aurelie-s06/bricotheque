@@ -173,6 +173,10 @@ router
     router
       .post('images/:kind/:id/cassee', [controllers.admin.Images, 'reportBroken'])
       .as('admin.images.broken')
+    router.get('traductions', [controllers.admin.Translations, 'index']).as('admin.translations')
+    router
+      .put('traductions/:id', [controllers.admin.Translations, 'update'])
+      .as('admin.translations.update')
     router.get('mises-a-jour', [controllers.admin.Updates, 'index']).as('admin.updates')
     router.post('mises-a-jour', [controllers.admin.Updates, 'store']).as('admin.updates.store')
   })

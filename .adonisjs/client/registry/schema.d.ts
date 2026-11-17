@@ -684,6 +684,32 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['reportBroken']>>>
     }
   }
+  'admin.translations': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/traductions'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/translations_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/translations_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/translations_controller').default['index']>>>
+    }
+  }
+  'admin.translations.update': {
+    methods: ["PUT"]
+    pattern: '/admin/traductions/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/translations_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/translations_controller').default['update']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/translations_controller').default['update']>>>
+    }
+  }
   'admin.updates': {
     methods: ["GET","HEAD"]
     pattern: '/admin/mises-a-jour'

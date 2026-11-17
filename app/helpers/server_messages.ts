@@ -10,6 +10,9 @@ const fr = {
   'admin.image.unreachable': 'Impossible de charger cette adresse : vérifie qu’elle est correcte.',
   'admin.image.notImage': 'Cette adresse ne pointe pas vers une image.',
   'admin.image.saved': 'L’image de « {name} » est enregistrée.',
+  'admin.translations.saved': 'La traduction de « {name} » est enregistrée.',
+  'admin.translations.cleared':
+    'La traduction de « {name} » est supprimée : la description s’affiche en anglais.',
   'admin.update.queued':
     'Mise à jour demandée : elle démarre dans la minute qui suit (tâche planifiée).',
   'admin.update.alreadyRunning': 'Une mise à jour est déjà en attente ou en cours.',
@@ -88,6 +91,9 @@ const en: Record<MessageKey, string> = {
   'admin.image.unreachable': 'This address cannot be loaded: check that it is correct.',
   'admin.image.notImage': 'This address does not point to a picture.',
   'admin.image.saved': 'The picture of “{name}” is saved.',
+  'admin.translations.saved': 'The translation of “{name}” is saved.',
+  'admin.translations.cleared':
+    'The translation of “{name}” is removed: the description is shown in English.',
   'admin.update.queued': 'Update requested: it starts within a minute (scheduled task).',
   'admin.update.alreadyRunning': 'An update is already pending or running.',
   'auth.invalidCredentials': 'Incorrect email address or password.',

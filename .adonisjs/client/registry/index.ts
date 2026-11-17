@@ -320,6 +320,18 @@ const routes = {
     tokens: [[0,"admin"],[0,"images"],[1,"kind"],[1,"id"],[0,"cassee"]],
     types: placeholder as Registry['admin.images.broken']['types'],
   },
+  'admin.translations': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/traductions',
+    tokens: [[0,"admin"],[0,"traductions"]],
+    types: placeholder as Registry['admin.translations']['types'],
+  },
+  'admin.translations.update': {
+    methods: ["PUT"],
+    pattern: '/admin/traductions/:id',
+    tokens: [[0,"admin"],[0,"traductions"],[1,"id"]],
+    types: placeholder as Registry['admin.translations.update']['types'],
+  },
   'admin.updates': {
     methods: ["GET","HEAD"],
     pattern: '/admin/mises-a-jour',

@@ -121,22 +121,15 @@ node ace import:brickset --refresh        # ignore le cache des réponses
 - Les textes de l'interface sont dans `inertia/i18n/fr.ts` (référence) et `inertia/i18n/en.ts` (TypeScript refuse une clé manquante). Dans un composant : `const { t, tc, formatPrice, formatDate } = useI18n()`.
 - Les noms des sets, minifigs et thèmes restent ceux de Rebrickable (anglais).
 
-## Traduction des descriptions (Claude)
+## Traduction des descriptions
 
-Brickset ne fournit les descriptions qu'en anglais. La commande les traduit en français avec Claude Opus 5.5 via l'API Batches (-50 %) et les stocke dans `sets.description_fr`. Les visiteurs francophones lisent la traduction (l'original reste accessible), les anglophones l'original.
+Les descriptions françaises s'écrivent directement dans le site, par un administrateur :
 
-```bash
-node ace translate:descriptions --dry-run      # nombre de descriptions et coût estimé, n'envoie rien
-node ace translate:descriptions --set=75192-1  # un seul set, tout de suite (pour juger la qualité)
-node ace translate:descriptions                # envoie un lot (confirmation demandée)
-node ace translate:descriptions                # plus tard : enregistre les traductions du lot terminé
-node ace translate:descriptions --yes --wait   # sans confirmation, attend la fin (cron)
-```
+- **Backoffice** (`/admin/traductions`) : compteur traduites / à traduire, liste paginée des sets (filtres « À traduire », « Traduites », « Toutes » et recherche par nom ou numéro). Pour chaque set, le texte anglais à gauche, la zone de texte française à droite et un bouton « Enregistrer la traduction ».
+- Vider le champ supprime la traduction : la description s'affiche de nouveau en anglais.
+- **Affichage** : la traduction si elle existe, sinon la description anglaise (balisée `lang="en"`), sinon le texte généré automatiquement.
 
-- Clé API dans `.env` : `ANTHROPIC_API_KEY` (https://platform.claude.com/settings/keys).
-- Seules les descriptions nouvelles ou modifiées depuis leur dernière traduction sont envoyées (empreinte SHA-1 du texte anglais dans `description_fr_source_hash`).
-- Chaque lot est suivi dans `import_runs` (source `translation`).
-- Coût du stock initial (9 573 descriptions) : estimé entre 45 et 85 $ ; ensuite quelques centimes par import hebdomadaire.
+L'ancienne commande `translate:descriptions` (traduction automatique par l'API Claude, payante) reste disponible si une clé `ANTHROPIC_API_KEY` est ajoutée ; une traduction saisie à la main est marquée à jour et n'est pas retraduite.
 
 ## Comptes utilisateurs
 

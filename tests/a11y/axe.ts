@@ -50,7 +50,13 @@ async function main() {
   const memberPages = ['/mon-compte', '/ma-collection', '/ma-wishlist', '/tableau-de-bord']
   // Back office: checked when the account is an administrator (A11Y_ADMIN=1)
   if (process.env.A11Y_ADMIN) {
-    memberPages.push('/admin', '/admin/images', '/admin/mises-a-jour', '/admin/utilisateurs')
+    memberPages.push(
+      '/admin',
+      '/admin/images',
+      '/admin/traductions',
+      '/admin/mises-a-jour',
+      '/admin/utilisateurs'
+    )
   }
 
   let failures = 0

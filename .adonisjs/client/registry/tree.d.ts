@@ -82,6 +82,9 @@ export interface ApiDefinition {
       update: typeof routes['admin.images.update']
       broken: typeof routes['admin.images.broken']
     }
+    translations: typeof routes['admin.translations'] & {
+      update: typeof routes['admin.translations.update']
+    }
     updates: typeof routes['admin.updates'] & {
       store: typeof routes['admin.updates.store']
     }
