@@ -11,6 +11,7 @@ import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 import { isLocale, LOCALE_COOKIE, safeReturnPath } from '#helpers/locale'
+import { forgotPasswordThrottle, signupThrottle } from '#start/limiter'
 
 router.get('/', [controllers.Home, 'index']).as('home')
 
@@ -52,20 +53,44 @@ router
   .as('locale.switch')
 
 /**
- * Authentication (reworked in step 7)
+ * Accounts
  */
 router
   .group(() => {
-    router.get('inscription', [controllers.NewAccount, 'create'])
-    router.post('inscription', [controllers.NewAccount, 'store'])
+    router.get('inscription', [controllers.NewAccount, 'create']).as('new_account.create')
+    router
+      .post('inscription', [controllers.NewAccount, 'store'])
+      .as('new_account.store')
+      .use(signupThrottle)
 
-    router.get('connexion', [controllers.Session, 'create'])
-    router.post('connexion', [controllers.Session, 'store'])
+    router.get('connexion', [controllers.Session, 'create']).as('session.create')
+    router.post('connexion', [controllers.Session, 'store']).as('session.store')
+
+    router.get('mot-de-passe-oublie', [controllers.PasswordReset, 'create']).as('password.forgot')
+    router
+      .post('mot-de-passe-oublie', [controllers.PasswordReset, 'store'])
+      .as('password.send')
+      .use(forgotPasswordThrottle)
+    router
+      .get('mot-de-passe/reinitialiser/:token', [controllers.PasswordReset, 'edit'])
+      .as('password.reset')
+    router
+      .post('mot-de-passe/reinitialiser/:token', [controllers.PasswordReset, 'update'])
+      .as('password.update')
   })
   .use(middleware.guest())
 
 router
   .group(() => {
-    router.post('deconnexion', [controllers.Session, 'destroy'])
+    router.post('deconnexion', [controllers.Session, 'destroy']).as('session.destroy')
+
+    router.get('mon-compte', [controllers.Account, 'show']).as('account.show')
+    router
+      .put('mon-compte/profil', [controllers.Account, 'updateProfile'])
+      .as('account.update_profile')
+    router
+      .put('mon-compte/mot-de-passe', [controllers.Account, 'updatePassword'])
+      .as('account.update_password')
+    router.delete('mon-compte', [controllers.Account, 'destroy']).as('account.destroy')
   })
   .use(middleware.auth())

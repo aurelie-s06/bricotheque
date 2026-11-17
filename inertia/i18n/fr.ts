@@ -220,6 +220,49 @@ const fr = {
   'search.noResults': 'Aucun résultat pour « {q} »',
   'search.noResultsHint':
     'Vérifie l’orthographe ou essaie un numéro (ex. 75192). Les noms sont en anglais.',
+
+  // Accounts (forms)
+  'nav.account': 'Mon compte',
+  'form.requiredNotice': 'Les champs marqués d’un astérisque (*) sont obligatoires.',
+  'form.required': 'obligatoire',
+  'form.showPassword': 'Afficher le mot de passe',
+  'form.hidePassword': 'Masquer le mot de passe',
+  'form.saving': 'Enregistrement…',
+  'auth.emailHint': 'Format : nom@exemple.fr',
+  'auth.usernameHint': '3 à 30 caractères : lettres sans accent, chiffres, « _ », « . » ou « - ».',
+  'auth.passwordHint':
+    'Au moins 10 caractères. Une phrase facile à retenir fait un bon mot de passe.',
+  'auth.forgotLink': 'Mot de passe oublié ?',
+  'auth.forgotTitle': 'Mot de passe oublié',
+  'auth.forgotLead':
+    'Indique l’adresse e-mail de ton compte : tu recevras un lien pour choisir un nouveau mot de passe.',
+  'auth.forgotSubmit': 'Recevoir le lien',
+  'auth.sending': 'Envoi…',
+  'auth.backToLogin': 'Retour à la connexion',
+  'auth.resetTitle': 'Nouveau mot de passe',
+  'auth.resetLead': 'Choisis le nouveau mot de passe de ton compte.',
+  'auth.newPassword': 'Nouveau mot de passe',
+  'auth.newPasswordConfirmation': 'Confirmer le nouveau mot de passe',
+  'auth.resetSubmit': 'Enregistrer le mot de passe',
+  'auth.resetInvalidTitle': 'Lien invalide ou expiré',
+  'auth.resetInvalidText':
+    'Ce lien de réinitialisation n’est plus valable : il a déjà servi ou date de plus d’une heure.',
+  'auth.resetNewRequest': 'Faire une nouvelle demande',
+  'account.title': 'Mon compte',
+  'account.memberSince': 'Membre depuis le {date}.',
+  'account.profile': 'Profil',
+  'account.profileHint':
+    'Ton mot de passe actuel n’est demandé que si tu changes d’adresse e-mail.',
+  'account.currentPassword': 'Mot de passe actuel',
+  'account.saveProfile': 'Enregistrer le profil',
+  'account.passwordTitle': 'Mot de passe',
+  'account.savePassword': 'Changer le mot de passe',
+  'account.deleteTitle': 'Supprimer mon compte',
+  'account.deleteWarning':
+    'Ton compte, ta collection et ta wishlist seront supprimés définitivement. Cette action est irréversible.',
+  'account.deleteUnderstand': 'Je comprends que la suppression est définitive.',
+  'account.deletePassword': 'Mot de passe (pour confirmer)',
+  'account.deleteButton': 'Supprimer définitivement mon compte',
 } as const
 
 export default fr

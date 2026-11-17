@@ -28,4 +28,16 @@ export interface ApiDefinition {
     store: typeof routes['session.store']
     destroy: typeof routes['session.destroy']
   }
+  password: {
+    forgot: typeof routes['password.forgot']
+    send: typeof routes['password.send']
+    reset: typeof routes['password.reset']
+    update: typeof routes['password.update']
+  }
+  account: {
+    show: typeof routes['account.show']
+    updateProfile: typeof routes['account.update_profile']
+    updatePassword: typeof routes['account.update_password']
+    destroy: typeof routes['account.destroy']
+  }
 }

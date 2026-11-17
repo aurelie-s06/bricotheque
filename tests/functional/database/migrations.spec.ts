@@ -5,6 +5,7 @@ import db from '@adonisjs/lucid/services/db'
 const APP_TABLES = [
   'import_runs',
   'minifigs',
+  'password_reset_tokens',
   'rate_limits',
   'set_minifigs',
   'sets',

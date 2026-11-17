@@ -1,4 +1,8 @@
 import app from '@adonisjs/core/services/app'
+import { errors as limiterErrors } from '@adonisjs/limiter'
+import { resolveLocale } from '#helpers/locale'
+import { serverMessage } from '#helpers/server_messages'
+import { backWithErrors } from '#helpers/form_errors'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
@@ -30,6 +34,16 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    /**
+     * Rate limit of a form (signup, forgot password): back to the form
+     * with a message, instead of a bare 429 page.
+     */
+    if (error instanceof limiterErrors.E_TOO_MANY_REQUESTS && ctx.request.method() !== 'GET') {
+      const minutes = Math.max(1, Math.ceil(error.response.availableIn / 60))
+      return backWithErrors(ctx, {
+        form: serverMessage(resolveLocale(ctx.request), 'auth.tooManyAttempts', { minutes }),
+      })
+    }
     return super.handle(error, ctx)
   }
 

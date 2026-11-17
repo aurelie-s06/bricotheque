@@ -1172,3 +1172,72 @@ select.field__input {
   margin-bottom: var(--space-1);
   font-weight: 600;
 }
+
+/* ---------- Account forms ---------- */
+.auth-form {
+  margin-top: var(--space-3);
+}
+
+.form-alert {
+  margin: var(--space-2) 0;
+  padding: var(--space-2);
+  border: 1px solid var(--brick-red);
+  border-left-width: var(--brick-edge);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.form-alert--success {
+  border-color: var(--brick-green);
+}
+
+.password-input {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.password-input .field__input {
+  flex: 1;
+  min-width: 0;
+}
+
+.password-input__toggle {
+  flex-shrink: 0;
+  min-height: 44px;
+}
+
+.field--checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.field--checkbox input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.account-sections {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 640px;
+}
+
+.account-section {
+  padding: var(--space-3);
+}
+
+.account-section--danger {
+  border-color: var(--brick-red);
+}
+
+.delete-account summary {
+  margin-top: var(--space-1);
+  color: var(--brick-red);
+  font-weight: 700;
+  cursor: pointer;
+}

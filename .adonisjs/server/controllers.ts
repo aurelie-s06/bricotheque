@@ -4,9 +4,11 @@
  */
 
 export const controllers = {
+  Account: () => import('#controllers/account_controller'),
   Home: () => import('#controllers/home_controller'),
   Minifigs: () => import('#controllers/minifigs_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
+  PasswordReset: () => import('#controllers/password_reset_controller'),
   Search: () => import('#controllers/search_controller'),
   Session: () => import('#controllers/session_controller'),
   Sets: () => import('#controllers/sets_controller'),

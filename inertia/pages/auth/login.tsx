@@ -1,61 +1,53 @@
 import { Form, Link } from '@adonisjs/inertia/react'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import FormField from '~/components/form_field'
+import FormAlert from '~/components/form_alert'
+import FlashNotice from '~/components/flash_notice'
+import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 
-export default function Login() {
+type Props = InertiaProps<{ notice: string | null }>
+
+export default function Login({ notice }: Props) {
   const { t } = useI18n()
   return (
     <div className="card auth-card">
       <Seo title={t('auth.loginTitle')} />
       <h1>{t('auth.loginTitle')}</h1>
       <p className="text-muted">{t('auth.loginLead')}</p>
+      <FlashNotice />
+      {notice && (
+        <div className="form-alert" role="status">
+          {notice}
+        </div>
+      )}
 
-      <Form route="session.store" style={{ marginTop: 'var(--space-3)' }}>
+      <Form route="session.store" className="auth-form" resetOnError={['password']}>
         {({ errors, processing }) => (
           <>
-            <div className="field">
-              <label className="field__label" htmlFor="email">
-                {t('auth.email')}
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                className="field__input"
-                autoComplete="email"
-                required
-                aria-invalid={errors.email ? 'true' : undefined}
-                aria-describedby={errors.email ? 'email-error' : undefined}
-              />
-              {errors.email && (
-                <span id="email-error" className="field__error">
-                  {errors.email}
-                </span>
-              )}
-            </div>
-
-            <div className="field">
-              <label className="field__label" htmlFor="password">
-                {t('auth.password')}
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                className="field__input"
-                autoComplete="current-password"
-                required
-                aria-invalid={errors.password ? 'true' : undefined}
-                aria-describedby={errors.password ? 'password-error' : undefined}
-              />
-              {errors.password && (
-                <span id="password-error" className="field__error">
-                  {errors.password}
-                </span>
-              )}
-            </div>
-
+            <FormAlert errors={errors} />
+            <p className="field__hint">{t('form.requiredNotice')}</p>
+            <FormField
+              name="email"
+              type="email"
+              label={t('auth.email')}
+              hint={t('auth.emailHint')}
+              autoComplete="email"
+              required
+              error={errors.email}
+            />
+            <FormField
+              name="password"
+              type="password"
+              label={t('auth.password')}
+              autoComplete="current-password"
+              required
+              error={errors.password}
+            />
+            <p>
+              <Link route="password.forgot">{t('auth.forgotLink')}</Link>
+            </p>
             <div className="form-actions">
               <button type="submit" className="btn btn--block" disabled={processing}>
                 {processing ? t('auth.loggingIn') : t('auth.login')}

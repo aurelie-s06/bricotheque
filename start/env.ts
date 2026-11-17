@@ -48,4 +48,19 @@ export default await Env.create(new URL('../', import.meta.url), {
   BRICKLINK_CONSUMER_SECRET: Env.schema.secret.optional(),
   BRICKLINK_TOKEN_VALUE: Env.schema.string.optional(),
   BRICKLINK_TOKEN_SECRET: Env.schema.secret.optional(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring the mail package
+  |----------------------------------------------------------
+  */
+
+  // Mail: "log" writes the emails to tmp/mails (development), "smtp" sends them
+  MAIL_MAILER: Env.schema.enum(['log', 'smtp'] as const),
+  MAIL_FROM_NAME: Env.schema.string(),
+  MAIL_FROM_ADDRESS: Env.schema.string({ format: 'email' }),
+  SMTP_HOST: Env.schema.string.optional(),
+  SMTP_PORT: Env.schema.number.optional(),
+  SMTP_USERNAME: Env.schema.string.optional(),
+  SMTP_PASSWORD: Env.schema.secret.optional(),
 })

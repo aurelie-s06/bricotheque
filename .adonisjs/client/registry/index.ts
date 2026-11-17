@@ -86,11 +86,59 @@ const routes = {
     tokens: [[0,"connexion"]],
     types: placeholder as Registry['session.store']['types'],
   },
+  'password.forgot': {
+    methods: ["GET","HEAD"],
+    pattern: '/mot-de-passe-oublie',
+    tokens: [[0,"mot-de-passe-oublie"]],
+    types: placeholder as Registry['password.forgot']['types'],
+  },
+  'password.send': {
+    methods: ["POST"],
+    pattern: '/mot-de-passe-oublie',
+    tokens: [[0,"mot-de-passe-oublie"]],
+    types: placeholder as Registry['password.send']['types'],
+  },
+  'password.reset': {
+    methods: ["GET","HEAD"],
+    pattern: '/mot-de-passe/reinitialiser/:token',
+    tokens: [[0,"mot-de-passe"],[0,"reinitialiser"],[1,"token"]],
+    types: placeholder as Registry['password.reset']['types'],
+  },
+  'password.update': {
+    methods: ["POST"],
+    pattern: '/mot-de-passe/reinitialiser/:token',
+    tokens: [[0,"mot-de-passe"],[0,"reinitialiser"],[1,"token"]],
+    types: placeholder as Registry['password.update']['types'],
+  },
   'session.destroy': {
     methods: ["POST"],
     pattern: '/deconnexion',
     tokens: [[0,"deconnexion"]],
     types: placeholder as Registry['session.destroy']['types'],
+  },
+  'account.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/mon-compte',
+    tokens: [[0,"mon-compte"]],
+    types: placeholder as Registry['account.show']['types'],
+  },
+  'account.update_profile': {
+    methods: ["PUT"],
+    pattern: '/mon-compte/profil',
+    tokens: [[0,"mon-compte"],[0,"profil"]],
+    types: placeholder as Registry['account.update_profile']['types'],
+  },
+  'account.update_password': {
+    methods: ["PUT"],
+    pattern: '/mon-compte/mot-de-passe',
+    tokens: [[0,"mon-compte"],[0,"mot-de-passe"]],
+    types: placeholder as Registry['account.update_password']['types'],
+  },
+  'account.destroy': {
+    methods: ["DELETE"],
+    pattern: '/mon-compte',
+    tokens: [[0,"mon-compte"]],
+    types: placeholder as Registry['account.destroy']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
 

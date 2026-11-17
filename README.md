@@ -136,6 +136,23 @@ node ace translate:descriptions --yes --wait   # sans confirmation, attend la fi
 - Chaque lot est suivi dans `import_runs` (source `translation`).
 - Coût du stock initial (9 573 descriptions) : estimé entre 45 et 85 $ ; ensuite quelques centimes par import hebdomadaire.
 
+## Comptes utilisateurs
+
+| URL                                                           | Rôle                                                                                                                                                                |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/inscription`, `/connexion`, `/deconnexion`                  | Compte : pseudo, e-mail, mot de passe d'au moins 10 caractères (haché par AdonisJS)                                                                                 |
+| `/mot-de-passe-oublie` → `/mot-de-passe/reinitialiser/:jeton` | Lien par e-mail, valable 1 h et utilisable une seule fois (seule son empreinte SHA-256 est stockée)                                                                 |
+| `/mon-compte`                                                 | Modifier le pseudo, l'e-mail (mot de passe actuel demandé), le mot de passe ; supprimer le compte (case à cocher + mot de passe ; la collection est supprimée avec) |
+
+- **Pages privées** (`middleware.auth()`) : un visiteur non connecté est envoyé vers `/connexion`, puis ramené à la page qu'il voulait.
+- **Sécurité** : jeton CSRF (Shield) sur tous les formulaires ; message identique pour un mauvais mot de passe ou un e-mail inconnu (et pour « mot de passe oublié ») ; limites de fréquence par adresse IP :
+  - connexion : 5 échecs en 15 min par adresse e-mail → blocage 15 min (les connexions réussies ne comptent pas) ;
+  - inscription : 5 comptes par heure ; mot de passe oublié : 5 demandes par 15 min.
+
+  Les compteurs sont dans la table `rate_limits` (`LIMITER_STORE=database`).
+
+- **E-mails** : en local, `MAIL_MAILER=log` écrit chaque e-mail en HTML dans `tmp/mails/` (le chemin s'affiche dans les logs du serveur). En production, `MAIL_MAILER=smtp` avec `SMTP_HOST`, `SMTP_PORT` (465), `SMTP_USERNAME`, `SMTP_PASSWORD` et `MAIL_FROM_ADDRESS` (une adresse de ton domaine sur o2switch). Les e-mails sont envoyés dans la langue du visiteur.
+
 ## Base de données
 
 | Table                        | Modèle                   | Contenu                                                                  |

@@ -60,13 +60,20 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                 </NavLink>
               </li>
               {props.user ? (
-                <li>
-                  <Form route="session.destroy">
-                    <button type="submit" className="btn btn--secondary btn--sm">
-                      {t('nav.logout')}
-                    </button>
-                  </Form>
-                </li>
+                <>
+                  <li>
+                    <NavLink route="account.show" className="site-nav__link">
+                      {t('nav.account')}
+                    </NavLink>
+                  </li>
+                  <li>
+                    <Form route="session.destroy">
+                      <button type="submit" className="btn btn--secondary btn--sm">
+                        {t('nav.logout')}
+                      </button>
+                    </Form>
+                  </li>
+                </>
               ) : (
                 <>
                   <li>

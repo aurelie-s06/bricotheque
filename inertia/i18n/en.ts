@@ -220,6 +220,48 @@ const en: Record<keyof typeof fr, string> = {
   'search.sectionEmpty': 'No result in this category.',
   'search.noResults': 'No result for “{q}”',
   'search.noResultsHint': 'Check the spelling or try a number (e.g. 75192).',
+
+  // Accounts (forms)
+  'nav.account': 'My account',
+  'form.requiredNotice': 'Fields marked with an asterisk (*) are required.',
+  'form.required': 'required',
+  'form.showPassword': 'Show password',
+  'form.hidePassword': 'Hide password',
+  'form.saving': 'Saving…',
+  'auth.emailHint': 'Format: name@example.com',
+  'auth.usernameHint': '3 to 30 characters: letters without accents, numbers, “_”, “.” or “-”.',
+  'auth.passwordHint':
+    'At least 10 characters. An easy-to-remember sentence makes a good password.',
+  'auth.forgotLink': 'Forgot your password?',
+  'auth.forgotTitle': 'Forgot your password',
+  'auth.forgotLead':
+    'Enter the email address of your account: you will receive a link to choose a new password.',
+  'auth.forgotSubmit': 'Send me the link',
+  'auth.sending': 'Sending…',
+  'auth.backToLogin': 'Back to log in',
+  'auth.resetTitle': 'New password',
+  'auth.resetLead': 'Choose the new password of your account.',
+  'auth.newPassword': 'New password',
+  'auth.newPasswordConfirmation': 'Confirm the new password',
+  'auth.resetSubmit': 'Save the password',
+  'auth.resetInvalidTitle': 'Invalid or expired link',
+  'auth.resetInvalidText':
+    'This reset link is no longer valid: it has already been used or is more than one hour old.',
+  'auth.resetNewRequest': 'Make a new request',
+  'account.title': 'My account',
+  'account.memberSince': 'Member since {date}.',
+  'account.profile': 'Profile',
+  'account.profileHint': 'Your current password is only required to change your email address.',
+  'account.currentPassword': 'Current password',
+  'account.saveProfile': 'Save the profile',
+  'account.passwordTitle': 'Password',
+  'account.savePassword': 'Change the password',
+  'account.deleteTitle': 'Delete my account',
+  'account.deleteWarning':
+    'Your account, your collection and your wishlist will be permanently deleted. This cannot be undone.',
+  'account.deleteUnderstand': 'I understand that the deletion is permanent.',
+  'account.deletePassword': 'Password (to confirm)',
+  'account.deleteButton': 'Permanently delete my account',
 }
 
 export default en
