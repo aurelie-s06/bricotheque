@@ -34,7 +34,7 @@ test.group('Dashboard', (group) => {
     const user = await createUser()
     const response = await client.get('/tableau-de-bord').loginAs(user).withInertia()
     response.assertStatus(200)
-    assert.deepInclude(response.inertiaProps.figures, { sets: 0, minifigs: 0, pieces: 0, paid: 0 })
+    assert.deepInclude(response.inertiaProps.figures, { sets: 0, minifigs: 0, pieces: 0 })
     assert.deepEqual(response.inertiaProps.byTheme, [])
   })
 
@@ -75,28 +75,6 @@ test.group('Dashboard', (group) => {
       minifigs: 1,
       minifigCopies: 2,
       pieces: 7541 + 1343 * 2 + 7541 * 3,
-      paid: 700 + 10 * 3, // unit prices × quantities; 8880-1 has no price
-      setsWithoutPrice: 1,
-      value: 849.99 + 199.99 * 2, // original prices; 75192-2 has none
-      valueSources: { bricklink: 0, original: 2, unknown: 1 },
-    })
-  })
-
-  test('uses the BrickLink value when it is known', async ({ client, assert }) => {
-    const user = await createUser()
-    const id = await setId('75192-1')
-    await db
-      .from('sets')
-      .where('id', id)
-      .update({ estimated_value_new: 1200, estimated_value_used: 900 })
-    await UserSet.create({ userId: user.id, setId: id, status: 'owned', condition: 'sealed' })
-
-    const response = await client.get('/tableau-de-bord').loginAs(user).withInertia()
-    assert.equal(response.inertiaProps.figures.value, 1200)
-    assert.deepEqual(response.inertiaProps.figures.valueSources, {
-      bricklink: 1,
-      original: 0,
-      unknown: 0,
     })
   })
 

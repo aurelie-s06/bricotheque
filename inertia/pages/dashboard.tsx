@@ -16,10 +16,6 @@ type Props = InertiaProps<{
     minifigs: number
     minifigCopies: number
     pieces: number
-    paid: number
-    setsWithoutPrice: number
-    value: number
-    valueSources: { bricklink: number; original: number; unknown: number }
   }
   byTheme: { name: string; url: string | null; count: number }[]
   byDecade: { decade: number; count: number }[]
@@ -75,7 +71,7 @@ function SetList({
 export default function DashboardPage(props: Props) {
   const { figures, byTheme, byDecade, biggest, oldest, retiringSoon, retired, wishlistDates } =
     props
-  const { t, tc, formatNumber, formatPrice, formatDate } = useI18n()
+  const { t, tc, formatNumber, formatDate } = useI18n()
 
   return (
     <>
@@ -117,27 +113,6 @@ export default function DashboardPage(props: Props) {
                 label={t('dashboard.pieces')}
                 value={formatNumber(figures.pieces)}
                 hint={t('dashboard.piecesHint')}
-              />
-              <Tile
-                label={t('dashboard.paid')}
-                value={formatPrice(figures.paid)!}
-                hint={
-                  figures.setsWithoutPrice > 0
-                    ? tc('dashboard.paidMissing', figures.setsWithoutPrice)
-                    : t('dashboard.paidComplete')
-                }
-              />
-              <Tile
-                label={t('dashboard.value')}
-                value={formatPrice(figures.value)!}
-                hint={[
-                  t('dashboard.valueHint'),
-                  figures.valueSources.unknown > 0
-                    ? tc('dashboard.valueUnknown', figures.valueSources.unknown)
-                    : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
               />
             </dl>
           </section>

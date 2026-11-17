@@ -12,39 +12,13 @@ export const RETIRING_SOON = { months: 6 }
 type OwnedSetRow = {
   set_id: number
   quantity: number
-  condition: string | null
-  purchase_price: string | null
   year: number | null
   theme_id: number
   num_parts: number
-  rrp_eur: string | null
-  estimated_value_new: string | null
-  estimated_value_used: string | null
-}
-
-const num = (value: string | number | null | undefined) =>
-  value === null || value === undefined ? null : Number(value)
-
-/**
- * Estimated value of one owned set: BrickLink value (new for sealed sets,
- * otherwise used, otherwise new), or else the original price.
- */
-export function setValue(
-  row: Pick<OwnedSetRow, 'condition' | 'rrp_eur' | 'estimated_value_new' | 'estimated_value_used'>
-) {
-  const newValue = num(row.estimated_value_new)
-  const usedValue = num(row.estimated_value_used)
-  const bricklink = row.condition === 'sealed' ? newValue : (usedValue ?? newValue)
-  if (bricklink !== null) return { value: bricklink, source: 'bricklink' as const }
-  const original = num(row.rrp_eur)
-  if (original !== null) return { value: original, source: 'original' as const }
-  return { value: null, source: 'unknown' as const }
 }
 
 /** 1987 → 1980 */
 export const decadeOf = (year: number) => Math.floor(year / 10) * 10
-
-const round = (value: number) => Math.round(value * 100) / 100
 
 export default class Dashboard {
   constructor(private userId: number) {}
@@ -57,25 +31,15 @@ export default class Dashboard {
       .select(
         'user_sets.set_id',
         'user_sets.quantity',
-        'user_sets.condition',
-        'user_sets.purchase_price',
         'sets.year',
         'sets.theme_id',
-        'sets.num_parts',
-        'sets.rrp_eur',
-        'sets.estimated_value_new',
-        'sets.estimated_value_used'
+        'sets.num_parts'
       )
 
-    const minifigs = await db
+    const minifigs: { quantity: number }[] = await db
       .from('user_minifigs')
-      .join('minifigs', 'minifigs.id', 'user_minifigs.minifig_id')
-      .where({ 'user_minifigs.user_id': this.userId, 'user_minifigs.status': 'owned' })
-      .select(
-        'user_minifigs.quantity',
-        'minifigs.estimated_value_new',
-        'minifigs.estimated_value_used'
-      )
+      .where({ user_id: this.userId, status: 'owned' })
+      .select('quantity')
 
     return {
       figures: this.#figures(owned, minifigs),
@@ -86,44 +50,13 @@ export default class Dashboard {
     }
   }
 
-  #figures(
-    owned: OwnedSetRow[],
-    minifigs: {
-      quantity: number
-      estimated_value_new: string | null
-      estimated_value_used: string | null
-    }[]
-  ) {
-    let pieces = 0
-    let paid = 0
-    let withoutPrice = 0
-    let value = 0
-    const sources = { bricklink: 0, original: 0, unknown: 0 }
-
-    for (const row of owned) {
-      pieces += row.num_parts * row.quantity
-      const price = num(row.purchase_price)
-      if (price === null) withoutPrice++
-      else paid += price * row.quantity
-      const estimate = setValue(row)
-      sources[estimate.source]++
-      if (estimate.value !== null) value += estimate.value * row.quantity
-    }
-    for (const row of minifigs) {
-      const estimate = num(row.estimated_value_used) ?? num(row.estimated_value_new)
-      if (estimate !== null) value += estimate * row.quantity
-    }
-
+  #figures(owned: OwnedSetRow[], minifigs: { quantity: number }[]) {
     return {
       sets: owned.length,
       setCopies: owned.reduce((total, row) => total + row.quantity, 0),
       minifigs: minifigs.length,
       minifigCopies: minifigs.reduce((total, row) => total + row.quantity, 0),
-      pieces,
-      paid: round(paid),
-      setsWithoutPrice: withoutPrice,
-      value: round(value),
-      valueSources: sources,
+      pieces: owned.reduce((total, row) => total + row.num_parts * row.quantity, 0),
     }
   }
 
