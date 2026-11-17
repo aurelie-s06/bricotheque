@@ -6,6 +6,8 @@ import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
 import BackLink from '~/components/back_link'
+import CollectionButtons from '~/components/collection_buttons'
+import { SetDetailsForm, type SetEntry } from '~/components/collection_details'
 import { usePage } from '@inertiajs/react'
 import ExternalLink from '~/components/external_link'
 import { type InertiaProps } from '~/types'
@@ -16,6 +18,7 @@ type Props = InertiaProps<{
   set: SetDetail
   themeChain: { name: string; url: string }[]
   backUrl: string | null
+  ownedEntry: SetEntry | null
   fallbackDescription: string | null
 }>
 
@@ -133,7 +136,13 @@ function metaText(set: SetDetail, locale: string, fallback: string | null) {
   return flat.length > 155 ? `${flat.slice(0, 155)}…` : flat
 }
 
-export default function SetShow({ set, themeChain, backUrl, fallbackDescription }: Props) {
+export default function SetShow({
+  set,
+  themeChain,
+  backUrl,
+  ownedEntry,
+  fallbackDescription,
+}: Props) {
   const { props } = usePage()
   const { t, formatNumber, locale } = useI18n()
   const lastTheme = themeChain.at(-1)
@@ -173,6 +182,14 @@ export default function SetShow({ set, themeChain, backUrl, fallbackDescription 
           <p>
             <StatusBadge status={set.availabilityStatus} />
           </p>
+          <CollectionButtons
+            kind="sets"
+            id={set.id}
+            name={`${set.setNum} ${set.name}`}
+            reload="page"
+            showAcquire
+            size="md"
+          />
 
           <dl className="facts">
             <dt>{t('set.theme')}</dt>
@@ -233,6 +250,10 @@ export default function SetShow({ set, themeChain, backUrl, fallbackDescription 
           </ul>
         </div>
       </article>
+
+      {ownedEntry && (
+        <SetDetailsForm setId={set.id} entry={ownedEntry} hasMinifigs={set.numMinifigs > 0} />
+      )}
 
       <hr className="section-divider studs studs--muted" />
 

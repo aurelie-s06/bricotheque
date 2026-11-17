@@ -2,14 +2,26 @@ import { Link } from '@adonisjs/inertia/react'
 import { type Data } from '@generated/data'
 import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
+import CollectionButtons from '~/components/collection_buttons'
 import { useI18n } from '~/i18n'
+
+export type CollectionEntry = { quantity: number; condition: string | null }
 
 export default function SetCard({
   set,
   headingLevel = 3,
+  entry,
+  reload = 'ids',
+  showAcquire = false,
+  showButtons = true,
 }: {
   set: Data.BrickSet
   headingLevel?: 2 | 3
+  /** Quantity and condition in the collection (collection pages) */
+  entry?: CollectionEntry
+  reload?: 'ids' | 'page'
+  showAcquire?: boolean
+  showButtons?: boolean
 }) {
   const { t, tc, formatPrice } = useI18n()
   const Heading = `h${headingLevel}` as const
@@ -30,12 +42,27 @@ export default function SetCard({
           </Link>
         </Heading>
         <p className="set-card__meta">{meta.join(' · ')}</p>
+        {entry && (
+          <p className="set-card__entry">
+            {tc('collection.copies', entry.quantity)}
+            {entry.condition && ` · ${t(`condition.${entry.condition}` as 'condition.built')}`}
+          </p>
+        )}
         <div className="set-card__footer">
           <StatusBadge status={set.availabilityStatus} />
           {set.rrpEur !== null && (
             <span className="set-card__price">{formatPrice(set.rrpEur)}</span>
           )}
         </div>
+        {showButtons && (
+          <CollectionButtons
+            kind="sets"
+            id={set.id}
+            name={`${set.setNum} ${set.name}`}
+            reload={reload}
+            showAcquire={showAcquire}
+          />
+        )}
       </div>
     </article>
   )

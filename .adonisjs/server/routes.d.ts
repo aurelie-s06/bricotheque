@@ -26,6 +26,18 @@ export type ScannedRoutes = {
     'account.update_profile': { paramsTuple?: []; params?: {} }
     'account.update_password': { paramsTuple?: []; params?: {} }
     'account.destroy': { paramsTuple?: []; params?: {} }
+    'account.update_preferences': { paramsTuple?: []; params?: {} }
+    'collection.index': { paramsTuple?: []; params?: {} }
+    'collection.export': { paramsTuple?: []; params?: {} }
+    'wishlist.index': { paramsTuple?: []; params?: {} }
+    'wishlist.share': { paramsTuple?: []; params?: {} }
+    'wishlist.unshare': { paramsTuple?: []; params?: {} }
+    'collection.acquire': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'collection.add_set_minifigs': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'collection.set_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'collection.minifig_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
+    'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
@@ -42,6 +54,10 @@ export type ScannedRoutes = {
     'password.forgot': { paramsTuple?: []; params?: {} }
     'password.reset': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'account.show': { paramsTuple?: []; params?: {} }
+    'collection.index': { paramsTuple?: []; params?: {} }
+    'collection.export': { paramsTuple?: []; params?: {} }
+    'wishlist.index': { paramsTuple?: []; params?: {} }
+    'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -58,6 +74,10 @@ export type ScannedRoutes = {
     'password.forgot': { paramsTuple?: []; params?: {} }
     'password.reset': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'account.show': { paramsTuple?: []; params?: {} }
+    'collection.index': { paramsTuple?: []; params?: {} }
+    'collection.export': { paramsTuple?: []; params?: {} }
+    'wishlist.index': { paramsTuple?: []; params?: {} }
+    'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
   }
   POST: {
     'new_account.store': { paramsTuple?: []; params?: {} }
@@ -65,10 +85,18 @@ export type ScannedRoutes = {
     'password.send': { paramsTuple?: []; params?: {} }
     'password.update': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'wishlist.share': { paramsTuple?: []; params?: {} }
+    'wishlist.unshare': { paramsTuple?: []; params?: {} }
+    'collection.acquire': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'collection.add_set_minifigs': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
   }
   PUT: {
     'account.update_profile': { paramsTuple?: []; params?: {} }
     'account.update_password': { paramsTuple?: []; params?: {} }
+    'account.update_preferences': { paramsTuple?: []; params?: {} }
+    'collection.set_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'collection.minifig_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   DELETE: {
     'account.destroy': { paramsTuple?: []; params?: {} }

@@ -71,10 +71,16 @@ export default function SetFilters({
   query,
   themeOptions,
   action = '/sets',
+  defaultType = 'set',
+  showCondition = false,
 }: {
   query: Record<string, string>
   themeOptions: ThemeOption[]
   action?: string
+  /** Type selected when the URL has none ("all" in a collection) */
+  defaultType?: (typeof TYPES)[number]
+  /** Condition of owned sets (collection page) */
+  showCondition?: boolean
 }) {
   const { t } = useI18n()
 
@@ -180,7 +186,7 @@ export default function SetFilters({
           className="field__input"
           id="filter-type"
           name="type"
-          defaultValue={value('type') || 'set'}
+          defaultValue={value('type') || defaultType}
         >
           {TYPES.map((type) => (
             <option key={type} value={type}>
@@ -189,6 +195,27 @@ export default function SetFilters({
           ))}
         </select>
       </div>
+
+      {showCondition && (
+        <div className="field">
+          <label className="field__label" htmlFor="filter-condition">
+            {t('filters.condition')}
+          </label>
+          <select
+            className="field__input"
+            id="filter-condition"
+            name="condition"
+            defaultValue={value('condition')}
+          >
+            <option value="">{t('filters.allConditions')}</option>
+            {(['built', 'in_box', 'sealed', 'partial'] as const).map((condition) => (
+              <option key={condition} value={condition}>
+                {t(`condition.${condition}`)}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="field">
         <label className="field__label" htmlFor="filter-sort">

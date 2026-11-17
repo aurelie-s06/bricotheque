@@ -12,6 +12,12 @@ const decimal = {
   decorators: [{ name: '@decimalColumn' }],
 }
 
+const boolean = {
+  tsType: 'boolean',
+  imports: [{ ...columnTypes, namedImports: ['booleanColumn'] }],
+  decorators: [{ name: '@booleanColumn' }],
+}
+
 const json = (tsType: string) => ({
   tsType,
   imports: [{ ...columnTypes, namedImports: ['jsonColumn'] }],
@@ -29,6 +35,7 @@ const collectionStatus = enumOf(['owned', 'wanted'])
 export default {
   types: {
     decimal,
+    boolean,
   },
   tables: {
     sets: {

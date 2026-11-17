@@ -4,9 +4,10 @@ import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import { resolveLocale } from '#helpers/locale'
 import { catalogueUrls } from '#helpers/catalogue_memory'
+import Collection from '#services/collection'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
-  share(ctx: HttpContext) {
+  async share(ctx: HttpContext) {
     /**
      * The share method is called everytime an Inertia page is rendered. In
      * certain cases, a page may get rendered before the session middleware
@@ -26,6 +27,10 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
       locale: ctx.inertia.always(resolveLocale(request)),
       catalogueUrls: ctx.inertia.always(catalogueUrls(ctx)),
+      /** What the visitor owns and wants, for the buttons of every page */
+      collectionIds: ctx.inertia.always(auth?.user ? await new Collection(auth.user).ids() : null),
+      /** For the plain forms that must work without JavaScript */
+      csrfToken: ctx.inertia.always(request?.csrfToken ?? ''),
     }
   }
 

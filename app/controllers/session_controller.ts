@@ -20,6 +20,11 @@ const loginLimiter = () =>
 
 export default class SessionController {
   async create({ inertia, session, request }: HttpContext) {
+    // "?retour=/sets/…": buttons of visitors who are not logged in
+    const returnTo = request.input('retour')
+    if (returnTo && safeReturnPath(returnTo) === returnTo) {
+      session.put(INTENDED_URL_KEY, returnTo)
+    }
     return inertia.render('auth/login', {
       notice: session.has(INTENDED_URL_KEY)
         ? serverMessage(resolveLocale(request), 'auth.loginRequired')

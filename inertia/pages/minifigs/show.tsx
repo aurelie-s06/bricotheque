@@ -6,6 +6,8 @@ import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
 import BackLink from '~/components/back_link'
+import CollectionButtons from '~/components/collection_buttons'
+import { MinifigDetailsForm } from '~/components/collection_details'
 import { usePage } from '@inertiajs/react'
 import ExternalLink from '~/components/external_link'
 import { type InertiaProps } from '~/types'
@@ -16,6 +18,7 @@ type Props = InertiaProps<{
   minifig: MinifigDetail
   themeChain: { name: string; url: string }[]
   backUrl: string | null
+  ownedEntry: { quantity: number; note: string | null } | null
 }>
 
 function EstimatedValue({ minifig }: { minifig: MinifigDetail }) {
@@ -45,7 +48,7 @@ function EstimatedValue({ minifig }: { minifig: MinifigDetail }) {
   )
 }
 
-export default function MinifigShow({ minifig, themeChain, backUrl }: Props) {
+export default function MinifigShow({ minifig, themeChain, backUrl, ownedEntry }: Props) {
   const { props } = usePage()
   const { t, tc, formatNumber } = useI18n()
   const sets = minifig.sets ?? []
@@ -83,6 +86,14 @@ export default function MinifigShow({ minifig, themeChain, backUrl }: Props) {
         <div className="set-detail__info">
           <p className="set-card__number">{t('minifig.number', { figNum: minifig.figNum })}</p>
           <h1>{minifig.name}</h1>
+          <CollectionButtons
+            kind="minifigs"
+            id={minifig.id}
+            name={`${minifig.figNum} ${minifig.name}`}
+            reload="page"
+            showAcquire
+            size="md"
+          />
 
           <dl className="facts">
             {themeChain.length > 0 && (
@@ -124,6 +135,8 @@ export default function MinifigShow({ minifig, themeChain, backUrl }: Props) {
           </ul>
         </div>
       </article>
+
+      {ownedEntry && <MinifigDetailsForm minifigId={minifig.id} entry={ownedEntry} />}
 
       <hr className="section-divider studs studs--muted" />
 

@@ -294,6 +294,162 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'account.update_preferences': {
+    methods: ["PUT"]
+    pattern: '/mon-compte/preferences'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/collection').preferencesValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/collection').preferencesValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updatePreferences']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updatePreferences']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['updatePreferences']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'collection.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/ma-collection'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['collection']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['collection']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['collection']>>>
+    }
+  }
+  'collection.export': {
+    methods: ["GET","HEAD"]
+    pattern: '/ma-collection/export.csv'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
+    }
+  }
+  'wishlist.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/ma-wishlist'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['wishlist']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['wishlist']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['wishlist']>>>
+    }
+  }
+  'wishlist.share': {
+    methods: ["POST"]
+    pattern: '/ma-wishlist/partage'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['share']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['share']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['share']>>>
+    }
+  }
+  'wishlist.unshare': {
+    methods: ["POST"]
+    pattern: '/ma-wishlist/partage/desactiver'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['unshare']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['unshare']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['unshare']>>>
+    }
+  }
+  'collection.acquire': {
+    methods: ["POST"]
+    pattern: '/collection/:kind/:id/acquired'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['acquire']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['acquire']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['acquire']>>>
+    }
+  }
+  'collection.add_set_minifigs': {
+    methods: ["POST"]
+    pattern: '/collection/sets/:id/minifigs'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['addSetMinifigs']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['addSetMinifigs']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['addSetMinifigs']>>>
+    }
+  }
+  'collection.set_details': {
+    methods: ["PUT"]
+    pattern: '/collection/sets/:id/details'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/collection').setDetailsValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/collection').setDetailsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['updateSetDetails']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['updateSetDetails']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['updateSetDetails']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'collection.minifig_details': {
+    methods: ["PUT"]
+    pattern: '/collection/minifigs/:id/details'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/collection').minifigDetailsValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/collection').minifigDetailsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['updateMinifigDetails']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['updateMinifigDetails']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['updateMinifigDetails']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'collection.toggle': {
+    methods: ["POST"]
+    pattern: '/collection/:kind/:id/:status'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue; status: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['toggle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['toggle']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['toggle']>>>
+    }
+  }
+  'wishlist.shared': {
+    methods: ["GET","HEAD"]
+    pattern: '/wishlist/:token'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { token: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['shared']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['shared']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['shared']>>>
+    }
+  }
 }
 
 export namespace Route {

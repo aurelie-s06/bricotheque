@@ -27,3 +27,13 @@ export function jsonColumn(options: Partial<ColumnOptions> = {}) {
     consume: (value: unknown) => (typeof value === 'string' ? JSON.parse(value) : value),
   })
 }
+
+/**
+ * BOOLEAN columns: MySQL stores them as TINYINT(1) (0 / 1), we expose booleans.
+ */
+export function booleanColumn(options: Partial<ColumnOptions> = {}) {
+  return column({
+    ...options,
+    consume: (value: unknown) => (value === null || value === undefined ? value : Boolean(value)),
+  })
+}

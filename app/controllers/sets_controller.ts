@@ -9,6 +9,7 @@ import BrickSetTransformer from '#transformers/brick_set_transformer'
 import { setNumCandidates, setPath, themePath } from '#helpers/urls'
 import { resolveLocale } from '#helpers/locale'
 import { listReferer, rememberListUrl } from '#helpers/catalogue_memory'
+import Collection from '#services/collection'
 
 export default class SetsController {
   /**
@@ -60,11 +61,22 @@ export default class SetsController {
 
     const themes = await ThemeTree.load()
     const chain = themes.ancestorsOf(set.themeId)
+    const user = ctx.auth.user
+    const owned = user ? await new Collection(user).ownedSet(set.id) : null
 
     return inertia.render('sets/show', {
       set: BrickSetTransformer.transform(set).useVariant('forDetail'),
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
       backUrl: listReferer(ctx),
+      ownedEntry: owned
+        ? {
+            quantity: owned.quantity,
+            condition: owned.condition,
+            purchasePrice: owned.purchasePrice,
+            purchaseDate: owned.purchaseDate?.toISODate() ?? null,
+            note: owned.note,
+          }
+        : null,
       fallbackDescription: set.description
         ? null
         : fallbackDescription(

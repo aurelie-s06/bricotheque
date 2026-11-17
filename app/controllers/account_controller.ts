@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import hash from '@adonisjs/core/services/hash'
+import { preferencesValidator } from '#validators/collection'
 import {
   deleteAccountValidator,
   updatePasswordValidator,
@@ -19,6 +20,7 @@ export default class AccountController {
         username: user.username,
         email: user.email,
         createdAt: user.createdAt.toISODate()!,
+        autoAddMinifigs: user.autoAddMinifigs,
       },
     })
   }
@@ -52,6 +54,19 @@ export default class AccountController {
     user.merge({ username: data.username, email: data.email })
     await user.save()
     session.flash('success', serverMessage(locale, 'account.profileUpdated'))
+    return response.redirect().toRoute('account.show')
+  }
+
+  /** PUT /mon-compte/preferences: add the minifigs of a set with the set */
+  async updatePreferences({ request, auth, session, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const locale = resolveLocale(request)
+    const data = await request.validateUsing(preferencesValidator, {
+      messagesProvider: validationMessages(locale),
+    })
+    user.autoAddMinifigs = data.autoAddMinifigs ?? false
+    await user.save()
+    session.flash('success', serverMessage(locale, 'collection.preferencesSaved'))
     return response.redirect().toRoute('account.show')
   }
 

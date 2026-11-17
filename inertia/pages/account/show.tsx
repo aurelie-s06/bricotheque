@@ -8,7 +8,7 @@ import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
-  account: { username: string; email: string; createdAt: string }
+  account: { username: string; email: string; createdAt: string; autoAddMinifigs: boolean }
 }>
 
 export default function AccountShow({ account }: Props) {
@@ -72,6 +72,31 @@ export default function AccountShow({ account }: Props) {
                 <div className="form-actions">
                   <button type="submit" className="btn" disabled={processing}>
                     {processing ? t('form.saving') : t('account.saveProfile')}
+                  </button>
+                </div>
+              </>
+            )}
+          </Form>
+        </section>
+
+        <section className="card account-section" aria-labelledby="preferences-title">
+          <h2 id="preferences-title">{t('account.preferencesTitle')}</h2>
+          <Form route="account.update_preferences" className="auth-form">
+            {({ processing }) => (
+              <>
+                <div className="field field--checkbox">
+                  <input
+                    type="checkbox"
+                    id="autoAddMinifigs"
+                    name="autoAddMinifigs"
+                    value="true"
+                    defaultChecked={account.autoAddMinifigs}
+                  />
+                  <label htmlFor="autoAddMinifigs">{t('account.autoAddMinifigs')}</label>
+                </div>
+                <div className="form-actions">
+                  <button type="submit" className="btn" disabled={processing}>
+                    {processing ? t('form.saving') : t('account.savePreferences')}
                   </button>
                 </div>
               </>

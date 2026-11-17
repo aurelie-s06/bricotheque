@@ -5,8 +5,10 @@
 
 export const controllers = {
   Account: () => import('#controllers/account_controller'),
+  CollectionActions: () => import('#controllers/collection_actions_controller'),
   Home: () => import('#controllers/home_controller'),
   Minifigs: () => import('#controllers/minifigs_controller'),
+  MyCollection: () => import('#controllers/my_collection_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
   PasswordReset: () => import('#controllers/password_reset_controller'),
   Search: () => import('#controllers/search_controller'),

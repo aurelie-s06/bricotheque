@@ -11,12 +11,16 @@ const SORTS = ['recent', 'oldest', 'name', 'number'] as const
 export default function MinifigFilters({
   query,
   themeOptions,
+  action = '/minifigs',
+  hidden = {},
 }: {
   query: Record<string, string>
   themeOptions: ThemeOption[]
+  action?: string
+  /** Extra fields kept when filtering (e.g. the collection tab) */
+  hidden?: Record<string, string>
 }) {
   const { t } = useI18n()
-  const action = '/minifigs'
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -31,6 +35,9 @@ export default function MinifigFilters({
 
   return (
     <form className="filters" action={action} method="get" onSubmit={onSubmit}>
+      {Object.entries(hidden).map(([name, value]) => (
+        <input key={name} type="hidden" name={name} value={value} />
+      ))}
       <div className="field">
         <label className="field__label" htmlFor="filter-q">
           {t('filters.q')}

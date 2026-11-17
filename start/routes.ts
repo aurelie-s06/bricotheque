@@ -92,5 +92,51 @@ router
       .put('mon-compte/mot-de-passe', [controllers.Account, 'updatePassword'])
       .as('account.update_password')
     router.delete('mon-compte', [controllers.Account, 'destroy']).as('account.destroy')
+    router
+      .put('mon-compte/preferences', [controllers.Account, 'updatePreferences'])
+      .as('account.update_preferences')
+
+    // Collection and wishlist
+    router.get('ma-collection', [controllers.MyCollection, 'collection']).as('collection.index')
+    router
+      .get('ma-collection/export.csv', [controllers.MyCollection, 'export'])
+      .as('collection.export')
+    router.get('ma-wishlist', [controllers.MyCollection, 'wishlist']).as('wishlist.index')
+    router.post('ma-wishlist/partage', [controllers.MyCollection, 'share']).as('wishlist.share')
+    router
+      .post('ma-wishlist/partage/desactiver', [controllers.MyCollection, 'unshare'])
+      .as('wishlist.unshare')
+
+    router
+      .post('collection/:kind/:id/acquired', [controllers.CollectionActions, 'acquire'])
+      .where('kind', /^(sets|minifigs)$/)
+      .where('id', router.matchers.number())
+      .as('collection.acquire')
+    router
+      .post('collection/sets/:id/minifigs', [controllers.CollectionActions, 'addSetMinifigs'])
+      .where('id', router.matchers.number())
+      .as('collection.add_set_minifigs')
+    router
+      .put('collection/sets/:id/details', [controllers.CollectionActions, 'updateSetDetails'])
+      .where('id', router.matchers.number())
+      .as('collection.set_details')
+    router
+      .put('collection/minifigs/:id/details', [
+        controllers.CollectionActions,
+        'updateMinifigDetails',
+      ])
+      .where('id', router.matchers.number())
+      .as('collection.minifig_details')
+    router
+      .post('collection/:kind/:id/:status', [controllers.CollectionActions, 'toggle'])
+      .where('kind', /^(sets|minifigs)$/)
+      .where('id', router.matchers.number())
+      .where('status', /^(owned|wanted)$/)
+      .as('collection.toggle')
   })
   .use(middleware.auth())
+
+/**
+ * Shared wishlist (public, read-only)
+ */
+router.get('wishlist/:token', [controllers.MyCollection, 'shared']).as('wishlist.shared')

@@ -22,6 +22,19 @@ const fr = {
   'account.currentPasswordRequired':
     'Saisis ton mot de passe actuel pour changer d’adresse e-mail.',
   'account.deleted': 'Ton compte et ta collection ont été supprimés.',
+  'collection.addedOwned': '« {name} » est dans ta collection.',
+  'collection.addedOwnedWithMinifigs':
+    '« {name} » est dans ta collection, avec {count} minifig(s) du set.',
+  'collection.addedWanted': '« {name} » est dans ta wishlist.',
+  'collection.removedOwned': '« {name} » a été retiré de ta collection.',
+  'collection.removedWanted': '« {name} » a été retiré de ta wishlist.',
+  'collection.acquired': 'Bravo ! « {name} » passe de ta wishlist à ta collection.',
+  'collection.minifigsAdded': '{count} minifig(s) du set ajoutée(s) à ta collection.',
+  'collection.detailsSaved': 'Les informations de « {name} » sont enregistrées.',
+  'collection.preferencesSaved': 'Tes préférences sont enregistrées.',
+  'wishlist.shared': 'Ta wishlist est partagée : copie le lien pour l’envoyer.',
+  'wishlist.unshared':
+    'Le partage de ta wishlist est désactivé : l’ancien lien ne fonctionne plus.',
   'mail.resetSubject': 'Réinitialisation de ton mot de passe',
   'mail.resetGreeting': 'Bonjour {username},',
   'mail.resetIntro':
@@ -50,6 +63,18 @@ const en: Record<MessageKey, string> = {
   'account.wrongPassword': 'Incorrect password.',
   'account.currentPasswordRequired': 'Enter your current password to change your email address.',
   'account.deleted': 'Your account and your collection have been deleted.',
+  'collection.addedOwned': '“{name}” is in your collection.',
+  'collection.addedOwnedWithMinifigs':
+    '“{name}” is in your collection, with {count} minifig(s) from the set.',
+  'collection.addedWanted': '“{name}” is in your wishlist.',
+  'collection.removedOwned': '“{name}” was removed from your collection.',
+  'collection.removedWanted': '“{name}” was removed from your wishlist.',
+  'collection.acquired': 'Well done! “{name}” moves from your wishlist to your collection.',
+  'collection.minifigsAdded': '{count} minifig(s) from the set added to your collection.',
+  'collection.detailsSaved': 'The details of “{name}” are saved.',
+  'collection.preferencesSaved': 'Your preferences are saved.',
+  'wishlist.shared': 'Your wishlist is shared: copy the link to send it.',
+  'wishlist.unshared': 'Sharing is turned off: the previous link no longer works.',
   'mail.resetSubject': 'Reset your password',
   'mail.resetGreeting': 'Hello {username},',
   'mail.resetIntro':

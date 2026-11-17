@@ -5,7 +5,7 @@
  */
 
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-import { jsonColumn, decimalColumn } from '#database/column_types'
+import { jsonColumn, decimalColumn, booleanColumn } from '#database/column_types'
 import { DateTime } from 'luxon'
 
 export class ImportRunSchema extends BaseModel {
@@ -230,8 +230,10 @@ export class UserSetSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'id', 'password', 'updatedAt', 'username', 'wishlistShareToken'] as const
+  static $columns = ['autoAddMinifigs', 'createdAt', 'email', 'id', 'password', 'updatedAt', 'username', 'wishlistShareToken'] as const
   $columns = UserSchema.$columns
+  @booleanColumn()
+  declare autoAddMinifigs: boolean
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()

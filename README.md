@@ -153,6 +153,20 @@ node ace translate:descriptions --yes --wait   # sans confirmation, attend la fi
 
 - **E-mails** : en local, `MAIL_MAILER=log` écrit chaque e-mail en HTML dans `tmp/mails/` (le chemin s'affiche dans les logs du serveur). En production, `MAIL_MAILER=smtp` avec `SMTP_HOST`, `SMTP_PORT` (465), `SMTP_USERNAME`, `SMTP_PASSWORD` et `MAIL_FROM_ADDRESS` (une adresse de ton domaine sur o2switch). Les e-mails sont envoyés dans la langue du visiteur.
 
+## Collection et wishlist
+
+| URL                                  | Rôle                                                                                                                                                                                                                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Boutons « Je l'ai » / « Je le veux » | Sur chaque carte et chaque fiche (sets et minifigs). Formulaires POST (fonctionnent sans JavaScript) ; avec JavaScript, sans rechargement. État annoncé par `aria-pressed`, confirmation par un message. Visiteur non connecté → connexion, puis retour à la page. |
+| « Je l'ai eu ! »                     | Sur un objet de la wishlist : le passe dans la collection.                                                                                                                                                                                                         |
+| Fiche d'un set possédé               | Quantité, état (monté, en boîte, neuf scellé, incomplet), prix et date d'achat, note ; bouton pour ajouter les minifigs du set.                                                                                                                                    |
+| `/ma-collection`                     | Onglets Sets / Minifigs, mêmes filtres que le catalogue + état, compteurs, **export CSV** (`/ma-collection/export.csv`, séparateur `;`, s'ouvre directement dans Excel).                                                                                           |
+| `/ma-wishlist`                       | Onglets Sets / Minifigs, **prix estimé total** (valeur BrickLink si connue, sinon prix d'origine), partage.                                                                                                                                                        |
+| `/wishlist/:jeton`                   | Wishlist partagée, publique et en lecture seule (ni la collection ni l'e-mail n'y apparaissent). Le partage se désactive depuis `/ma-wishlist` : l'ancien lien renvoie alors une 404.                                                                              |
+
+- **Minifigs incluses** : préférence dans « Mon compte » (ajouter automatiquement les minifigs d'un set ajouté à la collection), et bouton à la demande sur la fiche du set. Une minifig déjà possédée n'est pas dupliquée.
+- Chaque action ne touche que la collection de l'utilisateur connecté : aucun identifiant d'entrée n'est transmis par le navigateur (testé dans `tests/functional/collection/`).
+
 ## Base de données
 
 | Table                        | Modèle                   | Contenu                                                                  |

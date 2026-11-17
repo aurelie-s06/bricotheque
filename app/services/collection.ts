@@ -1,0 +1,119 @@
+import db from '@adonisjs/lucid/services/db'
+import { Exception } from '@adonisjs/core/exceptions'
+import type User from '#models/user'
+import BrickSet from '#models/brick_set'
+import Minifig from '#models/minifig'
+import UserSet from '#models/user_set'
+import UserMinifig from '#models/user_minifig'
+
+export type CollectionKind = 'sets' | 'minifigs'
+export type CollectionStatus = 'owned' | 'wanted'
+
+export const COLLECTION_KINDS = ['sets', 'minifigs'] as const
+export const COLLECTION_STATUSES = ['owned', 'wanted'] as const
+
+export type CollectionIds = {
+  ownedSets: number[]
+  wantedSets: number[]
+  ownedMinifigs: number[]
+  wantedMinifigs: number[]
+}
+
+const notFound = (kind: CollectionKind, id: number) =>
+  new Exception(`${kind} ${id} introuvable`, { status: 404, code: 'E_ITEM_NOT_FOUND' })
+
+/**
+ * A user's collection (status "owned") and wishlist (status "wanted").
+ * Every method works on the given user only: there is no way to reach
+ * another user's entries.
+ */
+export default class Collection {
+  constructor(private user: User) {}
+
+  /** Ids in the collection and the wishlist, for the buttons of every page */
+  async ids(): Promise<CollectionIds> {
+    const [sets, minifigs] = await Promise.all([
+      db.from('user_sets').where('user_id', this.user.id).select('set_id', 'status'),
+      db.from('user_minifigs').where('user_id', this.user.id).select('minifig_id', 'status'),
+    ])
+    const pick = (rows: Record<string, any>[], column: string, status: CollectionStatus) =>
+      rows.filter((row) => row.status === status).map((row) => Number(row[column]))
+    return {
+      ownedSets: pick(sets, 'set_id', 'owned'),
+      wantedSets: pick(sets, 'set_id', 'wanted'),
+      ownedMinifigs: pick(minifigs, 'minifig_id', 'owned'),
+      wantedMinifigs: pick(minifigs, 'minifig_id', 'wanted'),
+    }
+  }
+
+  /**
+   * Adds an item. Adding a set to the collection also adds its minifigs
+   * when the user chose so. Returns the number of minifigs added that way.
+   */
+  async add(kind: CollectionKind, id: number, status: CollectionStatus) {
+    await this.#assertExists(kind, id)
+    if (kind === 'sets') {
+      await UserSet.firstOrCreate({ userId: this.user.id, setId: id, status }, { quantity: 1 })
+      if (status === 'owned' && this.user.autoAddMinifigs) {
+        return this.addMinifigsOfSet(id)
+      }
+    } else {
+      await UserMinifig.firstOrCreate(
+        { userId: this.user.id, minifigId: id, status },
+        { quantity: 1 }
+      )
+    }
+    return 0
+  }
+
+  async remove(kind: CollectionKind, id: number, status: CollectionStatus) {
+    if (kind === 'sets') {
+      await UserSet.query().where({ userId: this.user.id, setId: id, status }).delete()
+    } else {
+      await UserMinifig.query().where({ userId: this.user.id, minifigId: id, status }).delete()
+    }
+  }
+
+  /** "Je l'ai eu !": from the wishlist to the collection */
+  async acquire(kind: CollectionKind, id: number) {
+    await this.remove(kind, id, 'wanted')
+    return this.add(kind, id, 'owned')
+  }
+
+  /**
+   * Makes sure every minifig of the set is in the collection (with at
+   * least the quantity found in the set). Returns how many were added.
+   */
+  async addMinifigsOfSet(setId: number) {
+    const links: { minifig_id: number; quantity: number }[] = await db
+      .from('set_minifigs')
+      .where('set_id', setId)
+      .select('minifig_id', 'quantity')
+    let added = 0
+    for (const link of links) {
+      const entry = await UserMinifig.firstOrNew(
+        { userId: this.user.id, minifigId: link.minifig_id, status: 'owned' },
+        { quantity: link.quantity }
+      )
+      if (!entry.$isPersisted) {
+        await entry.save()
+        added++
+      }
+    }
+    return added
+  }
+
+  /** The collection entry of a set or a minifig, or null */
+  ownedSet(setId: number) {
+    return UserSet.query().where({ userId: this.user.id, setId, status: 'owned' }).first()
+  }
+
+  ownedMinifig(minifigId: number) {
+    return UserMinifig.query().where({ userId: this.user.id, minifigId, status: 'owned' }).first()
+  }
+
+  async #assertExists(kind: CollectionKind, id: number) {
+    const item = kind === 'sets' ? await BrickSet.find(id) : await Minifig.find(id)
+    if (!item) throw notFound(kind, id)
+  }
+}

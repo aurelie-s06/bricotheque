@@ -39,5 +39,21 @@ export interface ApiDefinition {
     updateProfile: typeof routes['account.update_profile']
     updatePassword: typeof routes['account.update_password']
     destroy: typeof routes['account.destroy']
+    updatePreferences: typeof routes['account.update_preferences']
+  }
+  collection: {
+    index: typeof routes['collection.index']
+    export: typeof routes['collection.export']
+    acquire: typeof routes['collection.acquire']
+    addSetMinifigs: typeof routes['collection.add_set_minifigs']
+    setDetails: typeof routes['collection.set_details']
+    minifigDetails: typeof routes['collection.minifig_details']
+    toggle: typeof routes['collection.toggle']
+  }
+  wishlist: {
+    index: typeof routes['wishlist.index']
+    share: typeof routes['wishlist.share']
+    unshare: typeof routes['wishlist.unshare']
+    shared: typeof routes['wishlist.shared']
   }
 }
