@@ -1743,18 +1743,32 @@ select.field__input {
 }
 
 .password-input {
-  display: flex;
-  gap: var(--space-1);
+  position: relative;
 }
 
 .password-input .field__input {
-  flex: 1;
-  min-width: 0;
+  padding-right: 52px; /* room for the eye */
 }
 
 .password-input__toggle {
-  flex-shrink: 0;
-  min-height: 44px;
+  position: absolute;
+  top: 50%;
+  right: var(--half);
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+
+.password-input__toggle:hover,
+.password-input__toggle[aria-pressed='true'] {
+  color: var(--ink);
 }
 
 .field--checkbox {

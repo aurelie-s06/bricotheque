@@ -1,4 +1,5 @@
 import { useState, type InputHTMLAttributes } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
 import { useI18n } from '~/i18n'
 import PasswordStrength from '~/components/password_strength'
 
@@ -69,14 +70,22 @@ export default function FormField({
           }
         />
         {isPassword && (
+          // Eye inside the field; the state is given by aria-pressed, the
+          // name stays "Show password" for screen readers
           <button
             type="button"
-            className="btn btn--secondary btn--sm password-input__toggle"
+            className="password-input__toggle"
             aria-pressed={visible}
             aria-controls={id}
+            title={visible ? t('form.hidePassword') : t('form.showPassword')}
             onClick={() => setVisible((value) => !value)}
           >
-            {visible ? t('form.hidePassword') : t('form.showPassword')}
+            {visible ? (
+              <EyeOff size={20} aria-hidden="true" />
+            ) : (
+              <Eye size={20} aria-hidden="true" />
+            )}
+            <span className="visually-hidden">{t('form.showPassword')}</span>
           </button>
         )}
       </div>
