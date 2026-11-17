@@ -2217,7 +2217,7 @@ textarea.field__input {
   margin-bottom: var(--space-2);
 }
 
-/* Bar chart made of bricks: 4px-rounded blocks with a 2px gap */
+/* Bar chart: dark grey bars on a light track, the numbers beside them */
 .brick-chart {
   width: 100%;
   table-layout: fixed;
@@ -2226,7 +2226,7 @@ textarea.field__input {
 
 .brick-chart th,
 .brick-chart td {
-  padding: var(--half) 0;
+  padding: 6px 0;
   text-align: left;
   vertical-align: middle;
 }
@@ -2245,24 +2245,25 @@ textarea.field__input {
   gap: var(--space-1);
 }
 
-.brick-chart__bar {
-  display: flex;
-  flex: 0 1 auto;
-  gap: 2px;
+.brick-chart__track {
+  flex: 1;
   min-width: 0;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
-.brick-chart__brick {
-  width: 12px;
-  height: 18px;
-  flex-shrink: 1;
-  min-width: 3px;
-  border-radius: 4px;
-  background: var(--brick-yellow);
-  box-shadow: inset 0 -3px 0 var(--brick-yellow-dark);
+.brick-chart__bar {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: var(--ink-muted);
 }
 
 .brick-chart__value {
+  min-width: 3ch;
+  text-align: right;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;

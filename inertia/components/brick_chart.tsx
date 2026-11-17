@@ -4,13 +4,11 @@ import { useI18n } from '~/i18n'
 
 export type BrickChartRow = { label: string; url?: string | null; value: number }
 
-/** Bricks of the longest bar; the others are proportional */
-const MAX_BRICKS = 20
-
 /**
- * Horizontal bar chart drawn with stacked bricks (rounded blocks separated
- * by 2 px). It is a real table: the numbers are always written next to
- * the bars, the bars themselves are decorative (aria-hidden).
+ * Sober horizontal bar chart: one dark grey bar per row on a light track,
+ * its length proportional to the largest value. It is a real table: the
+ * numbers are always written next to the bars, the bars themselves are
+ * decorative (aria-hidden).
  */
 export default function BrickChart({
   caption,
@@ -37,7 +35,8 @@ export default function BrickChart({
       </thead>
       <tbody>
         {rows.map((row, index) => {
-          const bricks = row.value > 0 ? Math.max(1, Math.round((row.value / max) * MAX_BRICKS)) : 0
+          // At least a sliver for a non-zero value, so it stays visible
+          const percent = row.value > 0 ? Math.max(2, (row.value / max) * 100) : 0
           let label: ReactNode = row.label
           if (row.url) label = <Link href={row.url}>{row.label}</Link>
           return (
@@ -46,10 +45,8 @@ export default function BrickChart({
                 {label}
               </th>
               <td className="brick-chart__cell" title={`${row.label} : ${formatNumber(row.value)}`}>
-                <span className="brick-chart__bar" aria-hidden="true">
-                  {Array.from({ length: bricks }, (_, brick) => (
-                    <span key={brick} className="brick-chart__brick" />
-                  ))}
+                <span className="brick-chart__track" aria-hidden="true">
+                  <span className="brick-chart__bar" style={{ width: `${percent}%` }} />
                 </span>
                 <span className="brick-chart__value">{formatNumber(row.value)}</span>
               </td>
