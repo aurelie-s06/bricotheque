@@ -1,6 +1,7 @@
 import { useId, type FormEvent } from 'react'
 import { router } from '@inertiajs/react'
 import { urlFor } from '~/client'
+import { Search } from 'lucide-react'
 import { useI18n } from '~/i18n'
 
 /**
@@ -12,10 +13,13 @@ export default function SearchForm({
   defaultValue = '',
   className = '',
   buttonClassName = 'btn',
+  compact = false,
 }: {
   defaultValue?: string
   className?: string
   buttonClassName?: string
+  /** Header version: rounded field with a magnifier button */
+  compact?: boolean
 }) {
   const { t } = useI18n()
   const id = useId()
@@ -29,7 +33,7 @@ export default function SearchForm({
 
   return (
     <form
-      className={`search ${className}`.trim()}
+      className={`search ${compact ? 'search--compact' : ''} ${className}`.trim()}
       role="search"
       action={action}
       method="get"
@@ -46,9 +50,16 @@ export default function SearchForm({
         defaultValue={defaultValue}
         placeholder={t('search.placeholder')}
       />
-      <button type="submit" className={buttonClassName}>
-        {t('search.submit')}
-      </button>
+      {compact ? (
+        <button type="submit" className="search__icon-button" title={t('search.submit')}>
+          <Search size={18} aria-hidden="true" />
+          <span className="visually-hidden">{t('search.submit')}</span>
+        </button>
+      ) : (
+        <button type="submit" className={buttonClassName}>
+          {t('search.submit')}
+        </button>
+      )}
     </form>
   )
 }

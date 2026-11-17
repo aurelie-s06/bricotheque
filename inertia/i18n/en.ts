@@ -18,6 +18,8 @@ const en: Record<keyof typeof fr, string> = {
   'nav.login': 'Log in',
   'nav.signup': 'Sign up',
   'nav.logout': 'Log out',
+  'nav.menu': 'Menu',
+  'nav.accountMenu': 'Account menu',
   'nav.backToResults': 'Back to results',
   'language.label': 'Language',
   'language.fr': 'Français',

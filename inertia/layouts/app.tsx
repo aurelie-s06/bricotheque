@@ -1,8 +1,9 @@
 import { type ReactNode } from 'react'
 import { usePage } from '@inertiajs/react'
-import { Form } from '@adonisjs/inertia/react'
 import Logo from '~/components/logo'
-import NavLink from '~/components/nav_link'
+import PrimaryNav from '~/components/header/primary_nav'
+import AccountMenu from '~/components/header/account_menu'
+import MobileMenu from '~/components/header/mobile_menu'
 import SearchForm from '~/components/search_form'
 import FlashToasts from '~/components/flash_toasts'
 import LanguageSwitcher from '~/components/language_switcher'
@@ -13,7 +14,7 @@ import { useI18n } from '~/i18n'
  * main content and footer with the legal notice.
  */
 export default function AppLayout({ children }: { children: ReactNode }) {
-  const { props, url } = usePage()
+  const { url } = usePage()
   const { t } = useI18n()
   const currentQuery = new URLSearchParams(url.split('?')[1] ?? '').get('q') ?? ''
 
@@ -27,71 +28,22 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         <div className="container site-header__inner">
           <Logo />
 
+          <nav className="primary-nav" aria-label={t('site.mainMenu')}>
+            <PrimaryNav className="primary-nav__list" />
+          </nav>
+
           <SearchForm
             key={currentQuery}
             defaultValue={currentQuery}
             className="site-header__search"
-            buttonClassName="btn btn--sm"
+            compact
           />
 
-          <nav className="site-nav" aria-label={t('site.mainMenu')}>
-            <ul className="site-nav__list">
-              <li>
-                <NavLink
-                  route="sets.index"
-                  href={props.catalogueUrls.sets}
-                  className="site-nav__link"
-                >
-                  {t('nav.sets')}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  route="minifigs.index"
-                  href={props.catalogueUrls.minifigs}
-                  className="site-nav__link"
-                >
-                  {t('nav.minifigs')}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink route="themes.index" className="site-nav__link">
-                  {t('nav.themes')}
-                </NavLink>
-              </li>
-              {props.user ? (
-                <>
-                  <li>
-                    <NavLink route="account.show" className="site-nav__link">
-                      {t('nav.account')}
-                    </NavLink>
-                  </li>
-                  <li>
-                    <Form route="session.destroy">
-                      <button type="submit" className="btn btn--secondary btn--sm">
-                        {t('nav.logout')}
-                      </button>
-                    </Form>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <NavLink route="session.create" className="site-nav__link">
-                      {t('nav.login')}
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink route="new_account.create" className="site-nav__link">
-                      {t('nav.signup')}
-                    </NavLink>
-                  </li>
-                </>
-              )}
-            </ul>
-          </nav>
-
-          <LanguageSwitcher />
+          <div className="site-header__actions">
+            <LanguageSwitcher />
+            <AccountMenu />
+            <MobileMenu />
+          </div>
         </div>
       </header>
 

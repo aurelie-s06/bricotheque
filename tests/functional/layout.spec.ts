@@ -1,6 +1,10 @@
+import User from '#models/user'
+import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-test.group('Layout', () => {
+test.group('Layout', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
   test('home page renders with French layout and legal notice', async ({ client }) => {
     const response = await client.get('/')
 
@@ -15,11 +19,23 @@ test.group('Layout', () => {
     response.assertTextIncludes('Données : Rebrickable, Brickset.')
   })
 
-  test('guest sees login and signup links', async ({ client }) => {
-    const response = await client.get('/')
+  test('guest sees the login button, signup is offered on the login page', async ({ client }) => {
+    const home = await client.get('/')
+    home.assertTextIncludes('href="/connexion"')
 
-    response.assertTextIncludes('href="/connexion"')
-    response.assertTextIncludes('href="/inscription"')
+    const login = await client.get('/connexion')
+    login.assertTextIncludes('href="/inscription"')
+  })
+
+  test('members see their account menu instead of the login button', async ({ client }) => {
+    const user = await User.create({
+      email: 'member@example.com',
+      username: 'member',
+      password: 'correct horse battery',
+    })
+    const response = await client.get('/').loginAs(user)
+    response.assertTextIncludes('account-menu')
+    response.assertTextIncludes('href="/mon-compte"')
   })
 
   test('the search leads to the catalogue results', async ({ client }) => {
