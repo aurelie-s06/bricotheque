@@ -1,5 +1,6 @@
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import Breadcrumb from '~/components/breadcrumb'
 import { useI18n } from '~/i18n'
 
 export default function ServerError() {
@@ -7,6 +8,9 @@ export default function ServerError() {
   return (
     <>
       <Seo title={t('error.serverPageTitle')} />
+      <Breadcrumb
+        items={[{ name: t('breadcrumb.home'), url: '/' }, { name: t('error.serverPageTitle') }]}
+      />
       <div className="empty-state">
         <div className="studs" aria-hidden="true" />
         <h1>{t('error.serverTitle')}</h1>

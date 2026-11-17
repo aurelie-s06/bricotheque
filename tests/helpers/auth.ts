@@ -1,15 +1,22 @@
+import { DateTime } from 'luxon'
 import limiter from '@adonisjs/limiter/services/main'
 import User from '#models/user'
 
 export const PASSWORD = 'correct horse battery'
 
 export async function createUser(
-  overrides: Partial<{ email: string; username: string; password: string }> = {}
+  overrides: Partial<{
+    email: string
+    username: string
+    password: string
+    emailVerifiedAt: DateTime | null
+  }> = {}
 ) {
   return User.create({
     email: 'fan@example.com',
     username: 'fan',
     password: PASSWORD,
+    emailVerifiedAt: DateTime.now(),
     ...overrides,
   })
 }

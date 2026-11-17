@@ -53,6 +53,7 @@ function SetList({
             src={set.imgUrl}
             alt={t('image.set', { setNum: set.setNum, name: set.name })}
             className="set-list__image"
+            thumb
           />
           <div className="set-list__text">
             <Link href={set.url} className="set-list__name">
@@ -71,7 +72,7 @@ function SetList({
 export default function DashboardPage(props: Props) {
   const { figures, byTheme, byDecade, biggest, oldest, retiringSoon, retired, wishlistDates } =
     props
-  const { t, tc, formatNumber, formatDate } = useI18n()
+  const { t, tc, tn, formatNumber, dateNode } = useI18n()
 
   return (
     <>
@@ -174,7 +175,7 @@ export default function DashboardPage(props: Props) {
                   <SetList
                     sets={retiringSoon}
                     detail={(set) =>
-                      t('dashboard.until', { date: formatDate(wishlistDates[set.id]) ?? '—' })
+                      tn('dashboard.until', { date: dateNode(wishlistDates[set.id]) ?? '—' })
                     }
                   />
                 ) : (
@@ -190,7 +191,7 @@ export default function DashboardPage(props: Props) {
                     detail={(set) => (
                       <>
                         {wishlistDates[set.id]
-                          ? t('dashboard.since', { date: formatDate(wishlistDates[set.id])! })
+                          ? tn('dashboard.since', { date: dateNode(wishlistDates[set.id]) })
                           : set.year}{' '}
                         <StatusBadge status={set.availabilityStatus} />
                       </>

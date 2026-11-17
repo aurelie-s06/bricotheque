@@ -22,6 +22,11 @@ export default await Env.create(new URL('../', import.meta.url), {
   APP_KEY: Env.schema.secret(),
   APP_URL: Env.schema.string({ format: 'url', tld: false }),
 
+  // Legal notice and contact (public pages); left empty, the pages say "to be completed"
+  LEGAL_PUBLISHER: Env.schema.string.optional(),
+  CONTACT_EMAIL: Env.schema.string.optional({ format: 'email' }),
+  CONTACT_ISSUES_URL: Env.schema.string.optional({ format: 'url' }),
+
   // Session
   SESSION_DRIVER: Env.schema.enum(['cookie', 'memory', 'database'] as const),
 

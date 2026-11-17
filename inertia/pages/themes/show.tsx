@@ -61,7 +61,7 @@ export default function ThemeShow({ theme, themeChain, subthemes, sets, paginati
                 sets: tc('count.sets', theme.count),
               })}
           {pagination.lastPage > 1 &&
-            ` · ${t('sets.pageOf', { page: pagination.currentPage, last: pagination.lastPage })}`}
+            ` · ${t('sets.pageOf', { page: pagination.currentPage, last: pagination.lastPage, perPage: pagination.perPage })}`}
         </p>
       </div>
 

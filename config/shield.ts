@@ -1,3 +1,4 @@
+import app from '@adonisjs/core/services/app'
 import { defineConfig } from '@adonisjs/shield'
 
 const shieldConfig = defineConfig({
@@ -9,12 +10,26 @@ const shieldConfig = defineConfig({
     /**
      * Enable the Content-Security-Policy header.
      */
-    enabled: false,
+    enabled: true,
 
     /**
-     * Per-resource CSP directives.
+     * Only our own scripts, styles and fonts; images also come from the
+     * Rebrickable CDN. Inline styles are allowed for the style attributes
+     * rendered by React. The Vite dev server needs a websocket (HMR) and a
+     * nonce for its inline React Refresh script.
      */
-    directives: {},
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", '@nonce'],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", 'data:', 'https://cdn.rebrickable.com'],
+      fontSrc: ["'self'"],
+      connectSrc: app.inProduction ? ["'self'"] : ["'self'", 'ws:', 'wss:'],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+    },
 
     /**
      * Report violations without blocking resources.

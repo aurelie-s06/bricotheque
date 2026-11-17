@@ -32,7 +32,11 @@ export default function SetCard({
   return (
     <article className="set-card">
       <div className="set-card__media">
-        <SetImage src={set.imgUrl} alt={t('image.set', { setNum: set.setNum, name: set.name })} />
+        <SetImage
+          src={set.imgUrl}
+          alt={t('image.set', { setNum: set.setNum, name: set.name })}
+          thumb
+        />
       </div>
       <div className="set-card__body">
         <p className="set-card__number">{set.setNum}</p>

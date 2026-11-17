@@ -1,6 +1,7 @@
 import { Form, Link } from '@adonisjs/inertia/react'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import Breadcrumb from '~/components/breadcrumb'
 import FormField from '~/components/form_field'
 import FormAlert from '~/components/form_alert'
 import { type InertiaProps } from '~/types'
@@ -27,43 +28,49 @@ export default function ResetPassword({ token, valid }: Props) {
   }
 
   return (
-    <div className="card auth-card">
-      <Seo title={t('auth.resetTitle')} />
-      <h1>{t('auth.resetTitle')}</h1>
-      <p className="text-muted">{t('auth.resetLead')}</p>
+    <>
+      <Breadcrumb
+        items={[{ name: t('breadcrumb.home'), url: '/' }, { name: t('auth.resetTitle') }]}
+      />
+      <div className="card auth-card">
+        <Seo title={t('auth.resetTitle')} />
+        <h1>{t('auth.resetTitle')}</h1>
+        <p className="text-muted">{t('auth.resetLead')}</p>
 
-      <Form route="password.update" routeParams={{ token }} className="auth-form" resetOnError>
-        {({ errors, processing }) => (
-          <>
-            <FormAlert errors={errors} />
-            <p className="field__hint">{t('form.requiredNotice')}</p>
-            <FormField
-              name="password"
-              type="password"
-              label={t('auth.newPassword')}
-              hint={t('auth.passwordHint')}
-              autoComplete="new-password"
-              minLength={10}
-              required
-              error={errors.password}
-            />
-            <FormField
-              name="passwordConfirmation"
-              type="password"
-              label={t('auth.newPasswordConfirmation')}
-              autoComplete="new-password"
-              required
-              error={errors.passwordConfirmation}
-            />
-            <div className="form-actions">
-              <button type="submit" className="btn btn--block" disabled={processing}>
-                {processing ? t('form.saving') : t('auth.resetSubmit')}
-              </button>
-            </div>
-          </>
-        )}
-      </Form>
-    </div>
+        <Form route="password.update" routeParams={{ token }} className="auth-form" resetOnError>
+          {({ errors, processing }) => (
+            <>
+              <FormAlert errors={errors} />
+              <p className="field__hint">{t('form.requiredNotice')}</p>
+              <FormField
+                name="password"
+                type="password"
+                label={t('auth.newPassword')}
+                hint={t('auth.passwordHint')}
+                autoComplete="new-password"
+                strengthMeter
+                minLength={10}
+                required
+                error={errors.password}
+              />
+              <FormField
+                name="passwordConfirmation"
+                type="password"
+                label={t('auth.newPasswordConfirmation')}
+                autoComplete="new-password"
+                required
+                error={errors.passwordConfirmation}
+              />
+              <div className="form-actions">
+                <button type="submit" className="btn btn--block" disabled={processing}>
+                  {processing ? t('form.saving') : t('auth.resetSubmit')}
+                </button>
+              </div>
+            </>
+          )}
+        </Form>
+      </div>
+    </>
   )
 }
 

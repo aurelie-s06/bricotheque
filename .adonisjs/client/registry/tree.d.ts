@@ -15,9 +15,26 @@ export interface ApiDefinition {
     index: typeof routes['minifigs.index']
     show: typeof routes['minifigs.show']
   }
+  pages: {
+    about: typeof routes['pages.about']
+    legal: typeof routes['pages.legal']
+    privacy: typeof routes['pages.privacy']
+    terms: typeof routes['pages.terms']
+    siteMap: typeof routes['pages.site_map']
+  }
+  robots: typeof routes['robots']
+  sitemap: {
+    index: typeof routes['sitemap.index']
+    show: typeof routes['sitemap.show']
+  }
   search: typeof routes['search']
   locale: {
     switch: typeof routes['locale.switch']
+  }
+  email: {
+    verify: typeof routes['email.verify']
+    pending: typeof routes['email.pending']
+    resend: typeof routes['email.resend']
   }
   newAccount: {
     create: typeof routes['new_account.create']
@@ -52,6 +69,7 @@ export interface ApiDefinition {
     toggle: typeof routes['collection.toggle']
   }
   wishlist: {
+    export: typeof routes['wishlist.export']
     index: typeof routes['wishlist.index']
     share: typeof routes['wishlist.share']
     unshare: typeof routes['wishlist.unshare']

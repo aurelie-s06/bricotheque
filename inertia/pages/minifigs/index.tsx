@@ -1,6 +1,7 @@
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import Breadcrumb from '~/components/breadcrumb'
 import MinifigCard from '~/components/minifig_card'
 import MinifigFilters from '~/components/minifig_filters'
 import Pagination, { type PaginationData } from '~/components/pagination'
@@ -35,13 +36,14 @@ export default function MinifigsIndex({
   return (
     <>
       <Seo title={`${title}${pageSuffix}`} description={t('minifigs.metaDescription')} />
+      <Breadcrumb items={[{ name: t('breadcrumb.home'), url: '/' }, { name: title }]} />
 
       <div className="page-header">
         <h1>{title}</h1>
         <p className="text-muted" role="status">
           {tc('sets.results', pagination.total)}
           {pagination.lastPage > 1 &&
-            ` · ${t('sets.pageOf', { page: pagination.currentPage, last: pagination.lastPage })}`}
+            ` · ${t('sets.pageOf', { page: pagination.currentPage, last: pagination.lastPage, perPage: pagination.perPage })}`}
         </p>
       </div>
 

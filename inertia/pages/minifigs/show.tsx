@@ -128,7 +128,7 @@ export default function MinifigShow({ minifig, themeChain, backUrl, ownedEntry }
 
           <ul className="link-list">
             <li>
-              <ExternalLink href={minifig.rebrickableUrl}>
+              <ExternalLink href={minifig.rebrickableUrl} lang="en">
                 {t('minifig.onRebrickable')}
               </ExternalLink>
             </li>
@@ -153,6 +153,7 @@ export default function MinifigShow({ minifig, themeChain, backUrl, ownedEntry }
                     <SetImage
                       src={set.imgUrl}
                       alt={t('image.set', { setNum: set.setNum, name: set.name })}
+                      thumb
                     />
                   </div>
                   <div className="set-card__body">

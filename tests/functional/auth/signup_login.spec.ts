@@ -1,7 +1,10 @@
 import { test } from '@japa/runner'
 import hash from '@adonisjs/core/services/hash'
 import testUtils from '@adonisjs/core/services/test_utils'
+import mail from '@adonisjs/mail/services/main'
 import User from '#models/user'
+import EmailVerification from '#services/email_verification'
+import { AccountExistsMail, ConfirmEmailMail } from '#mails/account_mails'
 import { PASSWORD, createUser, firstError, formErrors, resetRateLimits } from '#tests/helpers/auth'
 
 const signupData = (overrides: Record<string, string> = {}) => ({
@@ -16,7 +19,11 @@ test.group('Signup', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
   group.each.setup(() => resetRateLimits())
 
-  test('creates the account, hashes the password and logs in', async ({ client, assert }) => {
+  test('creates an account waiting for confirmation and sends the link', async ({
+    client,
+    assert,
+  }) => {
+    const fake = mail.fake()
     const response = await client
       .post('/inscription')
       .form(signupData())
@@ -24,13 +31,66 @@ test.group('Signup', (group) => {
       .redirects(0)
 
     response.assertStatus(302)
-    response.assertHeader('location', '/mon-compte')
-    response.assertFlashMessage('success', 'Bienvenue sur Briquothèque, brickfan !')
+    response.assertHeader('location', '/inscription/confirmation')
 
     const user = await User.findByOrFail('email', 'brickfan@example.com') // stored in lower case
     assert.equal(user.username, 'brickfan')
+    assert.isNull(user.emailVerifiedAt)
     assert.notEqual(user.password, PASSWORD)
     assert.isTrue(await hash.verify(user.password, PASSWORD))
+    fake.mails.assertSent(ConfirmEmailMail, ({ message }) => {
+      message.assertTo('brickfan@example.com')
+      return true
+    })
+    mail.restore()
+  })
+
+  test('the confirmation link activates the account and logs in', async ({ client, assert }) => {
+    const user = await createUser({ emailVerifiedAt: null })
+    const link = new URL(EmailVerification.url(user))
+
+    const response = await client.get(link.pathname + link.search).redirects(0)
+    response.assertHeader('location', '/mon-compte')
+    response.assertFlashMessage(
+      'success',
+      'Ton adresse est confirmée. Bienvenue sur Briquothèque, fan !'
+    )
+    await user.refresh()
+    assert.isNotNull(user.emailVerifiedAt)
+  })
+
+  test('a forged or outdated confirmation link is refused', async ({ client, assert }) => {
+    const user = await createUser({ emailVerifiedAt: null })
+    const link = new URL(EmailVerification.url(user))
+
+    const forged = await client
+      .get(link.pathname + link.search.replace('fan%40example.com', 'other%40example.com'))
+      .redirects(0)
+    forged.assertHeader('location', '/inscription/confirmation')
+
+    user.email = 'changed@example.com'
+    await user.save()
+    const outdated = await client.get(link.pathname + link.search).redirects(0)
+    outdated.assertHeader('location', '/inscription/confirmation')
+    await user.refresh()
+    assert.isNull(user.emailVerifiedAt)
+  })
+
+  test('an account waiting for confirmation cannot log in and gets the link again', async ({
+    client,
+    assert,
+  }) => {
+    const fake = mail.fake()
+    await createUser({ emailVerifiedAt: null })
+    const response = await client
+      .post('/connexion')
+      .form({ email: 'fan@example.com', password: PASSWORD })
+      .withCsrfToken()
+      .redirects(0)
+
+    assert.match(firstError(formErrors(response).form)!, /pas encore activé/)
+    fake.mails.assertSent(ConfirmEmailMail)
+    mail.restore()
   })
 
   test('requires at least 10 characters and a matching confirmation', async ({
@@ -55,14 +115,37 @@ test.group('Signup', (group) => {
     assert.isNull(await User.findBy('username', 'brickfan'))
   })
 
-  test('refuses a taken email or username and an invalid username', async ({ client, assert }) => {
+  test('a taken email is not revealed: its owner gets an email instead', async ({
+    client,
+    assert,
+  }) => {
+    const fake = mail.fake()
     await createUser({ email: 'brickfan@example.com', username: 'brickfan' })
 
-    const taken = await client.post('/inscription').form(signupData()).withCsrfToken().redirects(0)
-    assert.equal(
-      firstError(formErrors(taken).email),
-      'Un compte existe déjà avec cette adresse e-mail.'
-    )
+    const taken = await client
+      .post('/inscription')
+      .form(signupData({ username: 'someone-else' }))
+      .withCsrfToken()
+      .redirects(0)
+    taken.assertHeader('location', '/inscription/confirmation')
+    assert.isUndefined(formErrors(taken).email)
+    assert.isNull(await User.findBy('username', 'someone-else'))
+    fake.mails.assertSent(AccountExistsMail, ({ message }) => {
+      message.assertTo('brickfan@example.com')
+      return true
+    })
+    fake.mails.assertNotSent(ConfirmEmailMail)
+    mail.restore()
+  })
+
+  test('refuses a taken username and an invalid username', async ({ client, assert }) => {
+    await createUser({ email: 'brickfan@example.com', username: 'brickfan' })
+
+    const taken = await client
+      .post('/inscription')
+      .form(signupData({ email: 'new@example.com' }))
+      .withCsrfToken()
+      .redirects(0)
     assert.equal(firstError(formErrors(taken).username), 'Ce pseudo est déjà pris.')
 
     const invalid = await client
@@ -101,7 +184,7 @@ test.group('Signup', (group) => {
         .form(signupData({ username: `fan${index}`, email: `fan${index}@example.com` }))
         .withCsrfToken()
         .redirects(0)
-      response.assertHeader('location', '/mon-compte')
+      response.assertHeader('location', '/inscription/confirmation')
     }
 
     const blocked = await client

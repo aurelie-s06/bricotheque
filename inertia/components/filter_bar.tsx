@@ -178,6 +178,16 @@ export default function FilterBar({
                   {t('filters.clearAll')}
                 </Link>
               )}
+              <button
+                type="button"
+                className="btn btn--ghost filter-bar__close"
+                onClick={() => {
+                  panel.current!.open = false
+                  panel.current!.querySelector('summary')?.focus()
+                }}
+              >
+                <X size={18} aria-hidden="true" /> {t('filters.close')}
+              </button>
             </div>
           </div>
         </details>

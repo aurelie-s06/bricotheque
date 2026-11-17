@@ -27,6 +27,18 @@ router.get('minifigs', [controllers.Minifigs, 'index']).as('minifigs.index')
 router.get('minifigs/:ref', [controllers.Minifigs, 'show']).as('minifigs.show')
 
 /**
+ * Information pages, robots.txt and sitemaps
+ */
+router.get('a-propos', [controllers.Pages, 'about']).as('pages.about')
+router.get('mentions-legales', [controllers.Pages, 'legal']).as('pages.legal')
+router.get('confidentialite', [controllers.Pages, 'privacy']).as('pages.privacy')
+router.get('conditions-utilisation', [controllers.Pages, 'terms']).as('pages.terms')
+router.get('plan-du-site', [controllers.Pages, 'siteMap']).as('pages.site_map')
+router.get('robots.txt', [controllers.Sitemap, 'robots']).as('robots')
+router.get('sitemap.xml', [controllers.Sitemap, 'index']).as('sitemap.index')
+router.get('sitemaps/:name.xml', [controllers.Sitemap, 'show']).as('sitemap.show')
+
+/**
  * Global search (header): sets and minifigs
  */
 router.get('recherche', [controllers.Search, 'index']).as('search')
@@ -55,6 +67,9 @@ router
 /**
  * Accounts
  */
+// Signed link of the confirmation email (works logged in or not)
+router.get('inscription/confirmer/:id', [controllers.NewAccount, 'verify']).as('email.verify')
+
 router
   .group(() => {
     router.get('inscription', [controllers.NewAccount, 'create']).as('new_account.create')
@@ -62,6 +77,11 @@ router
       .post('inscription', [controllers.NewAccount, 'store'])
       .as('new_account.store')
       .use(signupThrottle)
+    router.get('inscription/confirmation', [controllers.NewAccount, 'pending']).as('email.pending')
+    router
+      .post('inscription/renvoyer', [controllers.NewAccount, 'resend'])
+      .as('email.resend')
+      .use(forgotPasswordThrottle)
 
     router.get('connexion', [controllers.Session, 'create']).as('session.create')
     router.post('connexion', [controllers.Session, 'store']).as('session.store')
@@ -102,6 +122,9 @@ router
     router
       .get('ma-collection/export.csv', [controllers.MyCollection, 'export'])
       .as('collection.export')
+    router
+      .get('ma-wishlist/export.csv', [controllers.MyCollection, 'exportWishlist'])
+      .as('wishlist.export')
     router.get('ma-wishlist', [controllers.MyCollection, 'wishlist']).as('wishlist.index')
     router.post('ma-wishlist/partage', [controllers.MyCollection, 'share']).as('wishlist.share')
     router

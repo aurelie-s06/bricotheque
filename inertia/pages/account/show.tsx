@@ -12,7 +12,7 @@ type Props = InertiaProps<{
 }>
 
 export default function AccountShow({ account }: Props) {
-  const { t, formatDate } = useI18n()
+  const { t, tn, dateNode } = useI18n()
 
   return (
     <>
@@ -24,7 +24,7 @@ export default function AccountShow({ account }: Props) {
       <div className="page-header">
         <h1>{t('account.title')}</h1>
         <p className="text-muted">
-          {t('account.memberSince', { date: formatDate(account.createdAt)! })}
+          {tn('account.memberSince', { date: dateNode(account.createdAt) })}
         </p>
       </div>
       <FlashNotice />
@@ -63,6 +63,7 @@ export default function AccountShow({ account }: Props) {
                 />
                 <FormField
                   name="currentPassword"
+                  id="profile-currentPassword"
                   type="password"
                   label={t('account.currentPassword')}
                   hint={t('account.profileHint')}
@@ -123,6 +124,7 @@ export default function AccountShow({ account }: Props) {
                   label={t('auth.newPassword')}
                   hint={t('auth.passwordHint')}
                   autoComplete="new-password"
+                  strengthMeter
                   minLength={10}
                   required
                   error={errors.password}
@@ -162,6 +164,7 @@ export default function AccountShow({ account }: Props) {
                   </div>
                   <FormField
                     name="password"
+                    id="delete-password"
                     type="password"
                     label={t('account.deletePassword')}
                     autoComplete="current-password"

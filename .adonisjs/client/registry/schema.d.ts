@@ -99,6 +99,110 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/minifigs_controller').default['show']>>>
     }
   }
+  'pages.about': {
+    methods: ["GET","HEAD"]
+    pattern: '/a-propos'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['about']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['about']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['about']>>>
+    }
+  }
+  'pages.legal': {
+    methods: ["GET","HEAD"]
+    pattern: '/mentions-legales'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['legal']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['legal']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['legal']>>>
+    }
+  }
+  'pages.privacy': {
+    methods: ["GET","HEAD"]
+    pattern: '/confidentialite'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['privacy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['privacy']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['privacy']>>>
+    }
+  }
+  'pages.terms': {
+    methods: ["GET","HEAD"]
+    pattern: '/conditions-utilisation'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['terms']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['terms']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['terms']>>>
+    }
+  }
+  'pages.site_map': {
+    methods: ["GET","HEAD"]
+    pattern: '/plan-du-site'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['siteMap']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['siteMap']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['siteMap']>>>
+    }
+  }
+  'robots': {
+    methods: ["GET","HEAD"]
+    pattern: '/robots.txt'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['robots']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['robots']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['robots']>>>
+    }
+  }
+  'sitemap.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/sitemap.xml'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['index']>>>
+    }
+  }
+  'sitemap.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/sitemaps/:name.xml'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { name: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/sitemap_controller').default['show']>>>
+    }
+  }
   'search': {
     methods: ["GET","HEAD"]
     pattern: '/recherche'
@@ -125,6 +229,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<unknown>
     }
   }
+  'email.verify': {
+    methods: ["GET","HEAD"]
+    pattern: '/inscription/confirmer/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['verify']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['verify']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['verify']>>>
+    }
+  }
   'new_account.create': {
     methods: ["GET","HEAD"]
     pattern: '/inscription'
@@ -149,6 +266,32 @@ export interface Registry {
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'email.pending': {
+    methods: ["GET","HEAD"]
+    pattern: '/inscription/confirmation'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['pending']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['pending']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['pending']>>>
+    }
+  }
+  'email.resend': {
+    methods: ["POST"]
+    pattern: '/inscription/renvoyer'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/user').forgotPasswordValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').forgotPasswordValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['resend']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['resend']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['resend']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'session.create': {
@@ -344,6 +487,19 @@ export interface Registry {
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['export']>>>
+    }
+  }
+  'wishlist.export': {
+    methods: ["GET","HEAD"]
+    pattern: '/ma-wishlist/export.csv'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['exportWishlist']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['exportWishlist']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['exportWishlist']>>>
     }
   }
   'wishlist.index': {

@@ -27,6 +27,14 @@ const staticServerConfig = defineConfig({
    * Policy for files starting with a dot.
    */
   dotFiles: 'ignore',
+
+  /**
+   * Cache: built assets have a hash in their name and never change; the
+   * other files (favicons, robots.txt…) are kept one day.
+   */
+  maxAge: '1d',
+  headers: (path) =>
+    path.includes('/assets/') ? { 'Cache-Control': 'public, max-age=31536000, immutable' } : {},
 })
 
 export default staticServerConfig

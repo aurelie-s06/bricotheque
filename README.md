@@ -56,19 +56,21 @@ Toutes les clés sont dans `.env` (jamais commité). `.env.example` liste les va
 | `LIMITER_STORE`                                               | `database` (recommandé) ou `memory`                                                          |
 | `BRICKSET_API_KEY`                                            | Clé API Brickset v3 ([demande gratuite](https://brickset.com/tools/webservices/requestkey/)) |
 | `BRICKLINK_*`                                                 | Identifiants OAuth BrickLink (optionnels)                                                    |
+| `LEGAL_PUBLISHER`, `CONTACT_EMAIL`, `CONTACT_ISSUES_URL`      | Éditeur et moyens de contact affichés sur les mentions légales et la page À propos           |
 
 `.env.test` surcharge quelques valeurs pour les tests (base `briquotheque_test`, sessions et limiter en mémoire).
 
 ## Commandes
 
-| Commande                                        | Description                                        |
-| ----------------------------------------------- | -------------------------------------------------- |
-| `npm run dev`                                   | Serveur de développement avec rechargement à chaud |
-| `npm test`                                      | Tests Japa (migre la base de test automatiquement) |
-| `npm run lint` / `npm run typecheck`            | Qualité du code                                    |
-| `npm run format`                                | Formatage Prettier                                 |
-| `npm run build`                                 | Build de production dans `build/`                  |
-| `node ace migration:run` / `migration:rollback` | Migrations                                         |
+| Commande                                        | Description                                                                     |
+| ----------------------------------------------- | ------------------------------------------------------------------------------- |
+| `npm run dev`                                   | Serveur de développement avec rechargement à chaud                              |
+| `npm test`                                      | Tests Japa (migre la base de test automatiquement)                              |
+| `npm run test:a11y`                             | Test d'accessibilité axe-core des pages types (serveur lancé ; voir ci-dessous) |
+| `npm run lint` / `npm run typecheck`            | Qualité du code                                                                 |
+| `npm run format`                                | Formatage Prettier                                                              |
+| `npm run build`                                 | Build de production dans `build/`                                               |
+| `node ace migration:run` / `migration:rollback` | Migrations                                                                      |
 
 > ⚠️ Lucid régénère `database/schema.ts` après chaque migration. Sur la base de test, toujours ajouter `--no-schema-generate`, sinon le fichier est vidé.
 
@@ -140,10 +142,12 @@ node ace translate:descriptions --yes --wait   # sans confirmation, attend la fi
 
 | URL                                                           | Rôle                                                                                                                                                                |
 | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/inscription`, `/connexion`, `/deconnexion`                  | Compte : pseudo, e-mail, mot de passe d'au moins 10 caractères (haché par AdonisJS)                                                                                 |
+| `/inscription`, `/connexion`, `/deconnexion`                  | Compte : pseudo, e-mail, mot de passe d'au moins 10 caractères (haché par AdonisJS), avec jauge de solidité                                                         |
+| `/inscription/confirmation`, `/inscription/confirmer/:id`     | Le compte n'est actif qu'après le clic sur le lien signé reçu par e-mail (24 h) ; nouveau lien sur demande ou à la connexion                                        |
 | `/mot-de-passe-oublie` → `/mot-de-passe/reinitialiser/:jeton` | Lien par e-mail, valable 1 h et utilisable une seule fois (seule son empreinte SHA-256 est stockée)                                                                 |
 | `/mon-compte`                                                 | Modifier le pseudo, l'e-mail (mot de passe actuel demandé), le mot de passe ; supprimer le compte (case à cocher + mot de passe ; la collection est supprimée avec) |
 
+- **Confidentialité des comptes** : l'inscription répond la même chose que l'adresse ait déjà un compte ou non (son titulaire reçoit alors un e-mail). Un changement de mot de passe ou d'e-mail déclenche un e-mail d'alerte (à l'ancienne adresse pour l'e-mail).
 - **Pages privées** (`middleware.auth()`) : un visiteur non connecté est envoyé vers `/connexion`, puis ramené à la page qu'il voulait.
 - **Sécurité** : jeton CSRF (Shield) sur tous les formulaires ; message identique pour un mauvais mot de passe ou un e-mail inconnu (et pour « mot de passe oublié ») ; limites de fréquence par adresse IP :
   - connexion : 5 échecs en 15 min par adresse e-mail → blocage 15 min (les connexions réussies ne comptent pas) ;
@@ -202,6 +206,20 @@ Les classes de colonnes sont générées dans `database/schema.ts` (ne pas modif
 | `/minifigs/fig-000001-han-solo`                                                                                                                                                                 | Fiche d'une minifig avec les sets qui la contiennent (et le nombre d'exemplaires) ; URL partielle → redirection 301                                                                                                                                                                                                                                                                                        |
 | `/recherche?q=…`                                                                                                                                                                                | Recherche globale du header : sets et minifigs dans deux sections (12 premiers résultats chacune, avec un lien vers la liste complète)                                                                                                                                                                                                                                                                     |
 | La recherche par numéro (`75192`) trouve toutes les variantes (`75192-1`, `75192-2`…) ; la recherche par nom ignore la casse et les accents (les noms sont en anglais, comme chez Rebrickable). |
+
+## Pages d'information et qualité (Opquast)
+
+| URL                                                                         | Contenu                                                                                      |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `/a-propos`                                                                 | Le site, sources des données et date de mise à jour, glossaire, déclaration Opquast, contact |
+| `/mentions-legales`, `/confidentialite`, `/conditions-utilisation`          | Pages légales (éditeur et contact lus dans `.env`, tableau des cookies)                      |
+| `/plan-du-site`                                                             | Toutes les pages, dont les thèmes principaux                                                 |
+| `/robots.txt`, `/sitemap.xml`, `/sitemaps/{pages,themes,sets,minifigs}.xml` | Générés à partir de `APP_URL` ; les espaces privés sont exclus                               |
+
+- **Audit** : `docs/audit-opquast.md` (référentiel Opquast 2025, v5.0) liste les 245 règles, leur statut avant et après corrections, et ce qui reste à faire hors code.
+- **En-têtes** : CSP avec nonce, Referrer-Policy, X-Frame-Options, HSTS, nosniff ; réponses compressées (gzip / brotli) ; `/assets` en cache 1 an.
+- **Pages d'erreur** 403, 404 et 500 personnalisées en production et en test (en développement, la page de débogage d'AdonisJS reste affichée).
+- **Test d'accessibilité** : `npm run test:a11y` passe axe-core (WCAG 2.2 A/AA) sur les pages types de `http://localhost:3333` (ou `A11Y_BASE_URL`). Avec `A11Y_EMAIL` et `A11Y_PASSWORD` (compte activé), il teste aussi les pages du compte. Il échoue en cas de violation « serious » ou « critical ».
 
 ## Import du catalogue (Rebrickable)
 

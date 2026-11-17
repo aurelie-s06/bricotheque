@@ -12,6 +12,7 @@ const fr = {
   'site.mainMenu': 'Menu principal',
   'site.legal':
     'LEGO® est une marque du groupe LEGO, qui ne parraine ni n’approuve ce site. Données : Rebrickable, Brickset.',
+  'site.reuse': 'Sources et réutilisation des données',
   'nav.sets': 'Sets',
   'nav.themes': 'Thèmes',
   'nav.login': 'Connexion',
@@ -46,7 +47,7 @@ const fr = {
     'Tous les sets de briques, anciens, actuels et retirés : recherche par nom ou numéro, filtres par thème, année, pièces, statut et prix.',
   'sets.results_one': '{count} résultat',
   'sets.results_other': '{count} résultats',
-  'sets.pageOf': 'page {page} sur {last}',
+  'sets.pageOf': 'page {page} sur {last} ({perPage} par page)',
   'sets.pageSuffix': ' – page {page}',
   'sets.resultsLabel': 'Résultats',
   'sets.empty': 'Aucun set ne correspond',
@@ -79,6 +80,7 @@ const fr = {
   'filters.activeTitle': 'Filtres actifs',
   'filters.apply': 'Afficher les résultats',
   'filters.clearAll': 'Tout effacer',
+  'filters.close': 'Fermer',
   'filters.remove': 'Retirer le filtre « {label} »',
   'filters.chip': '{name} : {value}',
   'filters.chipRange': '{min} – {max}',
@@ -166,6 +168,33 @@ const fr = {
   'pagination.next': 'Suivante',
   'pagination.page': 'Page {page}',
   'external.label': '(site externe)',
+  'external.lang.fr': 'en français',
+  'external.lang.en': 'en anglais',
+  'footer.nav': 'Informations',
+  'footer.about': 'À propos',
+  'footer.legal': 'Mentions légales',
+  'footer.privacy': 'Confidentialité et cookies',
+  'footer.terms': 'Conditions d’utilisation',
+  'footer.siteMap': 'Plan du site',
+  'footer.contact': 'Contact',
+  'pages.toComplete': 'à compléter',
+  'pages.unknownDate': 'inconnue',
+  'pages.aboutTitle': 'À propos',
+  'pages.aboutDescription':
+    'Ce qu’est Briquothèque, d’où viennent ses données, glossaire et contact.',
+  'pages.legalDescription': 'Éditeur, hébergeur et propriété intellectuelle de Briquothèque.',
+  'pages.privacyDescription':
+    'Données personnelles collectées par Briquothèque, vos droits et les cookies utilisés.',
+  'pages.termsDescription': 'Conditions d’utilisation du catalogue et des comptes Briquothèque.',
+  'pages.siteMapDescription': 'Toutes les pages de Briquothèque.',
+  'pages.siteMapCatalogue': 'Catalogue',
+  'pages.siteMapAccount': 'Mon espace',
+  'pages.siteMapInfo': 'Informations',
+  'pages.contactTitle': 'Nous contacter',
+  'pages.contactEmail': 'Par e-mail :',
+  'pages.contactIssues': 'Par un ticket sur GitHub :',
+  'pages.contactIssuesLink': 'signaler un problème',
+  'pages.contactDelay': 'Nous répondons en général sous 7 jours.',
 
   // Errors
   'error.notFoundTitle': 'Page introuvable',
@@ -173,6 +202,8 @@ const fr = {
   'error.serverTitle': 'Oups, une erreur est survenue',
   'error.serverPageTitle': 'Erreur du serveur',
   'error.serverText': 'Le serveur a rencontré un problème. Réessaie dans quelques instants.',
+  'error.forbiddenTitle': 'Accès refusé',
+  'error.forbiddenText': 'Vous n’avez pas le droit d’ouvrir cette page.',
   'error.backHome': 'Retour à l’accueil',
 
   // Auth (reworked in step 7)
@@ -191,6 +222,16 @@ const fr = {
   'auth.noAccount': 'Pas encore de compte ?',
   'auth.createAccount': 'Créer un compte',
   'auth.hasAccount': 'Déjà un compte ?',
+  'auth.checkEmailTitle': 'Confirme ton adresse e-mail',
+  'auth.resendTitle': 'Tu n’as rien reçu ?',
+  'auth.resendLead':
+    'Vérifie tes courriers indésirables, ou demande un nouveau lien d’activation (valable 24 heures).',
+  'auth.resendSubmit': 'Renvoyer le lien',
+  'auth.signupConfirmNotice':
+    'Après l’inscription, tu recevras un e-mail avec un lien pour activer ton compte.',
+  'auth.sessionNotice':
+    'Pour ta sécurité, tu es déconnecté·e automatiquement après 2 heures d’inactivité.',
+  'auth.caseSensitive': 'Le mot de passe tient compte des majuscules et minuscules.',
 
   // Minifigs
   'nav.minifigs': 'Minifigs',
@@ -223,6 +264,7 @@ const fr = {
 
   // Global search
   'search.title': 'Recherche',
+  'search.previewNote': 'jusqu’à {count} résultats par type affichés sur cette page',
   'search.titleQuery': 'Recherche « {q} »',
   'search.metaDescription': 'Recherche de sets et de minifigs par nom ou par numéro.',
   'search.prompt': 'Tape un nom ou un numéro de set ou de minifig.',
@@ -241,10 +283,15 @@ const fr = {
   'form.showPassword': 'Afficher le mot de passe',
   'form.hidePassword': 'Masquer le mot de passe',
   'form.saving': 'Enregistrement…',
+  'form.strength': 'Solidité du mot de passe : {level}',
+  'form.strengthWeak': 'faible',
+  'form.strengthFair': 'moyenne',
+  'form.strengthGood': 'bonne',
+  'form.strengthStrong': 'excellente',
   'auth.emailHint': 'Format : nom@exemple.fr',
   'auth.usernameHint': '3 à 30 caractères : lettres sans accent, chiffres, « _ », « . » ou « - ».',
   'auth.passwordHint':
-    'Au moins 10 caractères. Une phrase facile à retenir fait un bon mot de passe.',
+    'Au moins 10 caractères ; les majuscules et minuscules comptent. Une phrase facile à retenir fait un bon mot de passe.',
   'auth.forgotLink': 'Mot de passe oublié ?',
   'auth.forgotTitle': 'Mot de passe oublié',
   'auth.forgotLead':
@@ -287,6 +334,7 @@ const fr = {
   'collection.wantLabel': '{name} : dans ma wishlist',
   'collection.acquireLabel': '{name} : passer de ma wishlist à ma collection',
   'collection.loginToUse': 'Connecte-toi pour gérer ta collection et ta wishlist',
+  'collection.loginRequired': 'connexion requise',
   'collection.title': 'Ma collection',
   'collection.metaDescription': 'Les sets et minifigs de ma collection.',
   'wishlist.title': 'Ma wishlist',
@@ -306,7 +354,12 @@ const fr = {
   'shared.empty': 'Cette wishlist est vide pour l’instant.',
   'collection.noMatch': 'Aucun résultat avec ces filtres.',
   'collection.browse': 'Parcourir le catalogue',
-  'collection.export': 'Exporter ma collection (CSV)',
+  'collection.export': 'Exporter ma collection',
+  'wishlist.export': 'Exporter ma wishlist',
+  'wishlist.exportInfo':
+    'Fichier CSV (tableur), {size} Ko, nommé « briquotheque-wishlist-date.csv ».',
+  'collection.exportInfo':
+    'Fichier CSV (tableur), {size} Ko, nommé « briquotheque-collection-date.csv ».',
   'wishlist.total': 'Prix estimé de la wishlist : {price}',
   'wishlist.totalUnknown_one': '{count} objet sans prix connu n’est pas compté.',
   'wishlist.totalUnknown_other': '{count} objets sans prix connu ne sont pas comptés.',

@@ -507,6 +507,26 @@ test.group('Collection pages', (group) => {
     assert.match(lines[2], /^Minifig;fig-000001;Han Solo;Star Wars;1994;4;1;/)
   })
 
+  test('exports the wishlist in the same format', async ({ client, assert }) => {
+    const user = await createUser()
+    await UserSet.create({ userId: user.id, setId: await setId('8880-1'), status: 'wanted' })
+    await UserSet.create({ userId: user.id, setId: await setId('75192-1'), status: 'owned' })
+
+    const response = await client.get('/ma-wishlist/export.csv').loginAs(user)
+    response.assertStatus(200)
+    assert.match(
+      response.header('content-disposition') ?? '',
+      /filename="briquotheque-wishlist-\d{4}-\d{2}-\d{2}\.csv"/
+    )
+    const lines = response
+      .text()
+      .replace(/^\uFEFF/, '')
+      .trim()
+      .split('\r\n')
+    assert.lengthOf(lines, 2)
+    assert.match(lines[1], /^Set;8880-1;/)
+  })
+
   test('the preference to add minifigs is saved from the account page', async ({
     client,
     assert,

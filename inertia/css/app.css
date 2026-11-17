@@ -1613,6 +1613,73 @@ select.field__input {
   margin-bottom: var(--space-1);
 }
 
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-1);
+}
+
+.site-footer__links a {
+  display: inline-block;
+  padding-block: var(--half);
+  color: var(--ink);
+}
+
+/* ---------- Information pages ---------- */
+.info-page h2 {
+  margin-top: var(--space-4);
+}
+
+.info-page ul {
+  padding-left: var(--space-3);
+}
+
+.info-page li + li {
+  margin-top: var(--half);
+}
+
+.info-page mark {
+  background: var(--brick-yellow-light);
+  padding: 0 var(--half);
+}
+
+.glossary dt {
+  font-weight: 700;
+  margin-top: var(--space-2);
+}
+
+.glossary dd {
+  margin: var(--half) 0 0;
+}
+
+.site-map__themes {
+  columns: 2 220px;
+  margin-top: var(--half);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: var(--space-2);
+}
+
+.data-table caption {
+  text-align: left;
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--space-1);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -2103,4 +2170,118 @@ textarea.field__input {
   align-items: center;
   gap: var(--half);
   font-size: 0.875rem;
+}
+
+/* ---------- Visited links (Opquast rule 141) ---------- */
+a:not([class]):visited {
+  color: #6b3fa0;
+}
+
+.external-link__lang {
+  font-weight: 400;
+}
+
+/* ---------- 404 page ---------- */
+.error-search {
+  width: min(100%, 420px);
+  margin: var(--space-2) auto;
+}
+
+/* ---------- Password strength ---------- */
+.password-strength {
+  display: grid;
+  gap: var(--half);
+}
+
+.password-strength__bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--half);
+}
+
+.password-strength__bar span {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+}
+
+.password-strength[data-strength='1'] .is-on {
+  background: var(--brick-red);
+}
+
+.password-strength[data-strength='2'] .is-on {
+  background: var(--brick-yellow-dark);
+}
+
+.password-strength[data-strength='3'] .is-on,
+.password-strength[data-strength='4'] .is-on {
+  background: var(--brick-green);
+}
+
+.password-strength__text {
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+  min-height: 1.5em;
+}
+
+.auth-card__subtitle {
+  font-size: 1.125rem;
+  margin-top: var(--space-4);
+}
+
+/* ---------- Print (Opquast rules 195 and 196) ---------- */
+@media print {
+  .skip-link,
+  .site-header,
+  .site-footer nav,
+  .filter-bar,
+  .pagination,
+  .collection-buttons,
+  .breadcrumb,
+  .toasts,
+  .password-input__toggle,
+  form button {
+    display: none !important;
+  }
+
+  body,
+  .site-main,
+  .card {
+    background: #ffffff !important;
+    color: #000000;
+    box-shadow: none !important;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .set-card,
+  .minifig-card {
+    break-inside: avoid;
+  }
+
+  .external-link::after {
+    content: ' (' attr(href) ')';
+    font-weight: 400;
+    font-size: 0.8em;
+    word-break: break-all;
+  }
+}
+
+.collection-button__lock {
+  color: var(--ink-muted);
+}
+
+.info-page ul + p,
+.info-page dl + p,
+.info-page table + p {
+  margin-top: var(--space-2);
+}
+
+.filter-bar__close {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--half);
 }

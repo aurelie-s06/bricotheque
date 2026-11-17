@@ -2,6 +2,7 @@ import { Link } from '@adonisjs/inertia/react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import Breadcrumb from '~/components/breadcrumb'
 import SetCard from '~/components/set_card'
 import MinifigCard from '~/components/minifig_card'
 import SearchForm from '~/components/search_form'
@@ -24,12 +25,15 @@ export default function Search({ q, sets, setsTotal, minifigs, minifigsTotal }: 
   return (
     <>
       <Seo title={title} description={t('search.metaDescription')} />
+      <Breadcrumb items={[{ name: t('breadcrumb.home'), url: '/' }, { name: title }]} />
 
       <div className="page-header">
         <h1>{title}</h1>
         {q && (
           <p className="text-muted" role="status">
             {tc('count.sets', setsTotal)} · {tc('count.minifigs', minifigsTotal)}
+            {setsTotal + minifigsTotal > 0 &&
+              ` · ${t('search.previewNote', { count: Math.max(sets.length, minifigs.length) })}`}
           </p>
         )}
       </div>

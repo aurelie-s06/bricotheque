@@ -13,6 +13,7 @@ const en: Record<keyof typeof fr, string> = {
   'site.mainMenu': 'Main menu',
   'site.legal':
     'LEGO® is a trademark of the LEGO Group, which does not sponsor or endorse this site. Data: Rebrickable, Brickset.',
+  'site.reuse': 'Data sources and reuse',
   'nav.sets': 'Sets',
   'nav.themes': 'Themes',
   'nav.login': 'Log in',
@@ -47,7 +48,7 @@ const en: Record<keyof typeof fr, string> = {
     'Every brick set, old, current and retired: search by name or number, filter by theme, year, pieces, status and price.',
   'sets.results_one': '{count} result',
   'sets.results_other': '{count} results',
-  'sets.pageOf': 'page {page} of {last}',
+  'sets.pageOf': 'page {page} of {last} ({perPage} per page)',
   'sets.pageSuffix': ' – page {page}',
   'sets.resultsLabel': 'Results',
   'sets.empty': 'No matching set',
@@ -80,6 +81,7 @@ const en: Record<keyof typeof fr, string> = {
   'filters.activeTitle': 'Active filters',
   'filters.apply': 'Show results',
   'filters.clearAll': 'Clear all',
+  'filters.close': 'Close',
   'filters.remove': 'Remove the “{label}” filter',
   'filters.chip': '{name}: {value}',
   'filters.chipRange': '{min} – {max}',
@@ -167,6 +169,33 @@ const en: Record<keyof typeof fr, string> = {
   'pagination.next': 'Next',
   'pagination.page': 'Page {page}',
   'external.label': '(external website)',
+  'external.lang.fr': 'in French',
+  'external.lang.en': 'in English',
+  'footer.nav': 'Information',
+  'footer.about': 'About',
+  'footer.legal': 'Legal notice',
+  'footer.privacy': 'Privacy and cookies',
+  'footer.terms': 'Terms of use',
+  'footer.siteMap': 'Site map',
+  'footer.contact': 'Contact',
+  'pages.toComplete': 'to be completed',
+  'pages.unknownDate': 'unknown',
+  'pages.aboutTitle': 'About',
+  'pages.aboutDescription':
+    'What Briquothèque is, where its data comes from, glossary and contact.',
+  'pages.legalDescription': 'Publisher, host and intellectual property of Briquothèque.',
+  'pages.privacyDescription':
+    'Personal data collected by Briquothèque, your rights and the cookies used.',
+  'pages.termsDescription': 'Terms of use of the Briquothèque catalogue and accounts.',
+  'pages.siteMapDescription': 'All the pages of Briquothèque.',
+  'pages.siteMapCatalogue': 'Catalogue',
+  'pages.siteMapAccount': 'My space',
+  'pages.siteMapInfo': 'Information',
+  'pages.contactTitle': 'Contact us',
+  'pages.contactEmail': 'By email:',
+  'pages.contactIssues': 'With a GitHub issue:',
+  'pages.contactIssuesLink': 'report a problem',
+  'pages.contactDelay': 'We usually answer within 7 days.',
 
   // Errors
   'error.notFoundTitle': 'Page not found',
@@ -174,6 +203,8 @@ const en: Record<keyof typeof fr, string> = {
   'error.serverTitle': 'Oops, something went wrong',
   'error.serverPageTitle': 'Server error',
   'error.serverText': 'The server ran into a problem. Please try again in a moment.',
+  'error.forbiddenTitle': 'Access denied',
+  'error.forbiddenText': 'You are not allowed to open this page.',
   'error.backHome': 'Back to home',
 
   // Auth (reworked in step 7)
@@ -191,6 +222,16 @@ const en: Record<keyof typeof fr, string> = {
   'auth.signingUp': 'Creating…',
   'auth.noAccount': 'No account yet?',
   'auth.createAccount': 'Create an account',
+  'auth.checkEmailTitle': 'Confirm your email address',
+  'auth.resendTitle': 'Nothing received?',
+  'auth.resendLead':
+    'Check your spam folder, or ask for a new activation link (valid for 24 hours).',
+  'auth.resendSubmit': 'Send the link again',
+  'auth.signupConfirmNotice':
+    'After signing up, you will receive an email with a link to activate your account.',
+  'auth.sessionNotice':
+    'For your security, you are logged out automatically after 2 hours of inactivity.',
+  'auth.caseSensitive': 'The password is case-sensitive.',
   'auth.hasAccount': 'Already have an account?',
 
   // Minifigs
@@ -224,6 +265,7 @@ const en: Record<keyof typeof fr, string> = {
 
   // Global search
   'search.title': 'Search',
+  'search.previewNote': 'up to {count} results per type shown on this page',
   'search.titleQuery': 'Search “{q}”',
   'search.metaDescription': 'Search sets and minifigs by name or number.',
   'search.prompt': 'Type the name or number of a set or a minifig.',
@@ -240,11 +282,16 @@ const en: Record<keyof typeof fr, string> = {
   'form.required': 'required',
   'form.showPassword': 'Show password',
   'form.hidePassword': 'Hide password',
+  'form.strength': 'Password strength: {level}',
+  'form.strengthWeak': 'weak',
+  'form.strengthFair': 'fair',
+  'form.strengthGood': 'good',
+  'form.strengthStrong': 'strong',
   'form.saving': 'Saving…',
   'auth.emailHint': 'Format: name@example.com',
   'auth.usernameHint': '3 to 30 characters: letters without accents, numbers, “_”, “.” or “-”.',
   'auth.passwordHint':
-    'At least 10 characters. An easy-to-remember sentence makes a good password.',
+    'At least 10 characters; it is case-sensitive. An easy-to-remember sentence makes a good password.',
   'auth.forgotLink': 'Forgot your password?',
   'auth.forgotTitle': 'Forgot your password',
   'auth.forgotLead':
@@ -286,6 +333,7 @@ const en: Record<keyof typeof fr, string> = {
   'collection.wantLabel': '{name}: in my wishlist',
   'collection.acquireLabel': '{name}: move from my wishlist to my collection',
   'collection.loginToUse': 'Log in to manage your collection and your wishlist',
+  'collection.loginRequired': 'login required',
   'collection.title': 'My collection',
   'collection.metaDescription': 'The sets and minifigs of my collection.',
   'wishlist.title': 'My wishlist',
@@ -303,7 +351,12 @@ const en: Record<keyof typeof fr, string> = {
   'shared.empty': 'This wishlist is empty for now.',
   'collection.noMatch': 'No result with these filters.',
   'collection.browse': 'Browse the catalogue',
-  'collection.export': 'Export my collection (CSV)',
+  'collection.export': 'Export my collection',
+  'wishlist.export': 'Export my wishlist',
+  'wishlist.exportInfo':
+    'CSV file (spreadsheet), {size} KB, named “briquotheque-wishlist-date.csv”.',
+  'collection.exportInfo':
+    'CSV file (spreadsheet), {size} KB, named “briquotheque-collection-date.csv”.',
   'wishlist.total': 'Estimated price of the wishlist: {price}',
   'wishlist.totalUnknown_one': '{count} item without a known price is not counted.',
   'wishlist.totalUnknown_other': '{count} items without a known price are not counted.',

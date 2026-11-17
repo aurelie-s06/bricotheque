@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 import mail from '@adonisjs/mail/services/main'
 import env from '#start/env'
 import User from '#models/user'
@@ -55,6 +56,8 @@ export default class PasswordResetController {
       messagesProvider: validationMessages(locale),
     })
     user.password = password
+    // The link came by email: the address is confirmed
+    user.emailVerifiedAt ??= DateTime.now()
     await user.save()
     await PasswordReset.consumeAll(user)
 

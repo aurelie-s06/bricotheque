@@ -17,7 +17,8 @@ const username = () =>
 
 export const signupValidator = vine.create({
   username: username().unique({ table: 'users', column: 'username' }),
-  email: email().unique({ table: 'users', column: 'email' }),
+  // No uniqueness check here: the controller must not reveal existing accounts
+  email: email(),
   password: newPassword(),
   passwordConfirmation: vine.string().sameAs('password'),
 })

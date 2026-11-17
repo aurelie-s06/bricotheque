@@ -33,6 +33,7 @@ export default function MinifigCard({
         <SetImage
           src={minifig.imgUrl}
           alt={t('image.minifig', { figNum: minifig.figNum, name: minifig.name })}
+          thumb
         />
       </div>
       <div className="set-card__body">

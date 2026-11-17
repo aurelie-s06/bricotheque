@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { errors as authErrors } from '@adonisjs/auth'
 import limiter from '@adonisjs/limiter/services/main'
 import User from '#models/user'
+import EmailVerification from '#services/email_verification'
 import { loginValidator } from '#validators/user'
 import { validationMessages } from '#validators/messages'
 import { resolveLocale, safeReturnPath } from '#helpers/locale'
@@ -58,6 +59,12 @@ export default class SessionController {
         return backWithErrors(ctx, { form: serverMessage(locale, 'auth.invalidCredentials') })
       }
       throw error
+    }
+
+    // Account not activated yet: send the link again instead of logging in
+    if (!user.emailVerifiedAt) {
+      await EmailVerification.send(user, locale)
+      return backWithErrors(ctx, { form: serverMessage(locale, 'auth.notVerified') })
     }
 
     await auth.use('web').login(user)

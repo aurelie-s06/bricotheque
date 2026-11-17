@@ -43,6 +43,35 @@ const fr = {
   'mail.resetExpiry': 'Ce lien est valable 1 heure et ne peut servir qu’une fois.',
   'mail.resetIgnore':
     'Si tu n’es pas à l’origine de cette demande, ignore cet e-mail : ton mot de passe ne changera pas.',
+  'mail.footer': 'Une question ? Contacte-nous : {url}',
+  'mail.confirmSubject': 'Active ton compte Briquothèque',
+  'mail.confirmIntro':
+    'Merci pour ton inscription ! Pour activer ton compte, confirme ton adresse e-mail en cliquant sur le bouton ci-dessous :',
+  'mail.confirmButton': 'Activer mon compte',
+  'mail.confirmExpiry': 'Ce lien est valable 24 heures.',
+  'mail.confirmIgnore':
+    'Si tu n’as pas créé de compte, ignore cet e-mail : aucun compte ne sera activé.',
+  'mail.existsSubject': 'Tentative d’inscription avec ton adresse',
+  'mail.existsIntro':
+    'Quelqu’un (peut-être toi) a essayé de créer un compte Briquothèque avec cette adresse e-mail, mais tu as déjà un compte.',
+  'mail.existsForgot': 'Mot de passe oublié ? Choisis-en un nouveau ici : {url}',
+  'mail.existsButton': 'Me connecter',
+  'mail.existsIgnore': 'Si ce n’était pas toi, ignore cet e-mail : rien n’a changé.',
+  'mail.passwordChangedSubject': 'Ton mot de passe a été modifié',
+  'mail.passwordChangedIntro': 'Le mot de passe de ton compte a été modifié le {date}.',
+  'mail.emailChangedSubject': 'Ton adresse e-mail a été modifiée',
+  'mail.emailChangedIntro': 'L’adresse e-mail de ton compte a été remplacée par {email} le {date}.',
+  'mail.notYou':
+    'Si ce n’est pas toi, choisis tout de suite un nouveau mot de passe ({url}) et écris-nous.',
+  'auth.checkEmail':
+    'Presque fini ! Un e-mail vient d’être envoyé à {email}. Clique sur le lien qu’il contient pour activer ton compte (valable 24 heures).',
+  'auth.verified': 'Ton adresse est confirmée. Bienvenue sur Briquothèque, {username} !',
+  'auth.verifyInvalid':
+    'Ce lien d’activation est invalide ou a expiré. Saisis ton adresse pour en recevoir un nouveau.',
+  'auth.notVerified':
+    'Ton compte n’est pas encore activé : nous venons de renvoyer le lien d’activation à ton adresse e-mail.',
+  'auth.verificationResent':
+    'Si un compte en attente d’activation existe pour cette adresse, un nouveau lien vient d’être envoyé. Pense à regarder dans les indésirables.',
 } as const
 
 type MessageKey = keyof typeof fr
@@ -83,6 +112,34 @@ const en: Record<MessageKey, string> = {
   'mail.resetExpiry': 'This link is valid for 1 hour and can only be used once.',
   'mail.resetIgnore':
     'If you did not make this request, ignore this email: your password will not change.',
+  'mail.footer': 'A question? Contact us: {url}',
+  'mail.confirmSubject': 'Activate your Briquothèque account',
+  'mail.confirmIntro':
+    'Thanks for signing up! To activate your account, confirm your email address by clicking the button below:',
+  'mail.confirmButton': 'Activate my account',
+  'mail.confirmExpiry': 'This link is valid for 24 hours.',
+  'mail.confirmIgnore':
+    'If you did not create an account, ignore this email: no account will be activated.',
+  'mail.existsSubject': 'Sign-up attempt with your address',
+  'mail.existsIntro':
+    'Someone (maybe you) tried to create a Briquothèque account with this email address, but you already have an account.',
+  'mail.existsForgot': 'Forgot your password? Choose a new one here: {url}',
+  'mail.existsButton': 'Log in',
+  'mail.existsIgnore': 'If it was not you, ignore this email: nothing has changed.',
+  'mail.passwordChangedSubject': 'Your password has been changed',
+  'mail.passwordChangedIntro': 'The password of your account was changed on {date}.',
+  'mail.emailChangedSubject': 'Your email address has been changed',
+  'mail.emailChangedIntro': 'The email address of your account was changed to {email} on {date}.',
+  'mail.notYou': 'If it was not you, choose a new password right away ({url}) and write to us.',
+  'auth.checkEmail':
+    'Almost done! An email has just been sent to {email}. Click the link inside to activate your account (valid for 24 hours).',
+  'auth.verified': 'Your address is confirmed. Welcome to Briquothèque, {username}!',
+  'auth.verifyInvalid':
+    'This activation link is invalid or has expired. Enter your address to get a new one.',
+  'auth.notVerified':
+    'Your account is not activated yet: we have just sent the activation link to your email address again.',
+  'auth.verificationResent':
+    'If an account waiting for activation exists for this address, a new link has just been sent. Remember to check your spam folder.',
 }
 
 const messages: Record<Locale, Record<MessageKey, string>> = { fr, en }

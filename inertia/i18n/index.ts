@@ -1,3 +1,4 @@
+import { createElement, Fragment, type ReactNode } from 'react'
 import { usePage } from '@inertiajs/react'
 import fr from '~/i18n/fr'
 import en from '~/i18n/en'
@@ -44,16 +45,44 @@ export function createI18n(locale: Locale) {
     return new Intl.NumberFormat(intlLocale, { style: 'currency', currency }).format(value)
   }
 
-  /** "2017-10-01" → "01/10/2017" (same day/month/year order in both languages) */
+  /**
+   * "2017-10-01" → "1 octobre 2017" / "1 October 2017": the month in words
+   * leaves no doubt about the day/month order (Opquast rule 4).
+   */
+  const dateFormat = new Intl.DateTimeFormat(intlLocale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
   function formatDate(isoDate: string | null | undefined) {
     if (!isoDate) {
       return null
     }
-    const [year, month, day] = isoDate.slice(0, 10).split('-')
-    return `${day}/${month}/${year}`
+    return dateFormat.format(new Date(`${isoDate.slice(0, 10)}T00:00:00Z`))
   }
 
-  return { locale, t, tc, formatNumber, formatPrice, formatDate }
+  /** Date in a <time> element, readable by programs too (Opquast rule 231) */
+  function dateNode(isoDate: string | null | undefined): ReactNode {
+    const text = formatDate(isoDate)
+    return text ? createElement('time', { dateTime: isoDate!.slice(0, 10) }, text) : null
+  }
+
+  /** Like t(), but the parameters can be elements (e.g. dates in <time>) */
+  function tn(key: MessageKey, params: Record<string, ReactNode>): ReactNode {
+    const parts = messages[key].split(/\{(\w+)\}/)
+    return createElement(
+      Fragment,
+      null,
+      ...parts.map((part, index) =>
+        index % 2 === 1
+          ? createElement(Fragment, { key: index }, part in params ? params[part] : `{${part}}`)
+          : part
+      )
+    )
+  }
+
+  return { locale, t, tc, tn, formatNumber, formatPrice, formatDate, dateNode }
 }
 
 /**

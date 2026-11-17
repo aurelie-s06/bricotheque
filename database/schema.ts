@@ -230,7 +230,7 @@ export class UserSetSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['autoAddMinifigs', 'createdAt', 'email', 'id', 'password', 'updatedAt', 'username', 'wishlistShareToken'] as const
+  static $columns = ['autoAddMinifigs', 'createdAt', 'email', 'emailVerifiedAt', 'id', 'password', 'updatedAt', 'username', 'wishlistShareToken'] as const
   $columns = UserSchema.$columns
   @booleanColumn()
   declare autoAddMinifigs: boolean
@@ -238,6 +238,8 @@ export class UserSchema extends BaseModel {
   declare createdAt: DateTime
   @column()
   declare email: string
+  @column.dateTime()
+  declare emailVerifiedAt: DateTime | null
   @column({ isPrimary: true })
   declare id: number
   @column({ serializeAs: null })

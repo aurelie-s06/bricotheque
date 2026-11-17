@@ -66,9 +66,9 @@ function EstimatedValue({ set }: { set: SetDetail }) {
 }
 
 function Availability({ set }: { set: SetDetail }) {
-  const { t, formatDate } = useI18n()
-  const from = formatDate(set.dateFirstAvailable)
-  const to = formatDate(set.dateLastAvailable)
+  const { t, tn, dateNode } = useI18n()
+  const from = dateNode(set.dateFirstAvailable)
+  const to = dateNode(set.dateLastAvailable)
   if (!from && !to) {
     return null
   }
@@ -77,10 +77,10 @@ function Availability({ set }: { set: SetDetail }) {
       <dt>{t('set.availability')}</dt>
       <dd>
         {from && to
-          ? t('set.availableFromTo', { from, to })
+          ? tn('set.availableFromTo', { from, to })
           : from
-            ? t('set.availableFrom', { from })
-            : t('set.availableUntil', { to: to! })}
+            ? tn('set.availableFrom', { from })
+            : tn('set.availableUntil', { to })}
       </dd>
     </>
   )
@@ -240,11 +240,15 @@ export default function SetShow({
 
           <ul className="link-list">
             <li>
-              <ExternalLink href={set.rebrickableUrl}>{t('set.onRebrickable')}</ExternalLink>
+              <ExternalLink href={set.rebrickableUrl} lang="en">
+                {t('set.onRebrickable')}
+              </ExternalLink>
             </li>
             {set.bricksetUrl && (
               <li>
-                <ExternalLink href={set.bricksetUrl}>{t('set.onBrickset')}</ExternalLink>
+                <ExternalLink href={set.bricksetUrl} lang="en">
+                  {t('set.onBrickset')}
+                </ExternalLink>
               </li>
             )}
           </ul>
@@ -274,6 +278,7 @@ export default function SetShow({
                   src={minifig.imgUrl}
                   alt={t('image.minifig', { figNum: minifig.figNum, name: minifig.name })}
                   className="minifig-card__image"
+                  thumb
                 />
                 <div>
                   <Link href={minifig.url} className="minifig-card__link">

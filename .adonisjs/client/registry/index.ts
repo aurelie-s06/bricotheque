@@ -50,6 +50,54 @@ const routes = {
     tokens: [[0,"minifigs"],[1,"ref"]],
     types: placeholder as Registry['minifigs.show']['types'],
   },
+  'pages.about': {
+    methods: ["GET","HEAD"],
+    pattern: '/a-propos',
+    tokens: [[0,"a-propos"]],
+    types: placeholder as Registry['pages.about']['types'],
+  },
+  'pages.legal': {
+    methods: ["GET","HEAD"],
+    pattern: '/mentions-legales',
+    tokens: [[0,"mentions-legales"]],
+    types: placeholder as Registry['pages.legal']['types'],
+  },
+  'pages.privacy': {
+    methods: ["GET","HEAD"],
+    pattern: '/confidentialite',
+    tokens: [[0,"confidentialite"]],
+    types: placeholder as Registry['pages.privacy']['types'],
+  },
+  'pages.terms': {
+    methods: ["GET","HEAD"],
+    pattern: '/conditions-utilisation',
+    tokens: [[0,"conditions-utilisation"]],
+    types: placeholder as Registry['pages.terms']['types'],
+  },
+  'pages.site_map': {
+    methods: ["GET","HEAD"],
+    pattern: '/plan-du-site',
+    tokens: [[0,"plan-du-site"]],
+    types: placeholder as Registry['pages.site_map']['types'],
+  },
+  'robots': {
+    methods: ["GET","HEAD"],
+    pattern: '/robots.txt',
+    tokens: [[0,"robots.txt"]],
+    types: placeholder as Registry['robots']['types'],
+  },
+  'sitemap.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/sitemap.xml',
+    tokens: [[0,"sitemap.xml"]],
+    types: placeholder as Registry['sitemap.index']['types'],
+  },
+  'sitemap.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/sitemaps/:name.xml',
+    tokens: [[0,"sitemaps"],[1,"name",".xml"]],
+    types: placeholder as Registry['sitemap.show']['types'],
+  },
   'search': {
     methods: ["GET","HEAD"],
     pattern: '/recherche',
@@ -62,6 +110,12 @@ const routes = {
     tokens: [[0,"langue"],[1,"locale"]],
     types: placeholder as Registry['locale.switch']['types'],
   },
+  'email.verify': {
+    methods: ["GET","HEAD"],
+    pattern: '/inscription/confirmer/:id',
+    tokens: [[0,"inscription"],[0,"confirmer"],[1,"id"]],
+    types: placeholder as Registry['email.verify']['types'],
+  },
   'new_account.create': {
     methods: ["GET","HEAD"],
     pattern: '/inscription',
@@ -73,6 +127,18 @@ const routes = {
     pattern: '/inscription',
     tokens: [[0,"inscription"]],
     types: placeholder as Registry['new_account.store']['types'],
+  },
+  'email.pending': {
+    methods: ["GET","HEAD"],
+    pattern: '/inscription/confirmation',
+    tokens: [[0,"inscription"],[0,"confirmation"]],
+    types: placeholder as Registry['email.pending']['types'],
+  },
+  'email.resend': {
+    methods: ["POST"],
+    pattern: '/inscription/renvoyer',
+    tokens: [[0,"inscription"],[0,"renvoyer"]],
+    types: placeholder as Registry['email.resend']['types'],
   },
   'session.create': {
     methods: ["GET","HEAD"],
@@ -163,6 +229,12 @@ const routes = {
     pattern: '/ma-collection/export.csv',
     tokens: [[0,"ma-collection"],[0,"export.csv"]],
     types: placeholder as Registry['collection.export']['types'],
+  },
+  'wishlist.export': {
+    methods: ["GET","HEAD"],
+    pattern: '/ma-wishlist/export.csv',
+    tokens: [[0,"ma-wishlist"],[0,"export.csv"]],
+    types: placeholder as Registry['wishlist.export']['types'],
   },
   'wishlist.index': {
     methods: ["GET","HEAD"],

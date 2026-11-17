@@ -2,7 +2,9 @@ import { test } from '@japa/runner'
 import hash from '@adonisjs/core/services/hash'
 import testUtils from '@adonisjs/core/services/test_utils'
 import db from '@adonisjs/lucid/services/db'
+import mail from '@adonisjs/mail/services/main'
 import User from '#models/user'
+import { SecurityAlertMail } from '#mails/account_mails'
 import UserSet from '#models/user_set'
 import { seedCatalogue } from '#tests/helpers/catalogue'
 import { PASSWORD, createUser, firstError, formErrors, resetRateLimits } from '#tests/helpers/auth'
@@ -128,5 +130,50 @@ test.group('My account', (group) => {
     response.assertFlashMessage('success', 'Ton compte et ta collection ont été supprimés.')
     assert.isNull(await User.find(user.id))
     assert.lengthOf(await UserSet.query().where('user_id', user.id), 0)
+  })
+})
+
+test.group('My account: security alerts', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+  group.each.setup(() => resetRateLimits())
+
+  test('a new password is announced by email', async ({ client }) => {
+    const fake = mail.fake()
+    const user = await createUser()
+    await client
+      .put('/mon-compte/mot-de-passe')
+      .loginAs(user)
+      .form({
+        currentPassword: PASSWORD,
+        password: 'another long password',
+        passwordConfirmation: 'another long password',
+      })
+      .withCsrfToken()
+      .redirects(0)
+
+    fake.mails.assertSent(SecurityAlertMail, ({ message }) => {
+      message.assertTo('fan@example.com')
+      message.assertSubject('Ton mot de passe a été modifié')
+      return true
+    })
+    mail.restore()
+  })
+
+  test('a new email address is announced to the previous one', async ({ client }) => {
+    const fake = mail.fake()
+    const user = await createUser()
+    await client
+      .put('/mon-compte/profil')
+      .loginAs(user)
+      .form({ username: 'fan', email: 'new@example.com', currentPassword: PASSWORD })
+      .withCsrfToken()
+      .redirects(0)
+
+    fake.mails.assertSent(SecurityAlertMail, ({ message }) => {
+      message.assertTo('fan@example.com')
+      message.assertSubject('Ton adresse e-mail a été modifiée')
+      return true
+    })
+    mail.restore()
   })
 })

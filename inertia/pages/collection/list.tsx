@@ -5,6 +5,7 @@ import { Download, Share2 } from 'lucide-react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
+import Breadcrumb from '~/components/breadcrumb'
 import SetCard, { type CollectionEntry } from '~/components/set_card'
 import MinifigCard from '~/components/minifig_card'
 import SetFilters, { type ThemeOption } from '~/components/set_filters'
@@ -27,6 +28,8 @@ type Props = InertiaProps<{
   entries: Record<string, CollectionEntry>
   wishlistTotal: { total: number; unknownPrices: number } | null
   shareUrl: string | null
+  /** Size in bytes of the CSV export (collection only) */
+  exportSize: number | null
 }>
 
 function SharePanel({ shareUrl }: { shareUrl: string | null }) {
@@ -92,7 +95,7 @@ function SharePanel({ shareUrl }: { shareUrl: string | null }) {
 export default function CollectionList(props: Props) {
   const { mode, owner, tab, counts, sets, minifigs, pagination, query, themeOptions, entries } =
     props
-  const { t, tc, formatPrice } = useI18n()
+  const { t, tc, formatPrice, formatNumber } = useI18n()
   const { url } = usePage()
   const path = url.split('?')[0]
   const readOnly = mode === 'shared'
@@ -129,6 +132,7 @@ export default function CollectionList(props: Props) {
   return (
     <>
       <Seo title={title} description={description} />
+      <Breadcrumb items={[{ name: t('breadcrumb.home'), url: '/' }, { name: title }]} />
 
       <div className="page-header">
         <h1>{title}</h1>
@@ -155,11 +159,23 @@ export default function CollectionList(props: Props) {
 
       {mode === 'wishlist' && <SharePanel shareUrl={props.shareUrl} />}
 
-      {mode === 'collection' && totalItems > 0 && (
+      {mode !== 'shared' && totalItems > 0 && (
         <p className="collection-export">
-          <a href="/ma-collection/export.csv" className="btn btn--secondary btn--sm" download>
-            <Download size={16} aria-hidden="true" /> {t('collection.export')}
-          </a>
+          <a
+            href={mode === 'collection' ? '/ma-collection/export.csv' : '/ma-wishlist/export.csv'}
+            className="btn btn--secondary btn--sm"
+            download
+          >
+            <Download size={16} aria-hidden="true" />{' '}
+            {t(mode === 'collection' ? 'collection.export' : 'wishlist.export')}
+          </a>{' '}
+          {props.exportSize !== null && (
+            <span className="field__hint">
+              {t(mode === 'collection' ? 'collection.exportInfo' : 'wishlist.exportInfo', {
+                size: formatNumber(Math.max(1, Math.round(props.exportSize / 1024))),
+              })}
+            </span>
+          )}
         </p>
       )}
 
@@ -223,6 +239,8 @@ export default function CollectionList(props: Props) {
           <section className="catalogue__results" aria-label={t('sets.resultsLabel')}>
             <p className="text-muted results-count" role="status">
               {tc('sets.results', pagination.total)}
+              {pagination.lastPage > 1 &&
+                ` · ${t('sets.pageOf', { page: pagination.currentPage, last: pagination.lastPage, perPage: pagination.perPage })}`}
             </p>
             {items.length === 0 ? (
               <p className="empty-state">{t('collection.noMatch')}</p>

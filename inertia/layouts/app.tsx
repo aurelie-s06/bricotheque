@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react'
 import { usePage } from '@inertiajs/react'
+import { Link } from '@adonisjs/inertia/react'
 import Logo from '~/components/logo'
 import PrimaryNav from '~/components/header/primary_nav'
 import AccountMenu from '~/components/header/account_menu'
@@ -54,7 +55,31 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <footer className="site-footer">
         <div className="container site-footer__inner">
           <div className="studs" aria-hidden="true" />
-          <p>{t('site.legal')}</p>
+          <nav aria-label={t('footer.nav')}>
+            <ul className="site-footer__links">
+              <li>
+                <Link href="/a-propos">{t('footer.about')}</Link>
+              </li>
+              <li>
+                <Link href="/a-propos#contact">{t('footer.contact')}</Link>
+              </li>
+              <li>
+                <Link href="/plan-du-site">{t('footer.siteMap')}</Link>
+              </li>
+              <li>
+                <Link href="/mentions-legales">{t('footer.legal')}</Link>
+              </li>
+              <li>
+                <Link href="/confidentialite">{t('footer.privacy')}</Link>
+              </li>
+              <li>
+                <Link href="/conditions-utilisation">{t('footer.terms')}</Link>
+              </li>
+            </ul>
+          </nav>
+          <p>
+            {t('site.legal')} <Link href="/a-propos#sources">{t('site.reuse')}</Link>
+          </p>
           <p>© {new Date().getFullYear()} Briquothèque</p>
         </div>
       </footer>

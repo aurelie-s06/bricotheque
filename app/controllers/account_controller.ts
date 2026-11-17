@@ -10,6 +10,11 @@ import { validationMessages } from '#validators/messages'
 import { resolveLocale } from '#helpers/locale'
 import { serverMessage } from '#helpers/server_messages'
 import { backWithErrors } from '#helpers/form_errors'
+import mail from '@adonisjs/mail/services/main'
+import env from '#start/env'
+import { SecurityAlertMail } from '#mails/account_mails'
+
+const forgotUrl = () => `${env.get('APP_URL').replace(/\/$/, '')}/mot-de-passe-oublie`
 
 export default class AccountController {
   /** GET /mon-compte */
@@ -51,8 +56,13 @@ export default class AccountController {
       }
     }
 
+    const previousEmail = user.email
     user.merge({ username: data.username, email: data.email })
     await user.save()
+    if (previousEmail !== user.email) {
+      // Warn the previous address, in case someone else made the change
+      await mail.send(new SecurityAlertMail(previousEmail, user, 'email', forgotUrl(), locale))
+    }
     session.flash('success', serverMessage(locale, 'account.profileUpdated'))
     return response.redirect().toRoute('account.show')
   }
@@ -87,6 +97,7 @@ export default class AccountController {
 
     user.password = data.password
     await user.save()
+    await mail.send(new SecurityAlertMail(user.email, user, 'password', forgotUrl(), locale))
     session.flash('success', serverMessage(locale, 'account.passwordUpdated'))
     return response.redirect().toRoute('account.show')
   }

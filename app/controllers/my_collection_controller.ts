@@ -43,6 +43,8 @@ export default class MyCollectionController {
       ...(await listProps(user.id, 'owned', request.qs())),
       wishlistTotal: null,
       shareUrl: null,
+      /** Size of the CSV export, shown on the download link (Opquast rule 148) */
+      exportSize: Buffer.byteLength(await this.#csv(user.id, resolveLocale(request), 'owned')),
     })
   }
 
@@ -55,6 +57,7 @@ export default class MyCollectionController {
       ...(await listProps(user.id, 'wanted', request.qs())),
       wishlistTotal: await wishlistTotal(user.id),
       shareUrl: user.wishlistShareToken ? this.#shareUrl(request, user.wishlistShareToken) : null,
+      exportSize: Buffer.byteLength(await this.#csv(user.id, resolveLocale(request), 'wanted')),
     })
   }
 
@@ -70,6 +73,7 @@ export default class MyCollectionController {
       ...(await listProps(owner.id, 'wanted', request.qs())),
       wishlistTotal: await wishlistTotal(owner.id),
       shareUrl: null,
+      exportSize: null,
     })
   }
 
@@ -99,12 +103,28 @@ export default class MyCollectionController {
    */
   async export({ auth, request, response }: HttpContext) {
     const user = auth.getUserOrFail()
-    const locale = resolveLocale(request)
+    const filename = `briquotheque-collection-${DateTime.utc().toISODate()}.csv`
+    response.header('Content-Type', 'text/csv; charset=utf-8')
+    response.header('Content-Disposition', `attachment; filename="${filename}"`)
+    return response.send(await this.#csv(user.id, resolveLocale(request), 'owned'))
+  }
+
+  /** GET /ma-wishlist/export.csv: same format for the wishlist (Opquast rule 21) */
+  async exportWishlist({ auth, request, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const filename = `briquotheque-wishlist-${DateTime.utc().toISODate()}.csv`
+    response.header('Content-Type', 'text/csv; charset=utf-8')
+    response.header('Content-Disposition', `attachment; filename="${filename}"`)
+    return response.send(await this.#csv(user.id, resolveLocale(request), 'wanted'))
+  }
+
+  /** CSV of the owned or wanted sets and minifigs (UTF-8 with BOM, ";" for spreadsheets) */
+  async #csv(userId: number, locale: 'fr' | 'en', status: 'owned' | 'wanted') {
     const sets = await db
       .from('user_sets')
       .join('sets', 'sets.id', 'user_sets.set_id')
       .join('themes', 'themes.id', 'sets.theme_id')
-      .where({ 'user_sets.user_id': user.id, 'user_sets.status': 'owned' })
+      .where({ 'user_sets.user_id': userId, 'user_sets.status': status })
       .orderBy('sets.set_num')
       .select(
         'sets.set_num',
@@ -123,7 +143,7 @@ export default class MyCollectionController {
       .from('user_minifigs')
       .join('minifigs', 'minifigs.id', 'user_minifigs.minifig_id')
       .leftJoin('themes', 'themes.id', 'minifigs.main_theme_id')
-      .where({ 'user_minifigs.user_id': user.id, 'user_minifigs.status': 'owned' })
+      .where({ 'user_minifigs.user_id': userId, 'user_minifigs.status': status })
       .orderBy('minifigs.fig_num')
       .select(
         'minifigs.fig_num',
@@ -207,10 +227,7 @@ export default class MyCollectionController {
       ]),
     ]
 
-    const filename = `briquotheque-collection-${DateTime.utc().toISODate()}.csv`
-    response.header('Content-Type', 'text/csv; charset=utf-8')
-    response.header('Content-Disposition', `attachment; filename="${filename}"`)
-    return response.send(`\uFEFF${toCsv(rows, ';')}`)
+    return `\uFEFF${toCsv(rows, ';')}`
   }
 
   #shareUrl(request: HttpContext['request'], token: string) {

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { router, usePage } from '@inertiajs/react'
-import { Check, Heart, PartyPopper } from 'lucide-react'
+import { Check, Heart, Lock, PartyPopper } from 'lucide-react'
 import { useI18n } from '~/i18n'
 
 type Kind = 'sets' | 'minifigs'
@@ -76,11 +76,16 @@ export default function CollectionButtons({
     const login = `/connexion?retour=${encodeURIComponent(url)}`
     return (
       <div className={className}>
+        {/* Links to a members-only action: marked with a lock (Opquast rule 143) */}
         <a href={login} className="collection-button" title={t('collection.loginToUse')}>
           <Check size={16} aria-hidden="true" /> {t('collection.own')}
+          <Lock size={12} aria-hidden="true" className="collection-button__lock" />
+          <span className="visually-hidden"> ({t('collection.loginRequired')})</span>
         </a>
         <a href={login} className="collection-button" title={t('collection.loginToUse')}>
           <Heart size={16} aria-hidden="true" /> {t('collection.want')}
+          <Lock size={12} aria-hidden="true" className="collection-button__lock" />
+          <span className="visually-hidden"> ({t('collection.loginRequired')})</span>
         </a>
       </div>
     )
