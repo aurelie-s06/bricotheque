@@ -11,6 +11,10 @@ export interface ApiDefinition {
     index: typeof routes['themes.index']
     show: typeof routes['themes.show']
   }
+  minifigs: {
+    index: typeof routes['minifigs.index']
+    show: typeof routes['minifigs.show']
+  }
   search: typeof routes['search']
   locale: {
     switch: typeof routes['locale.switch']

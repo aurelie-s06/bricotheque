@@ -42,6 +42,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                 </NavLink>
               </li>
               <li>
+                <NavLink route="minifigs.index" className="site-nav__link">
+                  {t('nav.minifigs')}
+                </NavLink>
+              </li>
+              <li>
                 <NavLink route="themes.index" className="site-nav__link">
                   {t('nav.themes')}
                 </NavLink>

@@ -26,7 +26,7 @@ test.group('Layout', () => {
     const response = await client.get('/recherche').qs({ q: '75192' })
 
     response.assertStatus(200)
-    response.assertTextIncludes('Recherche « 75192 » dans les sets')
+    response.assertTextIncludes('Recherche « 75192 »')
   })
 
   test('static assets are served', async ({ client }) => {

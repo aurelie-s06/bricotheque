@@ -17,7 +17,7 @@ const STATUSES = ['available', 'retired', 'unknown'] as const
 const TYPES = ['set', 'book', 'gear', 'parts', 'bundle', 'all'] as const
 
 /** Two number inputs (min / max) under one legend */
-function Range({
+export function Range({
   name,
   legend,
   minLabel,

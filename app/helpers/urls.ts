@@ -30,6 +30,10 @@ export function rebrickableSetUrl(setNum: string) {
   return `https://rebrickable.com/sets/${encodeURIComponent(setNum)}/`
 }
 
+export function rebrickableMinifigUrl(figNum: string) {
+  return `https://rebrickable.com/minifigs/${encodeURIComponent(figNum)}/`
+}
+
 export function bricksetSetUrl(setNum: string) {
   return `https://brickset.com/sets/${encodeURIComponent(setNum)}`
 }

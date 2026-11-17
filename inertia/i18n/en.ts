@@ -178,6 +178,47 @@ const en: Record<keyof typeof fr, string> = {
   'auth.noAccount': 'No account yet?',
   'auth.createAccount': 'Create an account',
   'auth.hasAccount': 'Already have an account?',
+
+  // Minifigs
+  'nav.minifigs': 'Minifigs',
+  'minifigs.title': 'Minifig catalogue',
+  'minifigs.titleSearch': 'Minifigs matching “{q}”',
+  'minifigs.titleTheme': '{theme} minifigs',
+  'minifigs.metaDescription':
+    'Every minifig, old and new: search by name or number, filter by main theme and year of first appearance.',
+  'minifigs.empty': 'No matching minifig',
+  'minifigs.seeAll': 'See all minifigs',
+  'filters.minifigQPlaceholder': 'e.g. Han Solo or fig-000123',
+  'filters.mainTheme': 'Main theme',
+  'filters.yearFirst': 'Year of first appearance',
+  'filters.yearFirstMin': 'First appearance, minimum year',
+  'filters.yearFirstMax': 'First appearance, maximum year',
+  'sort.number': 'Number',
+  'count.minifigs_one': '{count} minifig',
+  'count.minifigs_other': '{count} minifigs',
+  'minifig.number': 'Minifig no. {figNum}',
+  'minifig.mainTheme': 'Main theme',
+  'minifig.firstYear': 'First appearance',
+  'minifig.pieces': 'Pieces',
+  'minifig.inSets': 'Appears in',
+  'minifig.setsTitle': 'Sets with this minifig ({count})',
+  'minifig.noSets': 'This minifig does not appear in any known set.',
+  'minifig.onRebrickable': 'View on Rebrickable',
+  'minifig.metaDescription': 'Minifig {figNum} {name}, found in {sets}.',
+  'minifig.metaDescriptionNoSet': 'Minifig {figNum} {name}.',
+  'minifig.quantity': '×{count} in this set',
+
+  // Global search
+  'search.title': 'Search',
+  'search.titleQuery': 'Search “{q}”',
+  'search.metaDescription': 'Search sets and minifigs by name or number.',
+  'search.prompt': 'Type the name or number of a set or a minifig.',
+  'search.setsSection': 'Sets',
+  'search.minifigsSection': 'Minifigs',
+  'search.seeAll': 'See all results ({count})',
+  'search.sectionEmpty': 'No result in this category.',
+  'search.noResults': 'No result for “{q}”',
+  'search.noResultsHint': 'Check the spelling or try a number (e.g. 75192).',
 }
 
 export default en

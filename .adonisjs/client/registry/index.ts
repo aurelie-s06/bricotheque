@@ -38,6 +38,18 @@ const routes = {
     tokens: [[0,"themes"],[1,"slug"]],
     types: placeholder as Registry['themes.show']['types'],
   },
+  'minifigs.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/minifigs',
+    tokens: [[0,"minifigs"]],
+    types: placeholder as Registry['minifigs.index']['types'],
+  },
+  'minifigs.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/minifigs/:ref',
+    tokens: [[0,"minifigs"],[1,"ref"]],
+    types: placeholder as Registry['minifigs.show']['types'],
+  },
   'search': {
     methods: ["GET","HEAD"],
     pattern: '/recherche',

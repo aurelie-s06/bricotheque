@@ -9,6 +9,8 @@ export type ScannedRoutes = {
     'sets.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
     'themes.index': { paramsTuple?: []; params?: {} }
     'themes.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'minifigs.index': { paramsTuple?: []; params?: {} }
+    'minifigs.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
     'search': { paramsTuple?: []; params?: {} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
@@ -23,6 +25,8 @@ export type ScannedRoutes = {
     'sets.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
     'themes.index': { paramsTuple?: []; params?: {} }
     'themes.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'minifigs.index': { paramsTuple?: []; params?: {} }
+    'minifigs.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
     'search': { paramsTuple?: []; params?: {} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
@@ -34,6 +38,8 @@ export type ScannedRoutes = {
     'sets.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
     'themes.index': { paramsTuple?: []; params?: {} }
     'themes.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'minifigs.index': { paramsTuple?: []; params?: {} }
+    'minifigs.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
     'search': { paramsTuple?: []; params?: {} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }

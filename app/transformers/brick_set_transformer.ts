@@ -29,6 +29,17 @@ export default class BrickSetTransformer extends BaseTransformer<BrickSet> {
   }
 
   /**
+   * Set containing a minifig, with the number of copies of the minifig
+   */
+  withQuantity() {
+    const quantity = this.resource.$extras.pivot_quantity
+    return {
+      ...this.toObject(),
+      quantity: quantity === undefined ? null : Number(quantity),
+    }
+  }
+
+  /**
    * Set page
    */
   forDetail() {

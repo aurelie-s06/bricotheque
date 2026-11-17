@@ -102,6 +102,34 @@ export default class ThemeTree {
   }
 
   /**
+   * Number of minifigs per main theme (subthemes included).
+   */
+  async minifigCounts(): Promise<Map<number, number>> {
+    const rows: { main_theme_id: number; total: number }[] = await db
+      .from('minifigs')
+      .whereNotNull('main_theme_id')
+      .groupBy('main_theme_id')
+      .select('main_theme_id')
+      .count('* as total')
+    return this.#sumUp(new Map(rows.map((row) => [row.main_theme_id, Number(row.total)])))
+  }
+
+  /** Adds the counts of the subthemes to their parents */
+  #sumUp(direct: Map<number, number>) {
+    const totals = new Map<number, number>()
+    const total = (id: number): number => {
+      const cached = totals.get(id)
+      if (cached !== undefined) return cached
+      let sum = direct.get(id) ?? 0
+      for (const child of this.childrenOf(id)) sum += total(child.id)
+      totals.set(id, sum)
+      return sum
+    }
+    for (const id of this.byId.keys()) total(id)
+    return totals
+  }
+
+  /**
    * Flat list for a <select>: roots then their subthemes, indented.
    * Only themes that have real sets are listed.
    */

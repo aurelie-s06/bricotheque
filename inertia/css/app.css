@@ -1161,3 +1161,8 @@ select.field__input {
 .original-text[open] summary {
   margin-bottom: var(--space-1);
 }
+
+/* ---------- Global search ---------- */
+.search-section + .search-section {
+  margin-top: var(--space-6);
+}

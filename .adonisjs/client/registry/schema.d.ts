@@ -73,6 +73,32 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/themes_controller').default['show']>>>
     }
   }
+  'minifigs.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/minifigs'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/minifigs_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/minifigs_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/minifigs_controller').default['index']>>>
+    }
+  }
+  'minifigs.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/minifigs/:ref'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { ref: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/minifigs_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/minifigs_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/minifigs_controller').default['show']>>>
+    }
+  }
   'search': {
     methods: ["GET","HEAD"]
     pattern: '/recherche'
@@ -81,9 +107,9 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: unknown
-      errorResponse: unknown
-      rawResponse: ExtractRawResponse<unknown>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/search_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/search_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/search_controller').default['index']>>>
     }
   }
   'locale.switch': {

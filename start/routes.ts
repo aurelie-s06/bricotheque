@@ -22,15 +22,13 @@ router.get('sets/:ref', [controllers.Sets, 'show']).as('sets.show')
 router.get('themes', [controllers.Themes, 'index']).as('themes.index')
 router.get('themes/:slug', [controllers.Themes, 'show']).as('themes.show')
 
+router.get('minifigs', [controllers.Minifigs, 'index']).as('minifigs.index')
+router.get('minifigs/:ref', [controllers.Minifigs, 'show']).as('minifigs.show')
+
 /**
- * Global search: sets only for now (minifigs come with step 6)
+ * Global search (header): sets and minifigs
  */
-router
-  .get('recherche', ({ request, response }) => {
-    const q = String(request.input('q', '')).trim().slice(0, 100)
-    return response.redirect().toRoute('sets.index', {}, { qs: q ? { q } : {} })
-  })
-  .as('search')
+router.get('recherche', [controllers.Search, 'index']).as('search')
 
 /**
  * Language switcher: remembers the choice in a cookie for one year, then

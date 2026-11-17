@@ -177,6 +177,48 @@ const fr = {
   'auth.noAccount': 'Pas encore de compte ?',
   'auth.createAccount': 'Créer un compte',
   'auth.hasAccount': 'Déjà un compte ?',
+
+  // Minifigs
+  'nav.minifigs': 'Minifigs',
+  'minifigs.title': 'Catalogue des minifigs',
+  'minifigs.titleSearch': 'Recherche « {q} » dans les minifigs',
+  'minifigs.titleTheme': 'Minifigs {theme}',
+  'minifigs.metaDescription':
+    'Toutes les minifigs, anciennes et récentes : recherche par nom ou numéro, filtres par thème principal et année de première apparition.',
+  'minifigs.empty': 'Aucune minifig ne correspond',
+  'minifigs.seeAll': 'Voir toutes les minifigs',
+  'filters.minifigQPlaceholder': 'ex. Han Solo ou fig-000123',
+  'filters.mainTheme': 'Thème principal',
+  'filters.yearFirst': 'Année de première apparition',
+  'filters.yearFirstMin': 'Première apparition, année minimum',
+  'filters.yearFirstMax': 'Première apparition, année maximum',
+  'sort.number': 'Numéro',
+  'count.minifigs_one': '{count} minifig',
+  'count.minifigs_other': '{count} minifigs',
+  'minifig.number': 'Minifig n° {figNum}',
+  'minifig.mainTheme': 'Thème principal',
+  'minifig.firstYear': 'Première apparition',
+  'minifig.pieces': 'Pièces',
+  'minifig.inSets': 'Présente dans',
+  'minifig.setsTitle': 'Sets contenant cette minifig ({count})',
+  'minifig.noSets': 'Cette minifig n’apparaît dans aucun set connu.',
+  'minifig.onRebrickable': 'Voir sur Rebrickable',
+  'minifig.metaDescription': 'Minifig {figNum} {name}, présente dans {sets}.',
+  'minifig.metaDescriptionNoSet': 'Minifig {figNum} {name}.',
+  'minifig.quantity': '×{count} dans ce set',
+
+  // Global search
+  'search.title': 'Recherche',
+  'search.titleQuery': 'Recherche « {q} »',
+  'search.metaDescription': 'Recherche de sets et de minifigs par nom ou par numéro.',
+  'search.prompt': 'Tape un nom ou un numéro de set ou de minifig.',
+  'search.setsSection': 'Sets',
+  'search.minifigsSection': 'Minifigs',
+  'search.seeAll': 'Voir tous les résultats ({count})',
+  'search.sectionEmpty': 'Aucun résultat dans cette catégorie.',
+  'search.noResults': 'Aucun résultat pour « {q} »',
+  'search.noResultsHint':
+    'Vérifie l’orthographe ou essaie un numéro (ex. 75192). Les noms sont en anglais.',
 } as const
 
 export default fr

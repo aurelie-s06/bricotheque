@@ -100,12 +100,6 @@ test.group('Catalogue: /sets', (group) => {
     const second = await client.get('/sets').qs({ theme: 'technic', page: '2' }).withInertia()
     assert.lengthOf(second.inertiaProps.sets, 3)
   })
-
-  test('the header search redirects to the catalogue', async ({ client }) => {
-    const response = await client.get('/recherche').qs({ q: '75192' }).redirects(0)
-    response.assertStatus(302)
-    response.assertHeader('location', '/sets?q=75192')
-  })
 })
 
 test.group('Catalogue: /sets/:ref', (group) => {
