@@ -102,7 +102,6 @@ const fr = {
   'kind.set': 'Sets',
   'kind.book': 'Livres',
   'kind.gear': 'Produits dérivés',
-  'kind.parts': 'Lots de pièces',
   'kind.bundle': 'Lots de sets',
   'kind.all': 'Tout',
 

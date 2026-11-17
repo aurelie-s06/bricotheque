@@ -103,7 +103,6 @@ const en: Record<keyof typeof fr, string> = {
   'kind.set': 'Sets',
   'kind.book': 'Books',
   'kind.gear': 'Gear',
-  'kind.parts': 'Parts packs',
   'kind.bundle': 'Bundles',
   'kind.all': 'Everything',
 

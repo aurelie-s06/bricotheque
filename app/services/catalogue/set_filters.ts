@@ -16,7 +16,8 @@ export type SetSort = (typeof SET_SORTS)[number]
 export const SET_STATUSES = ['available', 'retired', 'unknown'] as const
 export type SetStatus = (typeof SET_STATUSES)[number]
 
-export const SET_TYPES = ['set', 'book', 'gear', 'parts', 'bundle', 'all'] as const
+/** Spare parts (kind "parts") are only shown with "all", not on their own */
+export const SET_TYPES = ['set', 'book', 'gear', 'bundle', 'all'] as const
 export type SetType = (typeof SET_TYPES)[number]
 
 export type SetFilters = {

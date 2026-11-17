@@ -34,6 +34,15 @@ test.group('Catalogue: /sets', (group) => {
     assert.deepEqual(setNums(books.inertiaProps), ['0003977811-1'])
   })
 
+  test('spare parts have no list of their own: type=parts shows the sets', async ({
+    client,
+    assert,
+  }) => {
+    const response = await client.get('/sets').qs({ type: 'parts' }).withInertia()
+    assert.notInclude(setNums(response.inertiaProps), '10003-1')
+    assert.notProperty(response.inertiaProps.query, 'type')
+  })
+
   test('searching "75192" finds 75192-1 and its variant', async ({ client, assert }) => {
     const response = await client.get('/sets').qs({ q: '75192' }).withInertia()
     assert.deepEqual(setNums(response.inertiaProps), ['75192-1', '75192-2'])
