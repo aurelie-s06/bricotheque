@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
@@ -33,14 +32,6 @@ export default function MinifigsIndex({
   const pageSuffix =
     pagination.currentPage > 1 ? t('sets.pageSuffix', { page: pagination.currentPage }) : ''
 
-  // Folded on small screens, unfolded beside the results on large screens
-  const filtersPanel = useRef<HTMLDetailsElement>(null)
-  useEffect(() => {
-    if (filtersPanel.current && window.matchMedia('(min-width: 960px)').matches) {
-      filtersPanel.current.open = true
-    }
-  }, [])
-
   return (
     <>
       <Seo title={`${title}${pageSuffix}`} description={t('minifigs.metaDescription')} />
@@ -55,10 +46,7 @@ export default function MinifigsIndex({
       </div>
 
       <div className="catalogue">
-        <details className="catalogue__filters" ref={filtersPanel}>
-          <summary className="catalogue__filters-toggle">{t('sets.filtersToggle')}</summary>
-          <MinifigFilters query={query} themeOptions={themeOptions} />
-        </details>
+        <MinifigFilters query={query} themeOptions={themeOptions} />
 
         <section className="catalogue__results" aria-label={t('sets.resultsLabel')}>
           {minifigs.length ? (

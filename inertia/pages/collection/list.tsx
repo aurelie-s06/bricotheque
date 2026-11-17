@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { usePage } from '@inertiajs/react'
 import { Form, Link } from '@adonisjs/inertia/react'
 import { Download, Share2 } from 'lucide-react'
@@ -113,14 +113,6 @@ export default function CollectionList(props: Props) {
   const pageQuery = tab === 'minifigs' ? { ...query, tab: 'minifigs' } : query
   const items = tab === 'sets' ? sets : minifigs
 
-  // Filters unfolded beside the results on large screens only
-  const filtersPanel = useRef<HTMLDetailsElement>(null)
-  useEffect(() => {
-    if (filtersPanel.current && window.matchMedia('(min-width: 960px)').matches) {
-      filtersPanel.current.open = true
-    }
-  }, [])
-
   const emptyTitle =
     mode === 'collection'
       ? t('collection.empty')
@@ -208,8 +200,7 @@ export default function CollectionList(props: Props) {
       ) : (
         <div className={readOnly ? undefined : 'catalogue'}>
           {!readOnly && (
-            <details className="catalogue__filters" ref={filtersPanel}>
-              <summary className="catalogue__filters-toggle">{t('sets.filtersToggle')}</summary>
+            <>
               {tab === 'sets' ? (
                 <SetFilters
                   query={query}
@@ -226,7 +217,7 @@ export default function CollectionList(props: Props) {
                   hidden={{ tab: 'minifigs' }}
                 />
               )}
-            </details>
+            </>
           )}
 
           <section className="catalogue__results" aria-label={t('sets.resultsLabel')}>

@@ -1,12 +1,12 @@
-import { type FormEvent } from 'react'
-import { router } from '@inertiajs/react'
-import { Range, type ThemeOption } from '~/components/set_filters'
+import FilterBar, { Range, rangeLabel, type ActiveFilter } from '~/components/filter_bar'
+import { type ThemeOption } from '~/components/set_filters'
 import { useI18n, type MessageKey } from '~/i18n'
 
 const SORTS = ['recent', 'oldest', 'name', 'number'] as const
 
 /**
- * Minifig filters: plain GET form, empty fields dropped with JavaScript.
+ * Minifig filters: search, sort, and the main theme and year of first
+ * appearance in the "Filters" panel.
  */
 export default function MinifigFilters({
   query,
@@ -22,46 +22,41 @@ export default function MinifigFilters({
 }) {
   const { t } = useI18n()
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const params: Record<string, string> = {}
-    for (const [key, value] of new FormData(event.currentTarget)) {
-      if (typeof value === 'string' && value.trim() !== '') {
-        params[key] = value.trim()
-      }
-    }
-    router.get(action, params)
+  const active: ActiveFilter[] = []
+  if (query.theme) {
+    const theme = themeOptions.find((option) => option.slug === query.theme)
+    active.push({
+      keys: ['theme'],
+      label: t('filters.chip', {
+        name: t('filters.themeShort'),
+        value: theme?.name ?? query.theme,
+      }),
+    })
+  }
+  if (query.year_min || query.year_max) {
+    active.push({
+      keys: ['year_min', 'year_max'],
+      label: t('filters.chip', {
+        name: t('filters.yearFirstShort'),
+        value: rangeLabel(t, query.year_min, query.year_max),
+      }),
+    })
   }
 
   return (
-    <form className="filters" action={action} method="get" onSubmit={onSubmit}>
-      {Object.entries(hidden).map(([name, value]) => (
-        <input key={name} type="hidden" name={name} value={value} />
-      ))}
-      <div className="field">
-        <label className="field__label" htmlFor="filter-q">
-          {t('filters.q')}
-        </label>
-        <input
-          className="field__input"
-          id="filter-q"
-          name="q"
-          type="search"
-          defaultValue={query.q ?? ''}
-          placeholder={t('filters.minifigQPlaceholder')}
-        />
-      </div>
-
-      <div className="field">
+    <FilterBar
+      action={action}
+      query={query}
+      hidden={hidden}
+      searchPlaceholder={t('filters.minifigQPlaceholder')}
+      sortOptions={SORTS.map((sort) => ({ value: sort, label: t(`sort.${sort}` as MessageKey) }))}
+      active={active}
+    >
+      <div className="field filter-bar__wide">
         <label className="field__label" htmlFor="filter-theme">
           {t('filters.mainTheme')}
         </label>
-        <select
-          className="field__input"
-          id="filter-theme"
-          name="theme"
-          defaultValue={query.theme ?? ''}
-        >
+        <select className="input" id="filter-theme" name="theme" defaultValue={query.theme ?? ''}>
           <option value="">{t('filters.allThemes')}</option>
           {themeOptions.map((theme) => (
             <option key={theme.slug} value={theme.slug}>
@@ -80,34 +75,6 @@ export default function MinifigFilters({
         min={1949}
         max={2100}
       />
-
-      <div className="field">
-        <label className="field__label" htmlFor="filter-sort">
-          {t('filters.sort')}
-        </label>
-        <select
-          className="field__input"
-          id="filter-sort"
-          name="sort"
-          defaultValue={query.sort ?? ''}
-        >
-          <option value="">{query.q ? t('filters.relevance') : t('sort.recent')}</option>
-          {SORTS.map((sort) => (
-            <option key={sort} value={sort}>
-              {t(`sort.${sort}` as MessageKey)}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="filters__actions">
-        <button type="submit" className="btn">
-          {t('filters.submit')}
-        </button>
-        <a className="btn btn--secondary" href={action}>
-          {t('filters.reset')}
-        </a>
-      </div>
-    </form>
+    </FilterBar>
   )
 }

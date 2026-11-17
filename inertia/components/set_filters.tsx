@@ -1,5 +1,4 @@
-import { type FormEvent } from 'react'
-import { router } from '@inertiajs/react'
+import FilterBar, { PillGroup, Range, rangeLabel, type ActiveFilter } from '~/components/filter_bar'
 import { useI18n, type MessageKey } from '~/i18n'
 
 export type ThemeOption = { slug: string; name: string; depth: number }
@@ -15,57 +14,11 @@ const SORTS = [
 ] as const
 const STATUSES = ['available', 'retired', 'unknown'] as const
 const TYPES = ['set', 'book', 'gear', 'parts', 'bundle', 'all'] as const
-
-/** Two number inputs (min / max) under one legend */
-export function Range({
-  name,
-  legend,
-  minLabel,
-  maxLabel,
-  query,
-  step,
-  min,
-  max,
-}: {
-  name: 'year' | 'parts' | 'price'
-  legend: string
-  minLabel: string
-  maxLabel: string
-  query: Record<string, string>
-  step?: string
-  min?: number
-  max?: number
-}) {
-  const { t } = useI18n()
-  return (
-    <fieldset className="filters__range">
-      <legend className="field__label">{legend}</legend>
-      {(['min', 'max'] as const).map((bound) => (
-        <span key={bound}>
-          <label className="visually-hidden" htmlFor={`filter-${name}-${bound}`}>
-            {bound === 'min' ? minLabel : maxLabel}
-          </label>
-          <input
-            className="field__input"
-            id={`filter-${name}-${bound}`}
-            name={`${name}_${bound}`}
-            type="number"
-            inputMode={step ? 'decimal' : 'numeric'}
-            min={min}
-            max={max}
-            step={step}
-            placeholder={t(bound === 'min' ? 'filters.from' : 'filters.to')}
-            defaultValue={query[`${name}_${bound}`] ?? ''}
-          />
-        </span>
-      ))}
-    </fieldset>
-  )
-}
+const CONDITIONS = ['built', 'in_box', 'sealed', 'partial'] as const
 
 /**
- * Catalogue filters. A plain GET form (works without JavaScript); with
- * JavaScript, empty fields are dropped so the URL stays short.
+ * Set filters: search, sort, product type (pills) and the advanced filters
+ * (theme, year, pieces, price, status, condition) in the "Filters" panel.
  */
 export default function SetFilters({
   query,
@@ -82,51 +35,93 @@ export default function SetFilters({
   /** Condition of owned sets (collection page) */
   showCondition?: boolean
 }) {
-  const { t } = useI18n()
-
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const params: Record<string, string> = {}
-    for (const [key, value] of new FormData(event.currentTarget)) {
-      if (typeof value === 'string' && value.trim() !== '') {
-        params[key] = value.trim()
-      }
-    }
-    router.get(action, params)
-  }
-
+  const { t, formatPrice } = useI18n()
   const value = (key: string) => query[key] ?? ''
 
-  return (
-    <form className="filters" action={action} method="get" onSubmit={onSubmit}>
-      <div className="field">
-        <label className="field__label" htmlFor="filter-q">
-          {t('filters.q')}
-        </label>
-        <input
-          className="field__input"
-          id="filter-q"
-          name="q"
-          type="search"
-          defaultValue={value('q')}
-          placeholder={t('filters.qPlaceholder')}
-        />
-      </div>
+  const active: ActiveFilter[] = []
+  if (query.theme) {
+    const theme = themeOptions.find((option) => option.slug === query.theme)
+    active.push({
+      keys: ['theme'],
+      label: t('filters.chip', {
+        name: t('filters.themeShort'),
+        value: theme?.name ?? query.theme,
+      }),
+    })
+  }
+  if (query.year_min || query.year_max) {
+    active.push({
+      keys: ['year_min', 'year_max'],
+      label: t('filters.chip', {
+        name: t('filters.year'),
+        value: rangeLabel(t, query.year_min, query.year_max),
+      }),
+    })
+  }
+  if (query.parts_min || query.parts_max) {
+    active.push({
+      keys: ['parts_min', 'parts_max'],
+      label: t('filters.chip', {
+        name: t('filters.partsShort'),
+        value: rangeLabel(t, query.parts_min, query.parts_max),
+      }),
+    })
+  }
+  if (query.price_min || query.price_max) {
+    active.push({
+      keys: ['price_min', 'price_max'],
+      label: t('filters.chip', {
+        name: t('filters.priceShort'),
+        value: rangeLabel(t, query.price_min, query.price_max, (price) =>
+          formatPrice(Number(price))!
+        ),
+      }),
+    })
+  }
+  if (query.status && (STATUSES as readonly string[]).includes(query.status)) {
+    active.push({
+      keys: ['status'],
+      label: t(`status.${query.status as (typeof STATUSES)[number]}`),
+    })
+  }
+  if (
+    showCondition &&
+    query.condition &&
+    (CONDITIONS as readonly string[]).includes(query.condition)
+  ) {
+    active.push({
+      keys: ['condition'],
+      label: t(`condition.${query.condition as (typeof CONDITIONS)[number]}`),
+    })
+  }
 
-      <div className="field">
+  return (
+    <FilterBar
+      action={action}
+      query={query}
+      defaults={{ type: defaultType }}
+      searchPlaceholder={t('filters.qPlaceholder')}
+      sortOptions={SORTS.map((sort) => ({ value: sort, label: t(`sort.${sort}` as MessageKey) }))}
+      active={active}
+      quick={
+        <PillGroup
+          name="type"
+          legend={t('filters.type')}
+          value={value('type') || defaultType}
+          options={TYPES.map((type) => ({ value: type, label: t(`kind.${type}`) }))}
+          autoApply
+        />
+      }
+    >
+      <div className="field filter-bar__wide">
         <label className="field__label" htmlFor="filter-theme">
           {t('filters.theme')}
         </label>
-        <select
-          className="field__input"
-          id="filter-theme"
-          name="theme"
-          defaultValue={value('theme')}
-        >
+        <select className="input" id="filter-theme" name="theme" defaultValue={value('theme')}>
           <option value="">{t('filters.allThemes')}</option>
           {themeOptions.map((theme) => (
             <option key={theme.slug} value={theme.slug}>
-              {`${'  '.repeat(theme.depth)}${theme.depth ? '– ' : ''}${theme.name}`}
+              {`${'  '.repeat(theme.depth)}${theme.depth ? '– ' : ''}${theme.name}`}
             </option>
           ))}
         </select>
@@ -159,86 +154,30 @@ export default function SetFilters({
         step="any"
       />
 
-      <div className="field">
-        <label className="field__label" htmlFor="filter-status">
-          {t('filters.status')}
-        </label>
-        <select
-          className="field__input"
-          id="filter-status"
-          name="status"
-          defaultValue={value('status')}
-        >
-          <option value="">{t('filters.allStatuses')}</option>
-          {STATUSES.map((status) => (
-            <option key={status} value={status}>
-              {t(`status.${status}`)}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="field">
-        <label className="field__label" htmlFor="filter-type">
-          {t('filters.type')}
-        </label>
-        <select
-          className="field__input"
-          id="filter-type"
-          name="type"
-          defaultValue={value('type') || defaultType}
-        >
-          {TYPES.map((type) => (
-            <option key={type} value={type}>
-              {t(`kind.${type}`)}
-            </option>
-          ))}
-        </select>
-      </div>
+      <PillGroup
+        name="status"
+        legend={t('filters.status')}
+        value={value('status')}
+        options={[
+          { value: '', label: t('filters.allStatuses') },
+          ...STATUSES.map((status) => ({ value: status, label: t(`status.${status}`) })),
+        ]}
+      />
 
       {showCondition && (
-        <div className="field">
-          <label className="field__label" htmlFor="filter-condition">
-            {t('filters.condition')}
-          </label>
-          <select
-            className="field__input"
-            id="filter-condition"
-            name="condition"
-            defaultValue={value('condition')}
-          >
-            <option value="">{t('filters.allConditions')}</option>
-            {(['built', 'in_box', 'sealed', 'partial'] as const).map((condition) => (
-              <option key={condition} value={condition}>
-                {t(`condition.${condition}`)}
-              </option>
-            ))}
-          </select>
-        </div>
+        <PillGroup
+          name="condition"
+          legend={t('filters.condition')}
+          value={value('condition')}
+          options={[
+            { value: '', label: t('filters.allConditions') },
+            ...CONDITIONS.map((condition) => ({
+              value: condition,
+              label: t(`condition.${condition}`),
+            })),
+          ]}
+        />
       )}
-
-      <div className="field">
-        <label className="field__label" htmlFor="filter-sort">
-          {t('filters.sort')}
-        </label>
-        <select className="field__input" id="filter-sort" name="sort" defaultValue={value('sort')}>
-          <option value="">{value('q') ? t('filters.relevance') : t('sort.recent')}</option>
-          {SORTS.map((sort) => (
-            <option key={sort} value={sort}>
-              {t(`sort.${sort}` as MessageKey)}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="filters__actions">
-        <button type="submit" className="btn">
-          {t('filters.submit')}
-        </button>
-        <a className="btn btn--secondary" href={action}>
-          {t('filters.reset')}
-        </a>
-      </div>
-    </form>
+    </FilterBar>
   )
 }

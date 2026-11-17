@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
@@ -26,15 +25,6 @@ export default function SetsIndex({ sets, pagination, query, themeOptions, theme
   const pageSuffix =
     pagination.currentPage > 1 ? t('sets.pageSuffix', { page: pagination.currentPage }) : ''
 
-  // Filters are folded on small screens (results first) and unfolded on
-  // large screens, where they sit in a side column
-  const filtersPanel = useRef<HTMLDetailsElement>(null)
-  useEffect(() => {
-    if (filtersPanel.current && window.matchMedia('(min-width: 960px)').matches) {
-      filtersPanel.current.open = true
-    }
-  }, [])
-
   return (
     <>
       <Seo title={`${title}${pageSuffix}`} description={t('sets.metaDescription')} />
@@ -49,10 +39,7 @@ export default function SetsIndex({ sets, pagination, query, themeOptions, theme
       </div>
 
       <div className="catalogue">
-        <details className="catalogue__filters" ref={filtersPanel}>
-          <summary className="catalogue__filters-toggle">{t('sets.filtersToggle')}</summary>
-          <SetFilters query={query} themeOptions={themeOptions} />
-        </details>
+        <SetFilters query={query} themeOptions={themeOptions} />
 
         <section className="catalogue__results" aria-label={t('sets.resultsLabel')}>
           {sets.length ? (
