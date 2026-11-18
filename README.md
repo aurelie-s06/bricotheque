@@ -70,6 +70,7 @@ Toutes les clés sont dans `.env` (jamais commité). `.env.example` liste les va
 | `npm run lint` / `npm run typecheck`            | Qualité du code                                                                 |
 | `npm run format`                                | Formatage Prettier                                                              |
 | `npm run build`                                 | Build de production dans `build/`                                               |
+| `npm run package`                               | Archive `briquotheque-build.zip` à envoyer sur o2switch (droits corrigés)       |
 | `node ace migration:run` / `migration:rollback` | Migrations                                                                      |
 | `node ace user:make-admin <email>`              | Donner (ou retirer avec `--remove`) les droits d'administration                 |
 | `node ace jobs:work` / `node ace sync:all`      | Mises à jour des données en arrière-plan (cron) / tout de suite                 |
@@ -298,4 +299,4 @@ find . -path ./node_modules -prune -o -type f -exec chmod 644 {} \;
 
 ## Déploiement
 
-Le guide de déploiement o2switch sera complété à l'étape 11.
+Procédure complète pas à pas : **[docs/deploiement-o2switch.md](docs/deploiement-o2switch.md)** (base de données, e-mails, `npm run package`, application Node.js, `.env`, migrations, import du catalogue, compte admin, tâches cron, HTTPS, vérifications et mises à jour).

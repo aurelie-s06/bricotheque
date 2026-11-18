@@ -27,6 +27,14 @@ export const http = defineConfig({
   allowMethodSpoofing: false,
 
   /**
+   * In production the app is only reachable through the o2switch web
+   * server (Apache + Passenger), which passes the visitor's IP address and
+   * the https protocol in the X-Forwarded-* headers: trust them, otherwise
+   * every visitor would share one IP (rate limits) and links would be http.
+   */
+  trustProxy: () => true,
+
+  /**
    * Enabling async local storage will let you access HTTP context
    * from anywhere inside your application.
    */

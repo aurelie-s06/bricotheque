@@ -74,7 +74,7 @@ const fr = {
   'admin.update.status.completed': 'Terminée',
   'admin.update.status.failed': 'Erreur',
   'admin.update.pendingHint':
-    '— elle démarre dans la minute (tâche planifiée « node ace jobs:work »).',
+    '— elle démarre au prochain passage de la tâche planifiée « node ace jobs:work ».',
   'admin.update.step': 'étape {step} sur {steps} : {label}',
   'admin.update.done': 'Mise à jour terminée.',
   'admin.update.failed': 'La mise à jour a échoué.',

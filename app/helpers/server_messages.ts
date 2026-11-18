@@ -14,7 +14,7 @@ const fr = {
   'admin.translations.cleared':
     'La traduction de « {name} » est supprimée : la description s’affiche en anglais.',
   'admin.update.queued':
-    'Mise à jour demandée : elle démarre dans la minute qui suit (tâche planifiée).',
+    'Mise à jour demandée : elle démarre au prochain passage de la tâche planifiée (quelques minutes au plus).',
   'admin.update.alreadyRunning': 'Une mise à jour est déjà en attente ou en cours.',
   'auth.invalidCredentials': 'Adresse e-mail ou mot de passe incorrect.',
   'auth.tooManyAttempts': 'Trop de tentatives. Pour ta sécurité, réessaie dans {minutes} min.',
@@ -93,7 +93,8 @@ const en: Record<MessageKey, string> = {
   'admin.translations.saved': 'The translation of “{name}” is saved.',
   'admin.translations.cleared':
     'The translation of “{name}” is removed: the description is shown in English.',
-  'admin.update.queued': 'Update requested: it starts within a minute (scheduled task).',
+  'admin.update.queued':
+    'Update requested: it starts at the next run of the scheduled task (a few minutes at most).',
   'admin.update.alreadyRunning': 'An update is already pending or running.',
   'auth.invalidCredentials': 'Incorrect email address or password.',
   'auth.tooManyAttempts': 'Too many attempts. For your security, try again in {minutes} min.',

@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
+    "package": "sh scripts/package.sh",
     "dev": "node ace serve --hmr",
     "test": "node ace test",
     "test:a11y": "node --import=@poppinss/ts-exec tests/a11y/axe.ts",

@@ -74,7 +74,8 @@ const en: Record<keyof typeof fr, string> = {
   'admin.update.status.running': 'Running',
   'admin.update.status.completed': 'Done',
   'admin.update.status.failed': 'Error',
-  'admin.update.pendingHint': '— it starts within a minute (scheduled task “node ace jobs:work”).',
+  'admin.update.pendingHint':
+    '— it starts at the next run of the scheduled task “node ace jobs:work”.',
   'admin.update.step': 'step {step} of {steps}: {label}',
   'admin.update.done': 'Update done.',
   'admin.update.failed': 'The update failed.',

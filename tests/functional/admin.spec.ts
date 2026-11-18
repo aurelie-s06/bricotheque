@@ -198,7 +198,7 @@ test.group('Back office: data updates', (group) => {
       .redirects(0)
     first.assertFlashMessage(
       'success',
-      'Mise à jour demandée : elle démarre dans la minute qui suit (tâche planifiée).'
+      'Mise à jour demandée : elle démarre au prochain passage de la tâche planifiée (quelques minutes au plus).'
     )
     const second = await client
       .post('/admin/mises-a-jour')
