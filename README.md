@@ -71,6 +71,8 @@ Toutes les clés sont dans `.env` (jamais commité). `.env.example` liste les va
 | `npm run format`                                | Formatage Prettier                                                              |
 | `npm run build`                                 | Build de production dans `build/`                                               |
 | `node ace migration:run` / `migration:rollback` | Migrations                                                                      |
+| `node ace user:make-admin <email>`              | Donner (ou retirer avec `--remove`) les droits d'administration                 |
+| `node ace jobs:work` / `node ace sync:all`      | Mises à jour des données en arrière-plan (cron) / tout de suite                 |
 
 > ⚠️ Lucid régénère `database/schema.ts` après chaque migration. Sur la base de test, toujours ajouter `--no-schema-generate`, sinon le fichier est vidé.
 
@@ -178,21 +180,22 @@ Les erreurs de formulaire restent affichées à côté des champs.
 `/tableau-de-bord` (menu du compte) résume la collection :
 
 - **Chiffres clés** : sets et minifigs (avec les exemplaires), total de pièces.
-- **Répartition par thème** (thème principal, 8 premiers + « Autres ») et **par décennie** : graphiques en « briques empilées », construits en HTML/CSS sans bibliothèque. Ce sont de vraies tables (lisibles par les lecteurs d'écran et sans CSS) ; les nombres sont toujours écrits à côté des barres.
+- **Répartition par thème** (thème principal, 8 premiers + « Autres ») et **par décennie** : barres gris foncé sobres sur une piste claire, construites en HTML/CSS sans bibliothèque. Ce sont de vraies tables (lisibles par les lecteurs d'écran et sans CSS) ; les nombres sont toujours écrits à côté des barres.
 - **Les 5 plus gros sets** et **les 5 plus anciens**.
 - **Wishlist : à ne pas rater** : sets qui quittent la vente dans les 6 mois (`date_last_available`) et sets déjà retirés (`availability_status = retired`).
 
 ## Base de données
 
-| Table                        | Modèle                   | Contenu                                                                  |
-| ---------------------------- | ------------------------ | ------------------------------------------------------------------------ |
-| `themes`                     | `Theme`                  | Thèmes Rebrickable (id Rebrickable, imbriqués via `parent_id`)           |
-| `sets`                       | `BrickSet`               | Sets (nommé ainsi pour ne pas masquer le `Set` natif de JavaScript)      |
-| `minifigs`                   | `Minifig`                | Minifigs, avec thème principal et année de première apparition           |
-| `set_minifigs`               | —                        | Table pivot sets ↔ minifigs (`quantity`), via les relations `manyToMany` |
-| `users`                      | `User`                   | Comptes (email, pseudo, jeton de partage de wishlist)                    |
-| `user_sets`, `user_minifigs` | `UserSet`, `UserMinifig` | Collection (`owned`) et wishlist (`wanted`)                              |
-| `import_runs`                | `ImportRun`              | Journal des imports, avec curseur JSON pour la reprise                   |
+| Table                        | Modèle                   | Contenu                                                                                                                                                      |
+| ---------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `themes`                     | `Theme`                  | Thèmes Rebrickable (id Rebrickable, imbriqués via `parent_id`)                                                                                               |
+| `sets`                       | `BrickSet`               | Sets (nommé ainsi pour ne pas masquer le `Set` natif de JavaScript) ; `img_url_manual` prioritaire sur `img_url`, `description_fr` saisie dans le backoffice |
+| `minifigs`                   | `Minifig`                | Minifigs, avec thème principal et année de première apparition                                                                                               |
+| `set_minifigs`               | —                        | Table pivot sets ↔ minifigs (`quantity`), via les relations `manyToMany`                                                                                     |
+| `users`                      | `User`                   | Comptes (email, pseudo, e-mail confirmé, rôle `is_admin`, jeton de partage de wishlist)                                                                      |
+| `user_sets`, `user_minifigs` | `UserSet`, `UserMinifig` | Collection (`owned`) et wishlist (`wanted`)                                                                                                                  |
+| `import_runs`                | `ImportRun`              | Journal des imports, avec curseur JSON pour la reprise                                                                                                       |
+| `jobs`                       | `Job`                    | Mises à jour demandées dans le backoffice (état, progression, nouveautés)                                                                                    |
 
 Les classes de colonnes sont générées dans `database/schema.ts` (ne pas modifier à la main). Les règles de génération (prix en `number`, enums typés, JSON) sont dans `database/schema_rules.ts`.
 
@@ -272,13 +275,13 @@ node ace import:rebrickable --only=minifigs   # minifigs + liens avec les sets +
   - `minifigs.main_theme_id` = thème **racine** le plus fréquent parmi ses vrais sets (`kind = set`) ; à défaut, parmi ses livres/gear ; vide si la minifig n'est dans aucun set.
 - Rebrickable range aussi des produits qui ne sont pas des sets. Ils sont importés mais **marqués** dans `sets.kind` d'après leur thème racine (`app/services/rebrickable/set_kinds.ts`) :
 
-| `kind`   | Thèmes racine Rebrickable                       |
-| -------- | ----------------------------------------------- |
-| `set`    | tous les autres                                 |
-| `book`   | Books                                           |
-| `gear`   | Gear (porte-clés, sacs, vêtements, jeux vidéo…) |
-| `parts`  | Service Packs, Bulk Bricks                      |
-| `bundle` | Value Packs                                     |
+| `kind`   | Thèmes racine Rebrickable                                                     |
+| -------- | ----------------------------------------------------------------------------- |
+| `set`    | tous les autres                                                               |
+| `book`   | Books                                                                         |
+| `gear`   | Gear (porte-clés, sacs, vêtements, jeux vidéo…)                               |
+| `parts`  | Service Packs, Bulk Bricks (pas de bouton de filtre : visibles avec « Tout ») |
+| `bundle` | Value Packs                                                                   |
 
 Le logo provisoire est dans `inertia/components/logo.tsx` : c'est le seul fichier à modifier pour le remplacer.
 

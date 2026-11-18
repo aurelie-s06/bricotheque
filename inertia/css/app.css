@@ -645,29 +645,10 @@ a:hover {
   transform: none;
 }
 
-.btn--primary {
-  /* default yellow brick */
-}
-
-.btn--danger,
-.btn--destructive,
-.btn--want {
+.btn--danger {
   --btn-bg: var(--brick-red);
   --btn-fg: #ffffff;
   --btn-edge: var(--brick-red-dark);
-}
-
-.btn--info {
-  --btn-bg: var(--brick-blue);
-  --btn-fg: #ffffff;
-  --btn-edge: var(--brick-blue-dark);
-}
-
-.btn--success,
-.btn--own {
-  --btn-bg: var(--brick-green);
-  --btn-fg: #ffffff;
-  --btn-edge: var(--brick-green-dark);
 }
 
 .btn--secondary {
@@ -1576,28 +1557,6 @@ input[type='number'].input::-webkit-outer-spin-button {
 }
 
 /* ---------- Themes ---------- */
-.theme-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-2);
-  list-style: none;
-  padding: 0;
-}
-
-.theme-card {
-  display: grid;
-  align-content: start;
-  gap: var(--space-1);
-  padding: var(--space-2);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-}
-
-.theme-card__title {
-  font-size: 1.25rem;
-}
-
 .subthemes {
   margin-bottom: var(--space-4);
 }
@@ -1890,10 +1849,6 @@ input[type='number'].input::-webkit-outer-spin-button {
   background: var(--surface);
   color: var(--ink);
   font-weight: 600;
-}
-
-.form-alert--success {
-  border-color: var(--brick-green);
 }
 
 .password-input {

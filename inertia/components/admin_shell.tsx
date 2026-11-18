@@ -3,6 +3,7 @@ import { usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import { Image, Languages, LayoutDashboard, RefreshCw, Users } from 'lucide-react'
 import Seo from '~/components/seo'
+import Breadcrumb from '~/components/breadcrumb'
 import { useI18n } from '~/i18n'
 
 const ITEMS = [
@@ -23,31 +24,41 @@ export default function AdminShell({ title, children }: { title: string; childre
   const path = url.split('?')[0]
 
   return (
-    <div className="admin">
-      <Seo title={`${title} – ${t('admin.title')}`} />
-      <nav className="admin__nav" aria-label={t('admin.navLabel')}>
-        <p className="admin__brand">{t('admin.title')}</p>
-        <ul>
-          {ITEMS.map(({ href, label, icon: Icon }) => {
-            const current = href === '/admin' ? path === '/admin' : path.startsWith(href)
-            return (
-              <li key={label}>
-                <Link
-                  href={href}
-                  className="admin__link"
-                  aria-current={current ? 'page' : undefined}
-                >
-                  <Icon size={18} aria-hidden="true" /> {t(label)}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </nav>
-      <div className="admin__content">
-        <h1>{title}</h1>
-        {children}
+    <>
+      <Breadcrumb
+        items={[
+          { name: t('breadcrumb.home'), url: '/' },
+          ...(path === '/admin'
+            ? [{ name: t('admin.title') }]
+            : [{ name: t('admin.title'), url: '/admin' }, { name: title }]),
+        ]}
+      />
+      <div className="admin">
+        <Seo title={`${title} – ${t('admin.title')}`} />
+        <nav className="admin__nav" aria-label={t('admin.navLabel')}>
+          <p className="admin__brand">{t('admin.title')}</p>
+          <ul>
+            {ITEMS.map(({ href, label, icon: Icon }) => {
+              const current = href === '/admin' ? path === '/admin' : path.startsWith(href)
+              return (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="admin__link"
+                    aria-current={current ? 'page' : undefined}
+                  >
+                    <Icon size={18} aria-hidden="true" /> {t(label)}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
+        <div className="admin__content">
+          <h1>{title}</h1>
+          {children}
+        </div>
       </div>
-    </div>
+    </>
   )
 }

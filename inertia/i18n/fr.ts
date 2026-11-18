@@ -109,13 +109,9 @@ const fr = {
   'nav.sets': 'Sets',
   'nav.themes': 'Thèmes',
   'nav.login': 'Connexion',
-  'nav.signup': 'Inscription',
   'nav.logout': 'Déconnexion',
   'nav.menu': 'Menu',
   'nav.accountMenu': 'Menu du compte',
-  'language.label': 'Langue',
-  'language.fr': 'Français',
-  'language.en': 'English',
 
   // Search
   'search.label': 'Rechercher un set ou une minifig',
@@ -259,7 +255,6 @@ const fr = {
     'Tous les thèmes de sets de briques (Star Wars, City, Technic…) avec leurs sous-thèmes et leur nombre de sets.',
   'themes.roots_one': '{count} thème principal',
   'themes.roots_other': '{count} thèmes principaux',
-  'themes.subthemesOf': 'Sous-thèmes de {name}',
   'theme.title': 'Thème {name}',
   'theme.metaDescription': 'Les sets du thème {name}, classés par année.',
   'theme.productsWithSets': '{products}, dont {sets}',

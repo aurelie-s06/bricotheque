@@ -19,7 +19,6 @@ const fr = {
   'auth.invalidCredentials': 'Adresse e-mail ou mot de passe incorrect.',
   'auth.tooManyAttempts': 'Trop de tentatives. Pour ta sécurité, réessaie dans {minutes} min.',
   'auth.loginRequired': 'Connecte-toi pour accéder à cette page.',
-  'auth.welcome': 'Bienvenue sur Briquothèque, {username} !',
   'auth.loggedIn': 'Content de te revoir, {username} !',
   'auth.loggedOut': 'Tu es maintenant déconnecté·e.',
   'password.resetSent':
@@ -99,7 +98,6 @@ const en: Record<MessageKey, string> = {
   'auth.invalidCredentials': 'Incorrect email address or password.',
   'auth.tooManyAttempts': 'Too many attempts. For your security, try again in {minutes} min.',
   'auth.loginRequired': 'Please log in to access this page.',
-  'auth.welcome': 'Welcome to Briquothèque, {username}!',
   'auth.loggedIn': 'Welcome back, {username}!',
   'auth.loggedOut': 'You are now logged out.',
   'password.resetSent':

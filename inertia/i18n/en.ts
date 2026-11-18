@@ -109,13 +109,9 @@ const en: Record<keyof typeof fr, string> = {
   'nav.sets': 'Sets',
   'nav.themes': 'Themes',
   'nav.login': 'Log in',
-  'nav.signup': 'Sign up',
   'nav.logout': 'Log out',
   'nav.menu': 'Menu',
   'nav.accountMenu': 'Account menu',
-  'language.label': 'Language',
-  'language.fr': 'Français',
-  'language.en': 'English',
 
   // Search
   'search.label': 'Search for a set or a minifig',
@@ -259,7 +255,6 @@ const en: Record<keyof typeof fr, string> = {
     'Every brick set theme (Star Wars, City, Technic…) with its subthemes and number of sets.',
   'themes.roots_one': '{count} main theme',
   'themes.roots_other': '{count} main themes',
-  'themes.subthemesOf': 'Subthemes of {name}',
   'theme.title': '{name} theme',
   'theme.metaDescription': 'Sets of the {name} theme, by year.',
   'theme.productsWithSets': '{products}, including {sets}',
