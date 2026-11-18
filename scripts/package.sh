@@ -17,6 +17,8 @@ mkdir -p "$STAGE"
 rsync -a --exclude node_modules --exclude .env --exclude '._*' build/ "$STAGE/"
 mkdir -p "$STAGE/tmp"
 touch "$STAGE/tmp/.gitkeep"
+# Passenger startup file (see server.cjs)
+cp server.cjs "$STAGE/server.cjs"
 find "$STAGE" -type d -exec chmod 755 {} \;
 find "$STAGE" -type f -exec chmod 644 {} \;
 

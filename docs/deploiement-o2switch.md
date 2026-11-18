@@ -26,7 +26,7 @@ L'hôte est `localhost` et le port `3306`.
 
 ## 3. Créer l'adresse d'envoi des e-mails
 
-1. cPanel › **Comptes de messagerie** › crée `ne-pas-repondre@exemple.fr`, avec un mot de passe long.
+1. cPanel › **Comptes de messagerie** › crée `ne-pas-repondre@exemple.fr`, avec un mot de passe long composé **uniquement de lettres et de chiffres** (24 caractères ou plus) : les caractères comme `$`, `#` ou `"` sont mal lus dans `.env` et provoquent l'erreur « 535 Incorrect authentication data ».
 2. Dans la ligne du compte, ouvre **Connect Devices** pour noter le **serveur SMTP sortant**, le port **465** (SSL) et l'identifiant (l'adresse complète).
 3. cPanel › **Délivrabilité des e-mails** › pour le domaine, clique sur **Réparer** si SPF ou DKIM ne sont pas « Valide ». Sans cela, les e-mails de confirmation risquent d'arriver en indésirables (règle Opquast 217).
 
@@ -65,7 +65,7 @@ cPanel › **Setup Node.js App** › **Create Application** :
 | Application mode         | **Production**                                                             |
 | Application root         | `bricotheque`                                                              |
 | Application URL          | `bricotheque.exemple.fr` (racine du domaine)                               |
-| Application startup file | `bin/server.js`                                                            |
+| Application startup file | `server.cjs`                                                               |
 
 Clique sur **Create**. En haut de la page de l'application, cPanel affiche une commande du type :
 
@@ -233,10 +233,17 @@ Ne supprime pas les lignes `Passenger…` écrites par cPanel.
 
 ## En cas de problème
 
-| Symptôme                             | Piste                                                                                                                     |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| Erreur 503 / « Incomplete response » | Le site n'a pas démarré : `stderr.log` dans `/home/USER/bricotheque`. Souvent une variable manquante dans `.env`.         |
-| Erreur 403                           | Droits de fichiers : refais l'archive avec `npm run package`, ne zippe jamais le dossier à la main sur le disque externe. |
-| Liens de partage en `http://`        | Le HTTPS n'est pas forcé (étape 13).                                                                                      |
-| Le bouton reste « En attente »       | Le cron ne tourne pas : vérifie la commande de l'étape 12 et `tmp/jobs.log`.                                              |
-| Une mise à jour tombe en « Erreur »  | Le message d'erreur est affiché sur la page ; le détail est dans `tmp/jobs.log` ou `tmp/sync.log`.                        |
+| Symptôme                                          | Piste                                                                                                                     |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Erreur 503 / « Incomplete response »              | Le site n'a pas démarré : `stderr.log` dans `/home/USER/bricotheque`. Souvent une variable manquante dans `.env`.         |
+| « Oups, une erreur est survenue » à l'inscription | Envoi d'e-mail en échec. Teste la connexion SMTP (commande ci-dessous) ; `535` = mot de passe de la boîte mal lu.         |
+| Erreur 403                                        | Droits de fichiers : refais l'archive avec `npm run package`, ne zippe jamais le dossier à la main sur le disque externe. |
+| Liens de partage en `http://`                     | Le HTTPS n'est pas forcé (étape 13).                                                                                      |
+| Le bouton reste « En attente »                    | Le cron ne tourne pas : vérifie la commande de l'étape 12 et `tmp/jobs.log`.                                              |
+| Une mise à jour tombe en « Erreur »               | Le message d'erreur est affiché sur la page ; le détail est dans `tmp/jobs.log` ou `tmp/sync.log`.                        |
+
+Test de la connexion SMTP (Terminal, environnement activé) :
+
+```bash
+node --env-file=.env -e "require('nodemailer').createTransport({host:process.env.SMTP_HOST,port:+process.env.SMTP_PORT,secure:true,auth:{user:process.env.SMTP_USERNAME,pass:process.env.SMTP_PASSWORD}}).verify().then(()=>console.log('SMTP OK'),e=>console.error('SMTP KO:',e.message))"
+```
