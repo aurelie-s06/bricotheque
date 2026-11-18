@@ -3,5 +3,5 @@
  * component already builds the full, translated title.
  */
 export function pageTitle(title?: string) {
-  return title || 'Briquothèque'
+  return title || 'Bricothèque'
 }

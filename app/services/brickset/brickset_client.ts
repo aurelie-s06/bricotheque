@@ -59,7 +59,7 @@ export default class BricksetClient implements BricksetApi {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Briquotheque-importer',
+        'User-Agent': 'Bricotheque-importer',
       },
       body: new URLSearchParams({ apiKey: this.#apiKey, ...fields }),
       signal: AbortSignal.timeout(60_000),

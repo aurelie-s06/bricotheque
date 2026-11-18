@@ -4,9 +4,9 @@
  */
 const fr = {
   // Site
-  'site.defaultTitle': 'Briquothèque – Catalogue de sets et minifigs',
+  'site.defaultTitle': 'Bricothèque – Catalogue de sets et minifigs',
   'site.defaultDescription':
-    'Briquothèque : le catalogue de tous les sets et minifigs de briques, pour gérer ta collection et ta wishlist.',
+    'Bricothèque : le catalogue de tous les sets et minifigs de briques, pour gérer ta collection et ta wishlist.',
   'toast.close': 'Fermer la notification',
   'admin.title': 'Administration',
   'admin.navLabel': 'Menu de l’administration',
@@ -101,7 +101,7 @@ const fr = {
   'admin.users.sets': 'Sets possédés',
   'admin.users.admin': '(admin)',
   'site.skipLink': 'Aller au contenu',
-  'site.homeLabel': 'Briquothèque – Accueil',
+  'site.homeLabel': 'Bricothèque – Accueil',
   'site.mainMenu': 'Menu principal',
   'site.legal':
     'LEGO® est une marque du groupe LEGO, qui ne parraine ni n’approuve ce site. Données : Rebrickable, Brickset.',
@@ -282,12 +282,12 @@ const fr = {
   'pages.unknownDate': 'inconnue',
   'pages.aboutTitle': 'À propos',
   'pages.aboutDescription':
-    'Ce qu’est Briquothèque, d’où viennent ses données, glossaire et contact.',
-  'pages.legalDescription': 'Éditeur, hébergeur et propriété intellectuelle de Briquothèque.',
+    'Ce qu’est Bricothèque, d’où viennent ses données, glossaire et contact.',
+  'pages.legalDescription': 'Éditeur, hébergeur et propriété intellectuelle de Bricothèque.',
   'pages.privacyDescription':
-    'Données personnelles collectées par Briquothèque, vos droits et les cookies utilisés.',
-  'pages.termsDescription': 'Conditions d’utilisation du catalogue et des comptes Briquothèque.',
-  'pages.siteMapDescription': 'Toutes les pages de Briquothèque.',
+    'Données personnelles collectées par Bricothèque, vos droits et les cookies utilisés.',
+  'pages.termsDescription': 'Conditions d’utilisation du catalogue et des comptes Bricothèque.',
+  'pages.siteMapDescription': 'Toutes les pages de Bricothèque.',
   'pages.siteMapCatalogue': 'Catalogue',
   'pages.siteMapAccount': 'Mon espace',
   'pages.siteMapInfo': 'Informations',

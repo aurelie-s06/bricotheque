@@ -1,5 +1,5 @@
 #!/bin/sh
-# Prepares briquotheque-build.zip, the archive to upload to o2switch:
+# Prepares bricotheque-build.zip, the archive to upload to o2switch:
 # production build, empty tmp/ folder, normalised permissions (755 folders,
 # 644 files), without node_modules, .env or macOS ._ files.
 #
@@ -12,7 +12,7 @@ PROJECT="$(pwd)"
 
 npm run build
 
-STAGE="$(mktemp -d)/briquotheque"
+STAGE="$(mktemp -d)/bricotheque"
 mkdir -p "$STAGE"
 rsync -a --exclude node_modules --exclude .env --exclude '._*' build/ "$STAGE/"
 mkdir -p "$STAGE/tmp"
@@ -20,7 +20,7 @@ touch "$STAGE/tmp/.gitkeep"
 find "$STAGE" -type d -exec chmod 755 {} \;
 find "$STAGE" -type f -exec chmod 644 {} \;
 
-rm -f "$PROJECT/briquotheque-build.zip"
-(cd "$STAGE" && COPYFILE_DISABLE=1 zip -rqX "$PROJECT/briquotheque-build.zip" .)
+rm -f "$PROJECT/bricotheque-build.zip"
+(cd "$STAGE" && COPYFILE_DISABLE=1 zip -rqX "$PROJECT/bricotheque-build.zip" .)
 rm -rf "$(dirname "$STAGE")"
-echo "briquotheque-build.zip prêt ($(du -h briquotheque-build.zip | cut -f1))"
+echo "bricotheque-build.zip prêt ($(du -h bricotheque-build.zip | cut -f1))"

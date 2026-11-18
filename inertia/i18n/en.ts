@@ -5,9 +5,9 @@ import type fr from '~/i18n/fr'
  */
 const en: Record<keyof typeof fr, string> = {
   // Site
-  'site.defaultTitle': 'Briquothèque – Set and minifig catalogue',
+  'site.defaultTitle': 'Bricothèque – Set and minifig catalogue',
   'site.defaultDescription':
-    'Briquothèque: the catalogue of every brick set and minifig, to manage your collection and your wishlist.',
+    'Bricothèque: the catalogue of every brick set and minifig, to manage your collection and your wishlist.',
   'toast.close': 'Close the notification',
   'admin.title': 'Administration',
   'admin.navLabel': 'Administration menu',
@@ -102,7 +102,7 @@ const en: Record<keyof typeof fr, string> = {
   'admin.users.sets': 'Owned sets',
   'admin.users.admin': '(admin)',
   'site.skipLink': 'Skip to content',
-  'site.homeLabel': 'Briquothèque – Home',
+  'site.homeLabel': 'Bricothèque – Home',
   'site.mainMenu': 'Main menu',
   'site.legal':
     'LEGO® is a trademark of the LEGO Group, which does not sponsor or endorse this site. Data: Rebrickable, Brickset.',
@@ -282,13 +282,12 @@ const en: Record<keyof typeof fr, string> = {
   'pages.toComplete': 'to be completed',
   'pages.unknownDate': 'unknown',
   'pages.aboutTitle': 'About',
-  'pages.aboutDescription':
-    'What Briquothèque is, where its data comes from, glossary and contact.',
-  'pages.legalDescription': 'Publisher, host and intellectual property of Briquothèque.',
+  'pages.aboutDescription': 'What Bricothèque is, where its data comes from, glossary and contact.',
+  'pages.legalDescription': 'Publisher, host and intellectual property of Bricothèque.',
   'pages.privacyDescription':
-    'Personal data collected by Briquothèque, your rights and the cookies used.',
-  'pages.termsDescription': 'Terms of use of the Briquothèque catalogue and accounts.',
-  'pages.siteMapDescription': 'All the pages of Briquothèque.',
+    'Personal data collected by Bricothèque, your rights and the cookies used.',
+  'pages.termsDescription': 'Terms of use of the Bricothèque catalogue and accounts.',
+  'pages.siteMapDescription': 'All the pages of Bricothèque.',
   'pages.siteMapCatalogue': 'Catalogue',
   'pages.siteMapAccount': 'My space',
   'pages.siteMapInfo': 'Information',

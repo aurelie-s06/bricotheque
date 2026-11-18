@@ -1,24 +1,24 @@
-# Mettre Briquothèque en ligne sur o2switch
+# Mettre Bricothèque en ligne sur o2switch
 
 Procédure complète, de zéro jusqu'au site en ligne avec la mise à jour automatique des données. Remplace partout :
 
 - `USER` par ton identifiant cPanel ;
-- `briquotheque.exemple.fr` par ton domaine ou sous-domaine.
+- `bricotheque.exemple.fr` par ton domaine ou sous-domaine.
 
-Le dossier de l'application sera `/home/USER/briquotheque`. Il est **hors** de `public_html`, pour qu'aucun fichier ne soit téléchargeable directement.
+Le dossier de l'application sera `/home/USER/bricotheque`. Il est **hors** de `public_html`, pour qu'aucun fichier ne soit téléchargeable directement.
 
 ---
 
 ## 1. Préparer le domaine et le HTTPS
 
-1. **Sous-domaine (si besoin)** : cPanel › **Sous-domaines** (pas « Domaines supplémentaires »). Crée `briquotheque.exemple.fr`. Garde le dossier racine proposé : il servira seulement au fichier `.htaccess`.
+1. **Sous-domaine (si besoin)** : cPanel › **Sous-domaines** (pas « Domaines supplémentaires »). Crée `bricotheque.exemple.fr`. Garde le dossier racine proposé : il servira seulement au fichier `.htaccess`.
 2. **Certificat** : cPanel › **Statut SSL/TLS** › coche le domaine › **Exécuter AutoSSL**. Après un changement DNS, laisse le temps à la propagation DNS et au certificat avant de chercher plus loin.
 
 ## 2. Créer la base de données
 
 cPanel › **Bases de données MySQL** :
 
-1. **Nouvelle base** : `USER_briquotheque`.
+1. **Nouvelle base** : `USER_bricotheque`.
 2. **Nouvel utilisateur** : `USER_briquo`, avec un mot de passe long, généré par le bouton « Générateur ». Note-le, il ira dans `.env`.
 3. **Ajouter l'utilisateur à la base** : **TOUS LES PRIVILÈGES**.
 
@@ -38,7 +38,7 @@ Dans le dossier du projet :
 npm run package
 ```
 
-La commande produit `briquotheque-build.zip`, d'environ 1 Mo :
+La commande produit `bricotheque-build.zip`, d'environ 1 Mo :
 
 - build de production ;
 - dossier `tmp/` vide ;
@@ -49,9 +49,9 @@ Le script copie le build sur le disque interne du Mac avant de corriger les droi
 
 ## 5. Envoyer l'application
 
-1. cPanel › **Gestionnaire de fichiers** › dans `/home/USER`, crée le dossier `briquotheque`.
-2. Entre dans `briquotheque` › **Charger** › envoie `briquotheque-build.zip`.
-3. Clic droit sur l'archive › **Extraire** dans `/home/USER/briquotheque`, puis supprime l'archive.
+1. cPanel › **Gestionnaire de fichiers** › dans `/home/USER`, crée le dossier `bricotheque`.
+2. Entre dans `bricotheque` › **Charger** › envoie `bricotheque-build.zip`.
+3. Clic droit sur l'archive › **Extraire** dans `/home/USER/bricotheque`, puis supprime l'archive.
 
 On doit voir directement `ace.js`, `bin/`, `app/`, `public/`, `package.json`, `tmp/`… et non un sous-dossier `build/`.
 
@@ -63,14 +63,14 @@ cPanel › **Setup Node.js App** › **Create Application** :
 | ------------------------ | -------------------------------------------------------------------------- |
 | Node.js version          | **24** (le projet exige Node ≥ 24 ; s'il n'est pas proposé, voir plus bas) |
 | Application mode         | **Production**                                                             |
-| Application root         | `briquotheque`                                                             |
-| Application URL          | `briquotheque.exemple.fr` (racine du domaine)                              |
+| Application root         | `bricotheque`                                                              |
+| Application URL          | `bricotheque.exemple.fr` (racine du domaine)                               |
 | Application startup file | `bin/server.js`                                                            |
 
 Clique sur **Create**. En haut de la page de l'application, cPanel affiche une commande du type :
 
 ```bash
-source /home/USER/nodevenv/briquotheque/24/bin/activate && cd /home/USER/briquotheque
+source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque
 ```
 
 **Copie-la** : elle sert aux étapes 7 à 12. Elle met la bonne version de Node dans le terminal.
@@ -82,7 +82,7 @@ source /home/USER/nodevenv/briquotheque/24/bin/activate && cd /home/USER/briquot
 cPanel › **Terminal**, puis colle la commande copiée et lance l'installation :
 
 ```bash
-source /home/USER/nodevenv/briquotheque/24/bin/activate && cd /home/USER/briquotheque
+source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque
 npm ci --omit=dev
 ```
 
@@ -96,7 +96,7 @@ Toujours dans le Terminal, génère d'abord une clé secrète :
 node ace generate:key --show
 ```
 
-Puis, dans le Gestionnaire de fichiers, crée `/home/USER/briquotheque/.env` avec ce contenu (sans espace autour des `=`, et une valeur contenant des caractères spéciaux entre guillemets) :
+Puis, dans le Gestionnaire de fichiers, crée `/home/USER/bricotheque/.env` avec ce contenu (sans espace autour des `=`, et une valeur contenant des caractères spéciaux entre guillemets) :
 
 ```ini
 TZ=Europe/Paris
@@ -105,7 +105,7 @@ HOST=127.0.0.1
 NODE_ENV=production
 LOG_LEVEL=info
 APP_KEY=la_cle_generee_juste_avant
-APP_URL=https://briquotheque.exemple.fr
+APP_URL=https://bricotheque.exemple.fr
 
 LEGAL_PUBLISHER="Ton nom"
 CONTACT_EMAIL=contact@exemple.fr
@@ -117,7 +117,7 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=USER_briquo
 DB_PASSWORD="le_mot_de_passe_de_la_base"
-DB_DATABASE=USER_briquotheque
+DB_DATABASE=USER_bricotheque
 
 LIMITER_STORE=database
 
@@ -125,7 +125,7 @@ BRICKSET_API_KEY="ta_cle_brickset"
 BRICKSET_DAILY_LIMIT=100
 
 MAIL_MAILER=smtp
-MAIL_FROM_NAME=Briquothèque
+MAIL_FROM_NAME=Bricothèque
 MAIL_FROM_ADDRESS=ne-pas-repondre@exemple.fr
 SMTP_HOST=le_serveur_smtp_note_a_l_etape_3
 SMTP_PORT=465
@@ -162,7 +162,7 @@ node ace import:brickset
 ## 11. Démarrer le site et créer ton compte administrateur
 
 1. **Setup Node.js App** › ton application › **Restart**.
-2. Ouvre `https://briquotheque.exemple.fr`. Le site doit s'afficher en HTTPS.
+2. Ouvre `https://bricotheque.exemple.fr`. Le site doit s'afficher en HTTPS.
 3. Inscris-toi sur le site et clique sur le lien reçu par e-mail. Si l'e-mail n'arrive pas, vérifie les indésirables et l'étape 3.
 4. Dans le Terminal (environnement activé, comme à l'étape 7) :
 
@@ -179,13 +179,13 @@ cPanel › **Tâches Cron** › ajoute deux tâches. Remplace le chemin `nodeven
 **Mises à jour demandées avec le bouton**, à lancer chaque minute (réglage « Une fois par minute ») :
 
 ```
-source /home/USER/nodevenv/briquotheque/24/bin/activate && cd /home/USER/briquotheque && node ace jobs:work >> tmp/jobs.log 2>&1
+source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque && node ace jobs:work >> tmp/jobs.log 2>&1
 ```
 
 **Mise à jour automatique de la nuit**, tous les jours à 3 h 30 :
 
 ```
-source /home/USER/nodevenv/briquotheque/24/bin/activate && cd /home/USER/briquotheque && node ace sync:all >> tmp/sync.log 2>&1
+source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque && node ace sync:all >> tmp/sync.log 2>&1
 ```
 
 Si o2switch refuse la fréquence d'une minute, mets « toutes les 5 minutes » (`*/5`). Le bouton fonctionnera pareil, avec un démarrage un peu plus lent.
@@ -208,7 +208,7 @@ Ne supprime pas les lignes `Passenger…` écrites par cPanel.
 
 ## 14. Vérifier
 
-- [ ] `http://…` et `https://www.…` redirigent vers `https://briquotheque.exemple.fr`.
+- [ ] `http://…` et `https://www.…` redirigent vers `https://bricotheque.exemple.fr`.
 - [ ] Inscription → e-mail reçu → compte activé.
 - [ ] Les mentions légales affichent ton nom et ton contact, et plus « à compléter ».
 - [ ] Le **bouton de mise à jour** fonctionne :
@@ -216,12 +216,12 @@ Ne supprime pas les lignes `Passenger…` écrites par cPanel.
   2. au plus tard une minute après (cinq si cron toutes les 5 minutes), il passe à « En cours » avec l'étape et la barre ;
   3. au bout de 2 à 5 minutes : « Terminée », notification, liste des nouveautés et historique mis à jour ;
   4. s'il reste « En attente », regarde `tmp/jobs.log` dans le Gestionnaire de fichiers : en général, c'est le chemin `nodevenv` du cron qui est faux.
-- [ ] Sur ton Mac, `A11Y_BASE_URL=https://briquotheque.exemple.fr npm run test:a11y` ne signale aucune erreur.
+- [ ] Sur ton Mac, `A11Y_BASE_URL=https://bricotheque.exemple.fr npm run test:a11y` ne signale aucune erreur.
 
 ## Mettre à jour le site plus tard
 
 1. Sur le Mac : `npm run package`.
-2. Gestionnaire de fichiers : envoie et **extrais** l'archive dans `/home/USER/briquotheque` en écrasant les fichiers. `.env` et `tmp/` ne sont pas dans l'archive, ils sont conservés.
+2. Gestionnaire de fichiers : envoie et **extrais** l'archive dans `/home/USER/bricotheque` en écrasant les fichiers. `.env` et `tmp/` ne sont pas dans l'archive, ils sont conservés.
 3. Terminal (environnement activé) :
 
    ```bash
@@ -235,7 +235,7 @@ Ne supprime pas les lignes `Passenger…` écrites par cPanel.
 
 | Symptôme                             | Piste                                                                                                                     |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| Erreur 503 / « Incomplete response » | Le site n'a pas démarré : `stderr.log` dans `/home/USER/briquotheque`. Souvent une variable manquante dans `.env`.        |
+| Erreur 503 / « Incomplete response » | Le site n'a pas démarré : `stderr.log` dans `/home/USER/bricotheque`. Souvent une variable manquante dans `.env`.         |
 | Erreur 403                           | Droits de fichiers : refais l'archive avec `npm run package`, ne zippe jamais le dossier à la main sur le disque externe. |
 | Liens de partage en `http://`        | Le HTTPS n'est pas forcé (étape 13).                                                                                      |
 | Le bouton reste « En attente »       | Le cron ne tourne pas : vérifie la commande de l'étape 12 et `tmp/jobs.log`.                                              |

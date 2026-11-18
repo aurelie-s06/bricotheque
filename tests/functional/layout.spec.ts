@@ -12,7 +12,7 @@ test.group('Layout', (group) => {
     response.assertTextIncludes('<html lang="fr">')
     response.assertTextIncludes('href="#contenu"')
     response.assertTextIncludes('id="contenu"')
-    response.assertTextIncludes('Briquothèque')
+    response.assertTextIncludes('Bricothèque')
     response.assertTextIncludes(
       'LEGO® est une marque du groupe LEGO, qui ne parraine ni n’approuve ce site.'
     )

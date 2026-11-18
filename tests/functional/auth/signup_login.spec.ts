@@ -53,7 +53,7 @@ test.group('Signup', (group) => {
     response.assertHeader('location', '/mon-compte')
     response.assertFlashMessage(
       'success',
-      'Ton adresse est confirmée. Bienvenue sur Briquothèque, fan !'
+      'Ton adresse est confirmée. Bienvenue sur Bricothèque, fan !'
     )
     await user.refresh()
     assert.isNotNull(user.emailVerifiedAt)

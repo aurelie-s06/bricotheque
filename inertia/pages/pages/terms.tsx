@@ -23,8 +23,8 @@ export default function Terms({ contact }: Props) {
       <h2>{fr ? 'Le service' : 'The service'}</h2>
       <p>
         {fr
-          ? 'Briquothèque est un catalogue gratuit. La consultation est libre et sans compte. Un compte gratuit permet de gérer une collection et une wishlist. Le site ne vend rien et n’affiche pas de publicité.'
-          : 'Briquothèque is a free catalogue. Browsing is open and needs no account. A free account lets you manage a collection and a wishlist. Nothing is sold and no ads are shown.'}
+          ? 'Bricothèque est un catalogue gratuit. La consultation est libre et sans compte. Un compte gratuit permet de gérer une collection et une wishlist. Le site ne vend rien et n’affiche pas de publicité.'
+          : 'Bricothèque is a free catalogue. Browsing is open and needs no account. A free account lets you manage a collection and a wishlist. Nothing is sold and no ads are shown.'}
       </p>
 
       <h2>{fr ? 'Votre compte' : 'Your account'}</h2>

@@ -1,4 +1,4 @@
-# Briquothèque
+# Bricothèque
 
 Catalogue de **tous les sets et minifigs** de briques (anciens, actuels, retirés), avec des comptes utilisateurs pour gérer sa **collection** et sa **wishlist**.
 
@@ -22,8 +22,8 @@ Catalogue de **tous les sets et minifigs** de briques (anciens, actuels, retiré
 ## Installation
 
 ```bash
-git clone <url-du-depot> briquotheque
-cd briquotheque
+git clone <url-du-depot> bricotheque
+cd bricotheque
 npm install
 cp .env.example .env
 node ace generate:key          # remplit APP_KEY
@@ -70,7 +70,7 @@ Toutes les clés sont dans `.env` (jamais commité). `.env.example` liste les va
 | `npm run lint` / `npm run typecheck`            | Qualité du code                                                                 |
 | `npm run format`                                | Formatage Prettier                                                              |
 | `npm run build`                                 | Build de production dans `build/`                                               |
-| `npm run package`                               | Archive `briquotheque-build.zip` à envoyer sur o2switch (droits corrigés)       |
+| `npm run package`                               | Archive `bricotheque-build.zip` à envoyer sur o2switch (droits corrigés)        |
 | `node ace migration:run` / `migration:rollback` | Migrations                                                                      |
 | `node ace user:make-admin <email>`              | Donner (ou retirer avec `--remove`) les droits d'administration                 |
 | `node ace jobs:work` / `node ace sync:all`      | Mises à jour des données en arrière-plan (cron) / tout de suite                 |
@@ -252,8 +252,8 @@ Le bouton n'exécute rien lui-même : il ajoute une ligne « en attente » dans 
 Tâches cron à créer dans cPanel (adapter le chemin) :
 
 ```
-* * * * *   cd ~/briquotheque && node ace jobs:work >> tmp/jobs.log 2>&1
-30 3 * * *  cd ~/briquotheque && node ace sync:all >> tmp/sync.log 2>&1
+* * * * *   cd ~/bricotheque && node ace jobs:work >> tmp/jobs.log 2>&1
+30 3 * * *  cd ~/bricotheque && node ace sync:all >> tmp/sync.log 2>&1
 ```
 
 ## Import du catalogue (Rebrickable)

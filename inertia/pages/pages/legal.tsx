@@ -25,8 +25,8 @@ export default function Legal({ contact, host }: Props) {
       <h2>{fr ? 'Éditeur du site' : 'Publisher'}</h2>
       <p>
         {fr
-          ? 'Briquothèque est un site personnel et non commercial, édité par '
-          : 'Briquothèque is a personal, non-commercial site published by '}
+          ? 'Bricothèque est un site personnel et non commercial, édité par '
+          : 'Bricothèque is a personal, non-commercial site published by '}
         <Filled value={contact.publisher} />
         {fr ? ', particulier.' : ', private individual.'}
       </p>

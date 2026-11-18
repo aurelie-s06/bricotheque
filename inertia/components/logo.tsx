@@ -9,7 +9,7 @@ export default function Logo() {
   const { t } = useI18n()
   return (
     <Link route="home" className="logo" aria-label={t('site.homeLabel')}>
-      Briquothèque
+      Bricothèque
     </Link>
   )
 }

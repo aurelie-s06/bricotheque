@@ -58,8 +58,8 @@ export default function About({ contact, catalogueUpdates }: Props) {
       <h2>{fr ? 'Le site' : 'The site'}</h2>
       <p>
         {fr
-          ? 'Briquothèque est un catalogue gratuit et non commercial de sets et de minifigs de briques de construction. Il permet de chercher un set, de consulter sa fiche, puis, avec un compte, de suivre sa collection et sa liste d’envies (wishlist). Le site ne vend rien.'
-          : 'Briquothèque is a free, non-commercial catalogue of building brick sets and minifigs. You can search for a set, read its page and, with an account, keep track of your collection and wishlist. Nothing is sold on this site.'}
+          ? 'Bricothèque est un catalogue gratuit et non commercial de sets et de minifigs de briques de construction. Il permet de chercher un set, de consulter sa fiche, puis, avec un compte, de suivre sa collection et sa liste d’envies (wishlist). Le site ne vend rien.'
+          : 'Bricothèque is a free, non-commercial catalogue of building brick sets and minifigs. You can search for a set, read its page and, with an account, keep track of your collection and wishlist. Nothing is sold on this site.'}
       </p>
 
       <h2 id="sources">{fr ? 'Sources des données' : 'Data sources'}</h2>

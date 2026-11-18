@@ -39,7 +39,7 @@ export async function downloadDump(directory: string, dump: RebrickableDump) {
   const url = `${REBRICKABLE_DUMPS_URL}/${dump}.csv.gz`
 
   const response = await fetch(url, {
-    headers: { 'User-Agent': 'Briquotheque-importer' },
+    headers: { 'User-Agent': 'Bricotheque-importer' },
     signal: AbortSignal.timeout(10 * 60 * 1000),
   })
   if (!response.ok || !response.body) {

@@ -4,7 +4,7 @@ import SyncJob from '#services/jobs/sync_job'
 
 /**
  * Runs the jobs asked for in the back office. Meant for cron, every minute:
- *   * * * * * cd ~/briquotheque && node ace jobs:work
+ *   * * * * * cd ~/bricotheque && node ace jobs:work
  * It does nothing when no job is pending or when one is already running.
  */
 export default class JobsWork extends BaseCommand {

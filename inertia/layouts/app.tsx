@@ -80,7 +80,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           <p>
             {t('site.legal')} <Link href="/a-propos#sources">{t('site.reuse')}</Link>
           </p>
-          <p>© {new Date().getFullYear()} Briquothèque</p>
+          <p>© {new Date().getFullYear()} Bricothèque</p>
         </div>
       </footer>
 

@@ -14,7 +14,7 @@ const mailConfig = defineConfig({
   },
 
   globals: {
-    brandName: 'Briquothèque',
+    brandName: 'Bricothèque',
   },
 
   mailers: {
