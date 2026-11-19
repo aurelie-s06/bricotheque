@@ -7,6 +7,7 @@ import Pagination, { type PaginationData } from '~/components/pagination'
 import SetFilters, { type ThemeOption } from '~/components/set_filters'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
+import Mascot from '~/components/mascot'
 
 type Props = InertiaProps<{
   sets: Data.BrickSet[]
@@ -54,7 +55,7 @@ export default function SetsIndex({ sets, pagination, query, themeOptions, theme
             </ul>
           ) : (
             <div className="empty-state">
-              <div className="studs" aria-hidden="true" />
+              <Mascot variant="empty" />
               <h2>{t('sets.empty')}</h2>
               <p className="text-muted">{t('sets.emptyHint')}</p>
               <a className="btn btn--secondary" href="/sets">

@@ -8,6 +8,7 @@ import Pagination, { type PaginationData } from '~/components/pagination'
 import { type ThemeOption } from '~/components/set_filters'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
+import Mascot from '~/components/mascot'
 
 type Props = InertiaProps<{
   minifigs: Data.Minifig[]
@@ -61,7 +62,7 @@ export default function MinifigsIndex({
             </ul>
           ) : (
             <div className="empty-state">
-              <div className="studs" aria-hidden="true" />
+              <Mascot variant="empty" />
               <h2>{t('minifigs.empty')}</h2>
               <p className="text-muted">{t('sets.emptyHint')}</p>
               <a className="btn btn--secondary" href="/minifigs">

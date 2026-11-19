@@ -748,6 +748,13 @@ a:hover {
   width: calc(var(--space-2) * 4);
 }
 
+/* "Brico", the mascot of the empty pages and error pages */
+.mascot {
+  display: block;
+  max-width: 40vw;
+  height: auto;
+}
+
 /* ---------- Cards ---------- */
 .card {
   background: var(--surface);

@@ -513,7 +513,7 @@ const en: Record<keyof typeof fr, string> = {
 
   // Errors
   'error.notFoundTitle': 'Page not found',
-  'error.notFoundText': 'The page you requested does not exist or has been moved.',
+  'error.notFoundText': 'This page got lost in the brick bin: it does not exist or has been moved.',
   'error.serverTitle': 'Oops, something went wrong',
   'error.serverPageTitle': 'Server error',
   'error.serverText': 'The server ran into a problem. Please try again in a moment.',

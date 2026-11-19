@@ -13,6 +13,7 @@ import { type InertiaProps } from '~/types'
 import SharePanel from '~/components/share_panel'
 import QuickAdd from '~/components/quick_add'
 import { useI18n } from '~/i18n'
+import Mascot from '~/components/mascot'
 
 type Props = InertiaProps<{
   mode: 'collection' | 'wishlist' | 'shared'
@@ -123,7 +124,7 @@ export default function CollectionList(props: Props) {
 
       {totalItems === 0 ? (
         <div className="empty-state">
-          <div className="studs" aria-hidden="true" />
+          <Mascot variant="empty" />
           <h2>{emptyTitle}</h2>
           {emptyHint && <p className="text-muted">{emptyHint}</p>}
           {!readOnly && (

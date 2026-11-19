@@ -4,6 +4,7 @@ import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import SearchForm from '~/components/search_form'
 import { useI18n } from '~/i18n'
+import Mascot from '~/components/mascot'
 
 export default function NotFound() {
   const { t } = useI18n()
@@ -14,7 +15,7 @@ export default function NotFound() {
         items={[{ name: t('breadcrumb.home'), url: '/' }, { name: t('error.notFoundTitle') }]}
       />
       <div className="empty-state">
-        <div className="studs" aria-hidden="true" />
+        <Mascot variant="lost" />
         <h1>{t('error.notFoundTitle')}</h1>
         <p className="text-muted">{t('error.notFoundText')}</p>
         <SearchForm className="error-search" />

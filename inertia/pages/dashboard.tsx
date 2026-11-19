@@ -9,6 +9,7 @@ import StatusBadge from '~/components/status_badge'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 import { displaySetNum } from '~/lib/set_number'
+import Mascot from '~/components/mascot'
 
 type Props = InertiaProps<{
   figures: {
@@ -129,7 +130,7 @@ export default function DashboardPage(props: Props) {
 
       {figures.sets === 0 && figures.minifigs === 0 ? (
         <div className="empty-state">
-          <div className="studs" aria-hidden="true" />
+          <Mascot variant="empty" />
           <h2>{t('dashboard.empty')}</h2>
           <p className="text-muted">{t('dashboard.emptyHint')}</p>
           <Link href="/sets" className="btn">

@@ -514,7 +514,8 @@ const fr = {
 
   // Errors
   'error.notFoundTitle': 'Page introuvable',
-  'error.notFoundText': 'La page demandée n’existe pas ou a été déplacée.',
+  'error.notFoundText':
+    'Cette page s’est perdue dans le bac à briques : elle n’existe pas ou a été déplacée.',
   'error.serverTitle': 'Oups, une erreur est survenue',
   'error.serverPageTitle': 'Erreur du serveur',
   'error.serverText': 'Le serveur a rencontré un problème. Réessaie dans quelques instants.',

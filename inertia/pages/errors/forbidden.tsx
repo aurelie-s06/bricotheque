@@ -3,6 +3,7 @@ import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import { useI18n } from '~/i18n'
+import Mascot from '~/components/mascot'
 
 export default function Forbidden() {
   const { t } = useI18n()
@@ -13,7 +14,7 @@ export default function Forbidden() {
         items={[{ name: t('breadcrumb.home'), url: '/' }, { name: t('error.forbiddenTitle') }]}
       />
       <div className="empty-state">
-        <div className="studs" aria-hidden="true" />
+        <Mascot variant="key" />
         <h1>{t('error.forbiddenTitle')}</h1>
         <p className="text-muted">{t('error.forbiddenText')}</p>
         <p>

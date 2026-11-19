@@ -8,6 +8,7 @@ import MinifigCard from '~/components/minifig_card'
 import SearchForm from '~/components/search_form'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
+import Mascot from '~/components/mascot'
 
 type Props = InertiaProps<{
   q: string
@@ -47,7 +48,7 @@ export default function Search({ q, sets, setsTotal, minifigs, minifigsTotal }: 
 
       {q && setsTotal + minifigsTotal === 0 && (
         <div className="empty-state">
-          <div className="studs" aria-hidden="true" />
+          <Mascot variant="empty" />
           <h2>{t('search.noResults', { q })}</h2>
           <p className="text-muted">{t('search.noResultsHint')}</p>
         </div>
