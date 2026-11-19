@@ -86,6 +86,19 @@ export default class ThemesController {
 
     const ids = themes.descendantIds(theme.id)
     const featured = await featuredSet(ids)
+    // Background of the header, as on the home page: the latest sets of the theme
+    const mosaic: { img_url: string }[] = await db
+      .from('sets')
+      .whereIn('theme_id', ids)
+      .where('kind', 'set')
+      .whereNotNull('img_url')
+      .whereNull('img_broken_at')
+      .where((query) => query.whereNull('year').orWhere('year', '<=', DateTime.utc().year))
+      .orderByRaw('`year` IS NULL')
+      .orderBy('year', 'desc')
+      .orderBy('num_parts', 'desc')
+      .limit(18)
+      .select('img_url')
     const [years] = await db
       .from('sets')
       .whereIn('theme_id', ids)
@@ -101,6 +114,7 @@ export default class ThemesController {
         firstYear: years?.first ? Number(years.first) : null,
         lastYear: years?.last ? Number(years.last) : null,
       },
+      mosaic: mosaic.map((row) => row.img_url),
       featured: featured
         ? {
             setNum: featured.setNum,

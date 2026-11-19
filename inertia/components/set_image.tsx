@@ -1,8 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePage } from '@inertiajs/react'
-import { Link } from '@adonisjs/inertia/react'
-import { ImageUp, PencilLine } from 'lucide-react'
-import { useI18n } from '~/i18n'
 
 const PLACEHOLDER = '/images/placeholder-set.svg'
 const REBRICKABLE = 'https://cdn.rebrickable.com/media/sets/'
@@ -98,22 +95,5 @@ export default function SetImage({
         next()
       }}
     />
-  )
-}
-
-/** "Change the picture" and "Fix this page" links under the main picture, for administrators only */
-export function AdminImageLink({ kind, id }: { kind: 'sets' | 'minifigs'; id: number }) {
-  const { props } = usePage()
-  const { t } = useI18n()
-  if (!props.user?.isAdmin) return null
-  return (
-    <p className="admin-image-link">
-      <Link href={`/admin/images/${kind}/${id}`} className="btn btn--secondary btn--sm">
-        <ImageUp size={16} aria-hidden="true" /> {t('admin.image.change')}
-      </Link>
-      <Link href={`/admin/catalogue/${kind}/${id}`} className="btn btn--secondary btn--sm">
-        <PencilLine size={16} aria-hidden="true" /> {t('admin.catalogue.adminLink')}
-      </Link>
-    </p>
   )
 }

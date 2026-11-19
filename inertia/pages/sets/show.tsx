@@ -3,7 +3,7 @@ import { Blocks, CalendarDays, Tag, UserRound } from 'lucide-react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
-import SetImage, { AdminImageLink } from '~/components/set_image'
+import SetImage from '~/components/set_image'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
 import CollectionButtons from '~/components/collection_buttons'
@@ -190,20 +190,23 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
       <article className="set-detail">
         <div className="set-detail__media">
           <SetImage src={set.imgUrl} alt={imageAlt} eager item={{ kind: 'sets', id: set.id }} />
-          <AdminImageLink kind="sets" id={set.id} />
         </div>
 
-        <div className="set-detail__info">
-          <p className="set-card__number">
-            {t('set.number', { setNum: displaySetNum(set.setNum) })}
-          </p>
-          <h1>{set.name}</h1>
-          <p>
-            <StatusBadge status={set.availabilityStatus} />
-          </p>
+        <div className="set-detail__info set-panel">
+          <header className="set-panel__head">
+            <div className="set-panel__meta">
+              <p className="set-card__number">
+                {t('set.number', { setNum: displaySetNum(set.setNum) })}
+              </p>
+              <StatusBadge status={set.availabilityStatus} />
+            </div>
+            <h1>{set.name}</h1>
+          </header>
+
           <SpecPills set={set} />
+
           {/* On a phone, a bar fixed at the bottom of the screen */}
-          <div className="set-detail__actions">
+          <div className="set-detail__actions set-panel__section">
             <CollectionButtons
               kind="sets"
               id={set.id}
@@ -214,7 +217,7 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
             />
           </div>
 
-          <dl className="facts">
+          <dl className="facts set-panel__section">
             <dt>{t('set.theme')}</dt>
             <dd>
               {themeChain.map((theme, index) => (
@@ -242,13 +245,10 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
 
             <EstimatedValue set={set} />
 
-            <dt>{t('set.status')}</dt>
-            <dd>{t(`status.${set.availabilityStatus}`)}</dd>
-
             <Availability set={set} />
           </dl>
 
-          <ul className="link-list">
+          <ul className="link-list set-panel__links set-panel__section">
             <li>
               <ExternalLink href={set.rebrickableUrl} lang="en">
                 {t('set.onRebrickable')}

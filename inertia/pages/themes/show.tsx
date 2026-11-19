@@ -7,7 +7,7 @@ import Breadcrumb from '~/components/breadcrumb'
 import Pagination, { type PaginationData } from '~/components/pagination'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
-import SetImage from '~/components/set_image'
+import { thumbnailOf } from '~/components/set_image'
 import { displaySetNum } from '~/lib/set_number'
 
 type ThemeEntry = { name: string; url: string; count: number }
@@ -21,6 +21,7 @@ type Featured = {
 }
 type Props = InertiaProps<{
   theme: ThemeEntry & { firstYear: number | null; lastYear: number | null }
+  mosaic: string[]
   featured: Featured | null
   themeChain: { name: string; url: string }[]
   subthemes: ThemeEntry[]
@@ -44,6 +45,7 @@ function byYear(sets: Data.BrickSet[]) {
 
 export default function ThemeShow({
   theme,
+  mosaic,
   featured,
   themeChain,
   subthemes,
@@ -69,10 +71,26 @@ export default function ThemeShow({
         ]}
       />
 
-      <header className={`theme-banner${featured ? '' : ' theme-banner--plain'}`}>
-        <div className="theme-banner__text">
-          <h1>{theme.name}</h1>
-          <ul className="theme-banner__figures">
+      <section className="hero theme-hero" aria-labelledby="theme-title">
+        {mosaic.length > 0 && (
+          // Decorative: the latest sets of the theme, faded behind the text
+          <div className="hero__mosaic" aria-hidden="true">
+            {mosaic.map((src) => (
+              <img
+                key={src}
+                src={thumbnailOf(src) ?? src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width={250}
+                height={250}
+              />
+            ))}
+          </div>
+        )}
+        <div className="hero__content">
+          <h1 id="theme-title">{theme.name}</h1>
+          <ul className="hero__figures">
             <li>
               <strong>{formatNumber(theme.count)}</strong> {tc('theme.figureSets', theme.count)}
             </li>
@@ -90,41 +108,8 @@ export default function ThemeShow({
               </li>
             )}
           </ul>
-          {
-            /* the figures above say it all, unless books and gear are listed too */
-            (pagination.total !== theme.count || pagination.lastPage > 1) && (
-              <p className="text-muted">
-                {[
-                  // the number of sets is already in the figures above
-                  pagination.total !== theme.count &&
-                    t('theme.productsWithSets', {
-                      products: tc('count.products', pagination.total),
-                      sets: tc('count.sets', theme.count),
-                    }),
-                  pagination.lastPage > 1 &&
-                    t('sets.pageOf', {
-                      page: pagination.currentPage,
-                      last: pagination.lastPage,
-                      perPage: pagination.perPage,
-                    }),
-                ]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </p>
-            )
-          }
-        </div>
-        {featured && (
-          <figure className="theme-banner__featured">
-            <Link
-              href={featured.url}
-              className="theme-banner__image"
-              tabIndex={-1}
-              aria-hidden="true"
-            >
-              <SetImage src={featured.imgUrl} alt="" eager />
-            </Link>
-            <figcaption>
+          {featured && (
+            <p className="theme-hero__featured">
               {t('theme.featured')}{' '}
               <Link href={featured.url}>
                 {displaySetNum(featured.setNum)} {featured.name}
@@ -134,10 +119,30 @@ export default function ThemeShow({
                 · {tc('count.pieces', featured.numParts)}
                 {featured.year && ` · ${featured.year}`}
               </span>
-            </figcaption>
-          </figure>
-        )}
-      </header>
+            </p>
+          )}
+          {(pagination.total !== theme.count || pagination.lastPage > 1) && (
+            <p className="text-muted">
+              {[
+                // the number of sets is already in the figures above
+                pagination.total !== theme.count &&
+                  t('theme.productsWithSets', {
+                    products: tc('count.products', pagination.total),
+                    sets: tc('count.sets', theme.count),
+                  }),
+                pagination.lastPage > 1 &&
+                  t('sets.pageOf', {
+                    page: pagination.currentPage,
+                    last: pagination.lastPage,
+                    perPage: pagination.perPage,
+                  }),
+              ]
+                .filter(Boolean)
+                .join(' · ')}
+            </p>
+          )}
+        </div>
+      </section>
 
       {subthemes.length > 0 && (
         <section aria-labelledby="subthemes-title" className="subthemes">
