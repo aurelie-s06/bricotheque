@@ -2798,6 +2798,10 @@ a:not([class]):visited {
   border: 0;
 }
 
+.admin-stats {
+  margin-block: var(--space-3);
+}
+
 .admin-merge {
   display: grid;
   gap: var(--space-1);

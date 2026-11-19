@@ -76,6 +76,7 @@ export interface ApiDefinition {
   }
   admin: {
     dashboard: typeof routes['admin.dashboard']
+    stats: typeof routes['admin.stats']
     users: typeof routes['admin.users'] & {
       show: typeof routes['admin.users.show']
       confirmation: typeof routes['admin.users.confirmation']

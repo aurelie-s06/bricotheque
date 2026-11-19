@@ -392,3 +392,53 @@ test.group('Back office: users', (group) => {
     assert.isNotNull(await db.from('users').where('id', admin.id).first())
   })
 })
+
+test.group('Back office: statistics', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+  group.each.setup(() => resetRateLimits())
+  group.each.setup(() => seedCatalogue())
+
+  test('counts members, sign-ups per month and the most collected sets', async ({
+    client,
+    assert,
+  }) => {
+    const admin = await createAdmin()
+    const fan = await createUser()
+    const other = await createUser({
+      email: 'other@example.com',
+      username: 'other',
+      emailVerifiedAt: null,
+    })
+    const falcon = await BrickSet.findByOrFail('set_num', '75192-1')
+    const tumbler = await BrickSet.findByOrFail('set_num', '8880-1')
+    const now = new Date()
+    await db.table('user_sets').insert([
+      { user_id: fan.id, set_id: falcon.id, status: 'owned', quantity: 5, created_at: now },
+      { user_id: other.id, set_id: falcon.id, status: 'owned', quantity: 1, created_at: now },
+      { user_id: other.id, set_id: tumbler.id, status: 'owned', quantity: 1, created_at: now },
+      { user_id: fan.id, set_id: tumbler.id, status: 'wanted', quantity: 1, created_at: now },
+    ])
+
+    const response = await client.get('/admin/statistiques').loginAs(admin).withInertia()
+    response.assertInertiaComponent('admin/stats')
+    const { figures, signups, top } = response.inertiaProps
+    assert.deepInclude(figures, {
+      users: 3,
+      verified: 2,
+      newUsers: 3,
+      collectors: 2,
+      setsOwned: 3,
+      setsWanted: 1,
+    })
+    assert.lengthOf(signups, 12)
+    assert.equal(signups.at(-1).value, 3)
+    assert.deepEqual(
+      top.setsOwned.map((row: { number: string; value: number }) => [row.number, row.value]),
+      [
+        ['75192-1', 2],
+        ['8880-1', 1],
+      ]
+    )
+    assert.equal(top.setsWanted[0].number, '8880-1')
+  })
+})

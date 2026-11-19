@@ -619,6 +619,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/admin_controller').default['dashboard']>>>
     }
   }
+  'admin.stats': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/statistiques'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/stats_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/stats_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/stats_controller').default['index']>>>
+    }
+  }
   'admin.users': {
     methods: ["GET","HEAD"]
     pattern: '/admin/utilisateurs'

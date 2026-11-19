@@ -20,6 +20,7 @@ declare module '@adonisjs/inertia/types' {
     'admin/images': ExtractProps<(typeof import('../../inertia/pages/admin/images.tsx'))['default']>
     'admin/manual_create': ExtractProps<(typeof import('../../inertia/pages/admin/manual_create.tsx'))['default']>
     'admin/manual': ExtractProps<(typeof import('../../inertia/pages/admin/manual.tsx'))['default']>
+    'admin/stats': ExtractProps<(typeof import('../../inertia/pages/admin/stats.tsx'))['default']>
     'admin/translations': ExtractProps<(typeof import('../../inertia/pages/admin/translations.tsx'))['default']>
     'admin/updates': ExtractProps<(typeof import('../../inertia/pages/admin/updates.tsx'))['default']>
     'admin/user_show': ExtractProps<(typeof import('../../inertia/pages/admin/user_show.tsx'))['default']>

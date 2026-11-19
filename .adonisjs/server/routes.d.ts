@@ -51,6 +51,7 @@ export type ScannedRoutes = {
     'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
+    'admin.stats': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.confirmation': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -103,6 +104,7 @@ export type ScannedRoutes = {
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
+    'admin.stats': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.manual': { paramsTuple?: []; params?: {} }
@@ -144,6 +146,7 @@ export type ScannedRoutes = {
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
+    'admin.stats': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.manual': { paramsTuple?: []; params?: {} }

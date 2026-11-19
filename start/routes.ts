@@ -166,6 +166,7 @@ router.get('wishlist/:token', [controllers.MyCollection, 'shared']).as('wishlist
 router
   .group(() => {
     router.get('/', [controllers.admin.Admin, 'dashboard']).as('admin.dashboard')
+    router.get('statistiques', [controllers.admin.Stats, 'index']).as('admin.stats')
     router.get('utilisateurs', [controllers.admin.Users, 'index']).as('admin.users')
     router.get('utilisateurs/:id', [controllers.admin.Users, 'show']).as('admin.users.show')
     router

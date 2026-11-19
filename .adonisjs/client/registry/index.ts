@@ -290,6 +290,12 @@ const routes = {
     tokens: [[0,"admin"]],
     types: placeholder as Registry['admin.dashboard']['types'],
   },
+  'admin.stats': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/statistiques',
+    tokens: [[0,"admin"],[0,"statistiques"]],
+    types: placeholder as Registry['admin.stats']['types'],
+  },
   'admin.users': {
     methods: ["GET","HEAD"],
     pattern: '/admin/utilisateurs',
