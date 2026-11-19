@@ -434,6 +434,12 @@ const routes = {
     tokens: [[0,"admin"],[0,"images"]],
     types: placeholder as Registry['admin.images']['types'],
   },
+  'admin.images.check': {
+    methods: ["POST"],
+    pattern: '/admin/images/verification',
+    tokens: [[0,"admin"],[0,"images"],[0,"verification"]],
+    types: placeholder as Registry['admin.images.check']['types'],
+  },
   'admin.images.edit': {
     methods: ["GET","HEAD"],
     pattern: '/admin/images/:kind/:id',

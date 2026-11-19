@@ -71,7 +71,7 @@ export default {
     },
     jobs: {
       columns: {
-        type: enumOf(['sync']),
+        type: enumOf(['sync', 'images']),
         status: enumOf(['pending', 'running', 'completed', 'failed']),
         progress: json('{ step: number; steps: number; label: string; message: string }'),
         result: json('{ newSets: string[]; newMinifigs: string[] }'),

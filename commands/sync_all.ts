@@ -2,10 +2,11 @@ import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import SyncJob from '#services/jobs/sync_job'
 import WishlistAlerts from '#services/wishlist_alerts'
+import ImageHealth, { NIGHTLY_LIMIT } from '#services/admin/image_health'
 
 /**
  * Full data update now (Rebrickable, then Brickset), e.g. from a nightly
- * cron, then the wishlist alerts. It shares the lock of the back office: it does nothing when an
+ * cron, then the wishlist alerts and a batch of picture checks. It shares the lock of the back office: it does nothing when an
  * update is already pending or running.
  */
 export default class SyncAll extends BaseCommand {
@@ -38,6 +39,17 @@ export default class SyncAll extends BaseCommand {
       this.logger.success(`Alertes wishlist : ${sent} e-mail(s) envoyé(s)`)
     } catch (error) {
       this.logger.error(`Alertes wishlist en échec : ${(error as Error).message}`)
+      this.exitCode = 1
+    }
+
+    // A batch of pictures: all are checked within a few nights, then monthly
+    try {
+      const stats = await ImageHealth.run({ limit: NIGHTLY_LIMIT })
+      this.logger.success(
+        `Images : ${stats.checked} vérifiée(s), ${stats.broken} cassée(s), ${stats.unknown} sans réponse`
+      )
+    } catch (error) {
+      this.logger.error(`Vérification des images en échec : ${(error as Error).message}`)
       this.exitCode = 1
     }
   }

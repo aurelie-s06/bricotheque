@@ -182,7 +182,7 @@ cPanel › **Tâches Cron** › ajoute deux tâches. Remplace le chemin `nodeven
 source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque && node ace jobs:work >> tmp/jobs.log 2>&1
 ```
 
-**Mise à jour automatique de la nuit**, tous les jours à 3 h 30. Elle envoie ensuite les alertes wishlist par e-mail aux membres qui les ont activées :
+**Mise à jour automatique de la nuit**, tous les jours à 3 h 30. Elle envoie ensuite les alertes wishlist par e-mail aux membres qui les ont activées, puis vérifie un lot de 5 000 images (les cassées apparaissent dans Administration › Images manquantes) :
 
 ```
 source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque && node ace sync:all >> tmp/sync.log 2>&1

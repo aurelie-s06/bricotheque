@@ -55,13 +55,13 @@ export class JobSchema extends BaseModel {
   @column()
   declare status: 'pending' | 'running' | 'completed' | 'failed'
   @column()
-  declare type: 'sync'
+  declare type: 'sync' | 'images'
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
 
 export class MinifigSchema extends BaseModel {
-  static $columns = ['createdAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'figNum', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'isManual', 'lockedFields', 'mainThemeId', 'name', 'numParts', 'slug', 'updatedAt', 'yearFirst'] as const
+  static $columns = ['createdAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'figNum', 'id', 'imgBrokenAt', 'imgCheckedAt', 'imgUrl', 'imgUrlManual', 'isManual', 'lockedFields', 'mainThemeId', 'name', 'numParts', 'slug', 'updatedAt', 'yearFirst'] as const
   $columns = MinifigSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -79,6 +79,8 @@ export class MinifigSchema extends BaseModel {
   declare id: number
   @column.dateTime()
   declare imgBrokenAt: DateTime | null
+  @column.dateTime()
+  declare imgCheckedAt: DateTime | null
   @column()
   declare imgUrl: string | null
   @column()
@@ -139,7 +141,7 @@ export class SetMinifigSchema extends BaseModel {
 }
 
 export class SetSchema extends BaseModel {
-  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'isManual', 'kind', 'lockedFields', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
+  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgBrokenAt', 'imgCheckedAt', 'imgUrl', 'imgUrlManual', 'isManual', 'kind', 'lockedFields', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
   $columns = SetSchema.$columns
   @column()
   declare availabilityStatus: 'upcoming' | 'available' | 'retired' | 'unknown'
@@ -173,6 +175,8 @@ export class SetSchema extends BaseModel {
   declare id: number
   @column.dateTime()
   declare imgBrokenAt: DateTime | null
+  @column.dateTime()
+  declare imgCheckedAt: DateTime | null
   @column()
   declare imgUrl: string | null
   @column()

@@ -6,6 +6,9 @@ import db from '@adonisjs/lucid/services/db'
 import BrickSet from '#models/brick_set'
 import Minifig from '#models/minifig'
 import ImageUrlCheck from '#services/admin/image_url_check'
+import ImageHealth from '#services/admin/image_health'
+import ImageCheckJob from '#services/jobs/image_check_job'
+import Job from '#models/job'
 import { backWithErrors } from '#helpers/form_errors'
 import { resolveLocale } from '#helpers/locale'
 import { serverMessage } from '#helpers/server_messages'
@@ -61,8 +64,21 @@ export default class ImagesController {
       .orderBy(kind === 'sets' ? 'set_num' : 'fig_num')
       .paginate(page, PER_PAGE)
 
+    const job =
+      (await ImageCheckJob.current()) ??
+      (await Job.query().where('type', 'images').orderBy('id', 'desc').first())
+
     return inertia.render('admin/images', {
       kind,
+      check: {
+        ...(await ImageHealth.summary()),
+        job: job && {
+          status: job.status,
+          progress: job.progress,
+          error: job.error,
+          finishedAt: job.finishedAt?.toISO() ?? null,
+        },
+      },
       items: (result.all() as (BrickSet | Minifig)[]).map((item) => describe(kind, item)),
       pagination: {
         currentPage: result.currentPage,
@@ -71,6 +87,17 @@ export default class ImagesController {
         perPage: result.perPage,
       },
     })
+  }
+
+  /** POST /admin/images/verification: checks every picture in the background */
+  async checkAll({ auth, request, session, response }: HttpContext) {
+    const locale = resolveLocale(request)
+    const job = await ImageCheckJob.enqueue(auth.getUserOrFail().id)
+    session.flash(
+      job ? 'success' : 'info',
+      serverMessage(locale, job ? 'admin.image.checkQueued' : 'admin.image.checkRunning')
+    )
+    return response.redirect().back()
   }
 
   /** GET /admin/images/:kind/:id */

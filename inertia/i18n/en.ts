@@ -31,6 +31,18 @@ const en: Record<keyof typeof fr, string> = {
   'admin.never': 'never',
   'admin.image.lead':
     'Items without a picture, or whose picture could not be shown to an administrator. Paste the address of a picture: it replaces the imported one and is never overwritten by the updates.',
+  'admin.image.checkTitle': 'Automatic picture check',
+  'admin.image.checkSummary':
+    '{checked} pictures out of {total} checked in the last 30 days ({percent} %).',
+  'admin.image.checkLast': 'Last check: {date}.',
+  'admin.image.checkHint':
+    'Every night, the server checks 5,000 pictures: never checked ones first, then each one once a month. Broken pictures show up in the list below by themselves.',
+  'admin.image.checkAll': 'Check everything now',
+  'admin.image.jobPending': 'Full check pending: it starts within a minute.',
+  'admin.image.jobRunning':
+    'Full check running: {done} / {total} pictures ({message}). Reload the page to follow it.',
+  'admin.image.jobDone': 'Last full check finished on {date}: {message}.',
+  'admin.image.jobFailed': 'The last full check failed: {error}',
   'admin.image.tabs': 'Kind of items',
   'admin.image.count_one': '{count} item to handle',
   'admin.image.count_other': '{count} items to handle',

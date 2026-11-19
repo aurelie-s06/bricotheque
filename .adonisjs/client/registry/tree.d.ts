@@ -107,6 +107,7 @@ export interface ApiDefinition {
       merge: typeof routes['admin.manual.merge']
     }
     images: typeof routes['admin.images'] & {
+      check: typeof routes['admin.images.check']
       edit: typeof routes['admin.images.edit']
       update: typeof routes['admin.images.update']
       broken: typeof routes['admin.images.broken']

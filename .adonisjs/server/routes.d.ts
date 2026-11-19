@@ -75,6 +75,7 @@ export type ScannedRoutes = {
     'admin.manual.store': { paramsTuple: [ParamValue]; params: {'kind': ParamValue} }
     'admin.manual.merge': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.images': { paramsTuple?: []; params?: {} }
+    'admin.images.check': { paramsTuple?: []; params?: {} }
     'admin.images.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.images.update': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.images.broken': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
@@ -204,6 +205,7 @@ export type ScannedRoutes = {
     'admin.users.confirmation': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.manual.store': { paramsTuple: [ParamValue]; params: {'kind': ParamValue} }
     'admin.manual.merge': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
+    'admin.images.check': { paramsTuple?: []; params?: {} }
     'admin.images.broken': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.catalogue.release': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.updates.store': { paramsTuple?: []; params?: {} }

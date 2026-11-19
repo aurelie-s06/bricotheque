@@ -2,6 +2,7 @@ import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import SyncJob from '#services/jobs/sync_job'
 import SiteHealth from '#services/admin/site_health'
+import ImageCheckJob from '#services/jobs/image_check_job'
 
 /**
  * Runs the jobs asked for in the back office. Meant for cron, every minute:
@@ -22,6 +23,18 @@ export default class JobsWork extends BaseCommand {
       return
     }
     while (job) {
+      if (job.type === 'images') {
+        this.logger.info(`Job ${job.id} : vérification de toutes les images`)
+        const done = await ImageCheckJob.run(job)
+        if (done.status === 'failed') {
+          this.logger.error(`Job ${done.id} en échec : ${done.error}`)
+          this.exitCode = 1
+        } else {
+          this.logger.success(`Job ${done.id} terminé : ${done.progress?.message ?? ''}`)
+        }
+        job = await SyncJob.claim()
+        continue
+      }
       this.logger.info(`Job ${job.id} : mise à jour des données`)
       const done = await SyncJob.run(job, (line) => this.logger.log(line))
       if (done.status === 'failed') {

@@ -931,6 +931,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['index']>>>
     }
   }
+  'admin.images.check': {
+    methods: ["POST"]
+    pattern: '/admin/images/verification'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['checkAll']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['checkAll']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['checkAll']>>>
+    }
+  }
   'admin.images.edit': {
     methods: ["GET","HEAD"]
     pattern: '/admin/images/:kind/:id'

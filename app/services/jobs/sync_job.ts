@@ -37,8 +37,8 @@ const stripAnsi = (text: string) => text.replace(/\u001b\[[0-9;]*[A-Za-z]/g, '')
  * Only one job can be pending or running at a time.
  */
 export default class SyncJob {
-  /** Pending or running job, if any (after cleaning up dead ones) */
-  static async current() {
+  /** Marks as failed the running jobs whose worker gave no news for too long */
+  static async cleanUp() {
     await Job.query()
       .where('status', 'running')
       .where('heartbeat_at', '<', DateTime.now().minus(STALE_AFTER).toFormat(SQL_DATETIME))
@@ -47,31 +47,48 @@ export default class SyncJob {
         error: 'Le processus de mise à jour s’est arrêté sans prévenir.',
         finishedAt: DateTime.now().toFormat(SQL_DATETIME),
       })
-    return Job.query().whereIn('status', ['pending', 'running']).orderBy('id').first()
+  }
+
+  /** Pending or running job of this type, if any (after cleaning up dead ones) */
+  static async current(type: Job['type'] = 'sync') {
+    await this.cleanUp()
+    return Job.query()
+      .where('type', type)
+      .whereIn('status', ['pending', 'running'])
+      .orderBy('id')
+      .first()
   }
 
   /** Asks for an update; returns null when one is already pending or running */
   static async enqueue(userId: number | null) {
-    if (await this.current()) return null
+    if (await this.current('sync')) return null
     return Job.create({ type: 'sync', status: 'pending', requestedBy: userId })
   }
 
-  /** Takes the oldest pending job (atomically), or null */
+  /**
+   * Takes the oldest pending job (atomically) whose type is not already
+   * running, or null. A data update and a picture check can run side by side.
+   */
   static async claim() {
-    const current = await this.current()
-    if (!current || current.status !== 'pending') return null
-    const now = DateTime.now()
-    const updated = await Job.query()
-      .where({ id: current.id, status: 'pending' })
-      .update({
-        status: 'running',
-        startedAt: now.toFormat(SQL_DATETIME),
-        heartbeatAt: now.toFormat(SQL_DATETIME),
-      })
-    const count = Array.isArray(updated) ? Number(updated[0]) : Number(updated)
-    if (count !== 1) return null
-    await current.refresh()
-    return current
+    await this.cleanUp()
+    const pending = await Job.query().where('status', 'pending').orderBy('id')
+    for (const job of pending) {
+      const running = await Job.query().where({ type: job.type, status: 'running' }).first()
+      if (running) continue
+      const now = DateTime.now()
+      const updated = await Job.query()
+        .where({ id: job.id, status: 'pending' })
+        .update({
+          status: 'running',
+          startedAt: now.toFormat(SQL_DATETIME),
+          heartbeatAt: now.toFormat(SQL_DATETIME),
+        })
+      const count = Array.isArray(updated) ? Number(updated[0]) : Number(updated)
+      if (count !== 1) continue
+      await job.refresh()
+      return job
+    }
+    return null
   }
 
   /**

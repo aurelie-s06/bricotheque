@@ -226,6 +226,9 @@ router
       .where('kind', /^(sets|minifigs)$/)
       .where('id', router.matchers.number())
     router.get('images', [controllers.admin.Images, 'index']).as('admin.images')
+    router
+      .post('images/verification', [controllers.admin.Images, 'checkAll'])
+      .as('admin.images.check')
     router.get('images/:kind/:id', [controllers.admin.Images, 'edit']).as('admin.images.edit')
     router.put('images/:kind/:id', [controllers.admin.Images, 'update']).as('admin.images.update')
     router

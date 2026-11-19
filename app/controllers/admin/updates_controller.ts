@@ -25,7 +25,7 @@ export default class UpdatesController {
   /** GET /admin/mises-a-jour */
   async index({ inertia }: HttpContext) {
     const current = await SyncJob.current()
-    const last = current ?? (await Job.query().orderBy('id', 'desc').first())
+    const last = current ?? (await Job.query().where('type', 'sync').orderBy('id', 'desc').first())
     const runs = await ImportRun.query().orderBy('id', 'desc').limit(15)
 
     return inertia.render('admin/updates', {

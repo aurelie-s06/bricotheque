@@ -29,7 +29,19 @@ const fr = {
   'admin.lastUpdate': 'Dernière mise à jour des données :',
   'admin.never': 'jamais',
   'admin.image.lead':
-    'Éléments sans image, ou dont l’image n’a pas pu s’afficher chez un administrateur. Colle l’adresse d’une image : elle remplace l’image importée et n’est jamais écrasée par les mises à jour.',
+    'Éléments sans image, ou dont l’image est cassée (vérification automatique, ou image qui n’a pas pu s’afficher chez un administrateur). Colle l’adresse d’une image : elle remplace l’image importée et n’est jamais écrasée par les mises à jour.',
+  'admin.image.checkTitle': 'Vérification automatique des images',
+  'admin.image.checkSummary':
+    '{checked} images sur {total} vérifiées ces 30 derniers jours ({percent} %).',
+  'admin.image.checkLast': 'Dernière vérification : {date}.',
+  'admin.image.checkHint':
+    'Chaque nuit, le serveur vérifie 5 000 images : les jamais vérifiées d’abord, puis chacune une fois par mois. Les images cassées apparaissent seules dans la liste ci-dessous.',
+  'admin.image.checkAll': 'Tout vérifier maintenant',
+  'admin.image.jobPending': 'Vérification complète en attente : elle démarre dans la minute.',
+  'admin.image.jobRunning':
+    'Vérification complète en cours : {done} / {total} images ({message}). Recharge la page pour suivre.',
+  'admin.image.jobDone': 'Dernière vérification complète terminée le {date} : {message}.',
+  'admin.image.jobFailed': 'La dernière vérification complète a échoué : {error}',
   'admin.image.tabs': 'Type d’éléments',
   'admin.image.count_one': '{count} élément à traiter',
   'admin.image.count_other': '{count} éléments à traiter',

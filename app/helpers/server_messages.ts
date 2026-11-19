@@ -10,6 +10,9 @@ const fr = {
   'admin.image.unreachable': 'Impossible de charger cette adresse : vérifie qu’elle est correcte.',
   'admin.image.notImage': 'Cette adresse ne pointe pas vers une image.',
   'admin.image.saved': 'L’image de « {name} » est enregistrée.',
+  'admin.image.checkQueued':
+    'Vérification demandée : elle démarre au prochain passage de la tâche planifiée et dure environ une heure.',
+  'admin.image.checkRunning': 'Une vérification des images est déjà en attente ou en cours.',
   'admin.translations.saved': 'La traduction de « {name} » est enregistrée.',
   'admin.translations.cleared':
     'La traduction de « {name} » est supprimée : la description s’affiche en anglais.',
@@ -139,6 +142,9 @@ const en: Record<MessageKey, string> = {
   'admin.image.unreachable': 'This address cannot be loaded: check that it is correct.',
   'admin.image.notImage': 'This address does not point to a picture.',
   'admin.image.saved': 'The picture of “{name}” is saved.',
+  'admin.image.checkQueued':
+    'Check requested: it starts at the next run of the scheduled task and takes about an hour.',
+  'admin.image.checkRunning': 'A picture check is already pending or running.',
   'admin.translations.saved': 'The translation of “{name}” is saved.',
   'admin.translations.cleared':
     'The translation of “{name}” is removed: the description is shown in English.',
