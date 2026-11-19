@@ -224,6 +224,12 @@ const routes = {
     tokens: [[0,"mon-compte"],[0,"minifigs"],[0,"proposition"]],
     types: placeholder as Registry['account.minifig_prompt']['types'],
   },
+  'wishlist_alerts.prompt': {
+    methods: ["POST"],
+    pattern: '/mon-compte/alertes/proposition',
+    tokens: [[0,"mon-compte"],[0,"alertes"],[0,"proposition"]],
+    types: placeholder as Registry['wishlist_alerts.prompt']['types'],
+  },
   'account.update_preferences': {
     methods: ["PUT"],
     pattern: '/mon-compte/preferences',
@@ -313,6 +319,12 @@ const routes = {
     pattern: '/wishlist/:token',
     tokens: [[0,"wishlist"],[1,"token"]],
     types: placeholder as Registry['wishlist.shared']['types'],
+  },
+  'wishlist_alerts.unsubscribe': {
+    methods: ["GET","HEAD"],
+    pattern: '/alertes-wishlist/desinscription/:id',
+    tokens: [[0,"alertes-wishlist"],[0,"desinscription"],[1,"id"]],
+    types: placeholder as Registry['wishlist_alerts.unsubscribe']['types'],
   },
   'admin.dashboard': {
     methods: ["GET","HEAD"],

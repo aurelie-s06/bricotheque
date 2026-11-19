@@ -267,7 +267,7 @@ export class UserSetSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['autoAddMinifigs', 'createdAt', 'email', 'emailVerifiedAt', 'id', 'isAdmin', 'minifigPromptAnswered', 'password', 'updatedAt', 'username', 'wishlistShareToken'] as const
+  static $columns = ['autoAddMinifigs', 'createdAt', 'email', 'emailVerifiedAt', 'id', 'isAdmin', 'locale', 'minifigPromptAnswered', 'password', 'updatedAt', 'username', 'wishlistAlerts', 'wishlistAlertsPromptAnswered', 'wishlistShareToken'] as const
   $columns = UserSchema.$columns
   @booleanColumn()
   declare autoAddMinifigs: boolean
@@ -281,6 +281,8 @@ export class UserSchema extends BaseModel {
   declare id: number
   @booleanColumn()
   declare isAdmin: boolean
+  @column()
+  declare locale: string | null
   @booleanColumn()
   declare minifigPromptAnswered: boolean
   @column({ serializeAs: null })
@@ -289,6 +291,25 @@ export class UserSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare username: string
+  @booleanColumn()
+  declare wishlistAlerts: boolean
+  @booleanColumn()
+  declare wishlistAlertsPromptAnswered: boolean
   @column()
   declare wishlistShareToken: string | null
+}
+
+export class WishlistAlertsSentSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'kind', 'setId', 'userId'] as const
+  $columns = WishlistAlertsSentSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare kind: string
+  @column()
+  declare setId: number
+  @column()
+  declare userId: number
 }

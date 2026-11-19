@@ -80,3 +80,58 @@ export class TestMail extends NoticeMail {
     })
   }
 }
+
+export type AlertedSet = { setNum: string; name: string; url: string; date: string | null }
+
+/** "26/11/2026" or "11/26/2026": dates of the emails, written in full */
+const mailDate = (date: string | null, locale: Locale) =>
+  date
+    ? new Intl.DateTimeFormat(locale === 'fr' ? 'fr-FR' : 'en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'UTC',
+      }).format(new Date(`${date}T12:00:00Z`))
+    : '–'
+
+const setLine = (set: AlertedSet) => `${set.setNum.replace(/-1$/, '')} ${set.name}`
+
+/** Sets of the wishlist that came out, or leave the shops soon */
+export class WishlistAlertMail extends NoticeMail {
+  constructor(
+    user: User,
+    locale: Locale,
+    data: {
+      released: AlertedSet[]
+      retiring: AlertedSet[]
+      wishlistUrl: string
+      unsubscribeUrl: string
+    }
+  ) {
+    const t = translator(locale)
+    const paragraphs: string[] = []
+    if (data.released.length) {
+      paragraphs.push(t('mail.alertReleased'))
+      for (const set of data.released) {
+        paragraphs.push(
+          `• ${setLine(set)} – ${t('mail.alertSince', { date: mailDate(set.date, locale) })} : ${set.url}`
+        )
+      }
+    }
+    if (data.retiring.length) {
+      paragraphs.push(t('mail.alertRetiring'))
+      for (const set of data.retiring) {
+        paragraphs.push(
+          `• ${setLine(set)} – ${t('mail.alertUntil', { date: mailDate(set.date, locale) })} : ${set.url}`
+        )
+      }
+    }
+    super(user.email, locale, {
+      subject: t('mail.alertSubject'),
+      greeting: t('mail.resetGreeting', { username: user.username }),
+      paragraphs,
+      button: { label: t('mail.alertButton'), url: data.wishlistUrl },
+      notes: [t('mail.alertUnsubscribe', { url: data.unsubscribeUrl })],
+    })
+  }
+}

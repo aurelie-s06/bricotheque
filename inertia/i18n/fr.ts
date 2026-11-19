@@ -689,6 +689,15 @@ const fr = {
   'quickAdd.alreadyThere_other': '{count} déjà présents',
   'quickAdd.unknown_one': '{count} numéro introuvable dans le catalogue :',
   'quickAdd.unknown_other': '{count} numéros introuvables dans le catalogue :',
+  'account.wishlistAlerts':
+    'M’envoyer un e-mail quand un set de ma wishlist sort ou va bientôt quitter les magasins',
+  'account.wishlistAlertsHint':
+    'Au plus un e-mail par jour, après la mise à jour de la nuit, et une seule fois par set. Chaque e-mail contient un lien de désinscription.',
+  'alertsPrompt.title': 'Être prévenu·e pour les sets de ta wishlist ?',
+  'alertsPrompt.text':
+    'Bricothèque peut t’envoyer un e-mail quand un set de ta wishlist sort, ou quand il va quitter les magasins dans le mois. Au plus un e-mail par jour, jamais deux fois pour le même set.',
+  'alertsPrompt.yes': 'Oui, m’envoyer les alertes',
+  'alertsPrompt.no': 'Non merci',
   'account.preferencesTitle': 'Préférences',
   'account.autoAddMinifigs':
     'Quand j’ajoute un set à ma collection, ajouter aussi ses minifigs à ma collection de minifigs',

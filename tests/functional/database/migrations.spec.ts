@@ -14,6 +14,7 @@ const APP_TABLES = [
   'user_minifigs',
   'user_sets',
   'users',
+  'wishlist_alerts_sent',
 ]
 
 async function listTables(): Promise<string[]> {

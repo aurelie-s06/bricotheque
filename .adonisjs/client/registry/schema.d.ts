@@ -476,6 +476,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['answerMinifigPrompt']>>>
     }
   }
+  'wishlist_alerts.prompt': {
+    methods: ["POST"]
+    pattern: '/mon-compte/alertes/proposition'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/wishlist_alerts_controller').default['answerPrompt']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/wishlist_alerts_controller').default['answerPrompt']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/wishlist_alerts_controller').default['answerPrompt']>>>
+    }
+  }
   'account.update_preferences': {
     methods: ["PUT"]
     pattern: '/mon-compte/preferences'
@@ -669,6 +682,19 @@ export interface Registry {
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['shared']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['shared']>>>
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['shared']>>>
+    }
+  }
+  'wishlist_alerts.unsubscribe': {
+    methods: ["GET","HEAD"]
+    pattern: '/alertes-wishlist/desinscription/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/wishlist_alerts_controller').default['unsubscribe']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/wishlist_alerts_controller').default['unsubscribe']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/wishlist_alerts_controller').default['unsubscribe']>>>
     }
   }
   'admin.dashboard': {

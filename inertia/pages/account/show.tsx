@@ -11,7 +11,13 @@ import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
-  account: { username: string; email: string; createdAt: string; autoAddMinifigs: boolean }
+  account: {
+    username: string
+    email: string
+    createdAt: string
+    autoAddMinifigs: boolean
+    wishlistAlerts: boolean
+  }
   missingMinifigs: number
   shareUrl: string | null
 }>
@@ -202,6 +208,20 @@ export default function AccountShow({ account, missingMinifigs, shareUrl }: Prop
                   />
                   <label htmlFor="autoAddMinifigs">{t('account.autoAddMinifigs')}</label>
                 </div>
+                <div className="field field--checkbox">
+                  <input
+                    type="checkbox"
+                    id="wishlistAlerts"
+                    name="wishlistAlerts"
+                    value="true"
+                    defaultChecked={account.wishlistAlerts}
+                    aria-describedby="wishlistAlerts-hint"
+                  />
+                  <label htmlFor="wishlistAlerts">{t('account.wishlistAlerts')}</label>
+                </div>
+                <p className="field__hint" id="wishlistAlerts-hint">
+                  {t('account.wishlistAlertsHint')}
+                </p>
                 <SaveButton processing={processing} label={t('account.savePreferences')} />
               </>
             )}

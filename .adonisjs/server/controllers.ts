@@ -29,4 +29,5 @@ export const controllers = {
   Sets: () => import('#controllers/sets_controller'),
   Sitemap: () => import('#controllers/sitemap_controller'),
   Themes: () => import('#controllers/themes_controller'),
+  WishlistAlerts: () => import('#controllers/wishlist_alerts_controller'),
 }

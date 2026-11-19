@@ -15,6 +15,14 @@ async function minifigPrompt(user: User | undefined) {
   return { missing: await collection.countMissingMinifigsOfOwnedSets() }
 }
 
+async function wishlistAlertsPrompt(user: User | undefined) {
+  if (!user || user.wishlistAlerts || user.wishlistAlertsPromptAnswered) return false
+  // One question at a time: the minifigs one first
+  if (await minifigPrompt(user)) return false
+  const { wantedSets } = await new Collection(user).ids()
+  return wantedSets.length > 0
+}
+
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
     /**
@@ -43,6 +51,8 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
        * of the sets too? (null: nothing to ask)
        */
       minifigPrompt: ctx.inertia.always(await minifigPrompt(auth?.user)),
+      /** Asked once, after the first set in the wishlist: email alerts? */
+      wishlistAlertsPrompt: ctx.inertia.always(await wishlistAlertsPrompt(auth?.user)),
       /** For the plain forms that must work without JavaScript */
       csrfToken: ctx.inertia.always(request?.csrfToken ?? ''),
     }

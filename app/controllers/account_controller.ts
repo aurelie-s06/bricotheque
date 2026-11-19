@@ -28,6 +28,7 @@ export default class AccountController {
         email: user.email,
         createdAt: user.createdAt.toISODate()!,
         autoAddMinifigs: user.autoAddMinifigs,
+        wishlistAlerts: user.wishlistAlerts,
       },
       /** Minifigs of the owned sets not in the collection yet */
       missingMinifigs: await new Collection(user).countMissingMinifigsOfOwnedSets(),
@@ -87,8 +88,12 @@ export default class AccountController {
       messagesProvider: validationMessages(locale),
     })
     user.autoAddMinifigs = data.autoAddMinifigs ?? false
+    user.wishlistAlerts = data.wishlistAlerts ?? false
     // The member chose: no need to ask any more
     user.minifigPromptAnswered = true
+    user.wishlistAlertsPromptAnswered = true
+    // Language of the alerts, sent without a visit
+    user.locale = locale
     await user.save()
     session.flash('success', serverMessage(locale, 'collection.preferencesSaved'))
     return response.redirect().toRoute('account.show')

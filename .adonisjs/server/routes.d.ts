@@ -40,6 +40,7 @@ export type ScannedRoutes = {
     'account.destroy': { paramsTuple?: []; params?: {} }
     'account.add_owned_minifigs': { paramsTuple?: []; params?: {} }
     'account.minifig_prompt': { paramsTuple?: []; params?: {} }
+    'wishlist_alerts.prompt': { paramsTuple?: []; params?: {} }
     'account.update_preferences': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
@@ -55,6 +56,7 @@ export type ScannedRoutes = {
     'collection.minifig_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'wishlist_alerts.unsubscribe': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.stats': { paramsTuple?: []; params?: {} }
     'admin.health': { paramsTuple?: []; params?: {} }
@@ -113,6 +115,7 @@ export type ScannedRoutes = {
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'collection.missing_minifigs': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'wishlist_alerts.unsubscribe': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.stats': { paramsTuple?: []; params?: {} }
     'admin.health': { paramsTuple?: []; params?: {} }
@@ -157,6 +160,7 @@ export type ScannedRoutes = {
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'collection.missing_minifigs': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'wishlist_alerts.unsubscribe': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.stats': { paramsTuple?: []; params?: {} }
     'admin.health': { paramsTuple?: []; params?: {} }
@@ -180,6 +184,7 @@ export type ScannedRoutes = {
     'session.destroy': { paramsTuple?: []; params?: {} }
     'account.add_owned_minifigs': { paramsTuple?: []; params?: {} }
     'account.minifig_prompt': { paramsTuple?: []; params?: {} }
+    'wishlist_alerts.prompt': { paramsTuple?: []; params?: {} }
     'collection.add_missing_minifigs': { paramsTuple?: []; params?: {} }
     'wishlist.share': { paramsTuple?: []; params?: {} }
     'wishlist.unshare': { paramsTuple?: []; params?: {} }

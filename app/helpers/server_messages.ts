@@ -32,6 +32,20 @@ const fr = {
   'admin.health.mailFailed': 'L’e-mail n’est pas parti : {error}',
   'admin.health.logCleared': 'Le journal {file} est vidé.',
   'mail.testSubject': 'Test d’envoi Bricothèque',
+  'mail.alertSubject': 'Du nouveau dans ta wishlist Bricothèque',
+  'mail.alertReleased': 'Ces sets de ta wishlist sont sortis :',
+  'mail.alertRetiring': 'Ces sets de ta wishlist vont bientôt quitter les magasins :',
+  'mail.alertSince': 'en vente depuis le {date}',
+  'mail.alertUntil': 'en vente jusqu’au {date}',
+  'mail.alertButton': 'Voir ma wishlist',
+  'mail.alertUnsubscribe':
+    'Tu reçois cet e-mail car tu as activé les alertes wishlist. Pour ne plus les recevoir : {url}',
+  'wishlistAlerts.unsubscribed': 'Tu ne recevras plus d’alertes wishlist par e-mail.',
+  'wishlistAlerts.invalidLink':
+    'Ce lien de désinscription n’est pas valide. Désactive les alertes dans Mon compte › Préférences.',
+  'wishlistAlerts.on':
+    'C’est noté : tu recevras un e-mail quand un set de ta wishlist sort ou va quitter les magasins.',
+  'wishlistAlerts.off': 'C’est noté. Tu pourras activer les alertes dans Mon compte › Préférences.',
   'mail.testIntro':
     'Cet e-mail confirme que le site arrive à envoyer des messages. Tu peux le supprimer.',
   'admin.manual.created': '« {name} » est ajouté au catalogue.',
@@ -145,6 +159,20 @@ const en: Record<MessageKey, string> = {
   'admin.health.mailFailed': 'The email was not sent: {error}',
   'admin.health.logCleared': 'The {file} log is cleared.',
   'mail.testSubject': 'Bricothèque sending test',
+  'mail.alertSubject': 'News about your Bricothèque wishlist',
+  'mail.alertReleased': 'These sets of your wishlist came out:',
+  'mail.alertRetiring': 'These sets of your wishlist will soon leave the shops:',
+  'mail.alertSince': 'on sale since {date}',
+  'mail.alertUntil': 'on sale until {date}',
+  'mail.alertButton': 'See my wishlist',
+  'mail.alertUnsubscribe':
+    'You get this email because you turned the wishlist alerts on. To stop them: {url}',
+  'wishlistAlerts.unsubscribed': 'You will no longer get wishlist alerts by email.',
+  'wishlistAlerts.invalidLink':
+    'This unsubscribe link is not valid. Turn the alerts off in My account › Preferences.',
+  'wishlistAlerts.on':
+    'Done: you will get an email when a set of your wishlist comes out or will leave the shops.',
+  'wishlistAlerts.off': 'Noted. You can turn the alerts on in My account › Preferences.',
   'mail.testIntro': 'This email confirms that the site can send messages. You can delete it.',
   'admin.manual.created': '“{name}” is added to the catalogue.',
   'admin.manual.unknownTheme': 'Choose a theme from the list.',

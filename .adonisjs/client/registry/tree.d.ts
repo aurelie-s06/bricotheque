@@ -61,6 +61,10 @@ export interface ApiDefinition {
     minifigPrompt: typeof routes['account.minifig_prompt']
     updatePreferences: typeof routes['account.update_preferences']
   }
+  wishlistAlerts: {
+    prompt: typeof routes['wishlist_alerts.prompt']
+    unsubscribe: typeof routes['wishlist_alerts.unsubscribe']
+  }
   dashboard: typeof routes['dashboard']
   collection: {
     index: typeof routes['collection.index']

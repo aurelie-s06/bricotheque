@@ -120,6 +120,9 @@ router
       .post('mon-compte/minifigs/proposition', [controllers.Account, 'answerMinifigPrompt'])
       .as('account.minifig_prompt')
     router
+      .post('mon-compte/alertes/proposition', [controllers.WishlistAlerts, 'answerPrompt'])
+      .as('wishlist_alerts.prompt')
+    router
       .put('mon-compte/preferences', [controllers.Account, 'updatePreferences'])
       .as('account.update_preferences')
 
@@ -174,6 +177,10 @@ router
  * Shared wishlist (public, read-only)
  */
 router.get('wishlist/:token', [controllers.MyCollection, 'shared']).as('wishlist.shared')
+router
+  .get('alertes-wishlist/desinscription/:id', [controllers.WishlistAlerts, 'unsubscribe'])
+  .where('id', router.matchers.number())
+  .as('wishlist_alerts.unsubscribe')
 
 /**
  * Back office (administrators only: 404 for everyone else)

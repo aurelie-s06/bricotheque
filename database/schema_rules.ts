@@ -65,6 +65,8 @@ export default {
       columns: {
         is_admin: boolean,
         minifig_prompt_answered: boolean,
+        wishlist_alerts: boolean,
+        wishlist_alerts_prompt_answered: boolean,
       },
     },
     jobs: {

@@ -11,6 +11,7 @@ export const minifigDetailsValidator = vine.create({
 
 export const preferencesValidator = vine.create({
   autoAddMinifigs: vine.boolean().optional(),
+  wishlistAlerts: vine.boolean().optional(),
 })
 
 /** Quick add: set numbers separated by commas, spaces or new lines */

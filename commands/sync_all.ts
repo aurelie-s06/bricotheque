@@ -1,10 +1,11 @@
 import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import SyncJob from '#services/jobs/sync_job'
+import WishlistAlerts from '#services/wishlist_alerts'
 
 /**
  * Full data update now (Rebrickable, then Brickset), e.g. from a nightly
- * cron. It shares the lock of the back office: it does nothing when an
+ * cron, then the wishlist alerts. It shares the lock of the back office: it does nothing when an
  * update is already pending or running.
  */
 export default class SyncAll extends BaseCommand {
@@ -30,5 +31,14 @@ export default class SyncAll extends BaseCommand {
     this.logger.success(
       `Mise à jour terminée : ${newSets.length} nouveau(x) set(s), ${newMinifigs.length} nouvelle(s) minifig(s)`
     )
+
+    // With fresh dates: the wishlist alerts of the day
+    try {
+      const sent = await WishlistAlerts.run()
+      this.logger.success(`Alertes wishlist : ${sent} e-mail(s) envoyé(s)`)
+    } catch (error) {
+      this.logger.error(`Alertes wishlist en échec : ${(error as Error).message}`)
+      this.exitCode = 1
+    }
   }
 }

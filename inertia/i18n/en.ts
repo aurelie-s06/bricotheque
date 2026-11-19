@@ -685,6 +685,15 @@ const en: Record<keyof typeof fr, string> = {
   'quickAdd.alreadyThere_other': '{count} already there',
   'quickAdd.unknown_one': '{count} number not found in the catalogue:',
   'quickAdd.unknown_other': '{count} numbers not found in the catalogue:',
+  'account.wishlistAlerts':
+    'Email me when a set of my wishlist comes out or will soon leave the shops',
+  'account.wishlistAlertsHint':
+    'At most one email a day, after the nightly update, and only once per set. Each email has an unsubscribe link.',
+  'alertsPrompt.title': 'Get notified about your wishlist sets?',
+  'alertsPrompt.text':
+    'Bricothèque can email you when a set of your wishlist comes out, or will leave the shops within a month. At most one email a day, never twice for the same set.',
+  'alertsPrompt.yes': 'Yes, send me the alerts',
+  'alertsPrompt.no': 'No thanks',
   'account.preferencesTitle': 'Preferences',
   'account.autoAddMinifigs':
     'When I add a set to my collection, also add its minifigs to my minifig collection',
