@@ -1,5 +1,7 @@
 import { Form, Link } from '@adonisjs/inertia/react'
+import { Copy } from 'lucide-react'
 import { displaySetNum } from '~/lib/set_number'
+import { notify } from '~/lib/notify'
 import { useI18n } from '~/i18n'
 
 export type TranslationItem = {
@@ -18,6 +20,17 @@ export type TranslationItem = {
 export default function TranslationForm({ item }: { item: TranslationItem }) {
   const { t } = useI18n()
   const fieldId = `translation-${item.id}`
+
+  /** Copies the whole English text at once, to paste it into a translator */
+  async function copyEnglish() {
+    try {
+      await navigator.clipboard.writeText(item.description)
+      notify(t('admin.translations.copied'))
+    } catch {
+      notify(t('admin.translations.copyFailed'), 'error')
+    }
+  }
+
   return (
     <article className="card translation" aria-labelledby={`${fieldId}-title`}>
       <h2 className="translation__title" id={`${fieldId}-title`}>
@@ -30,9 +43,19 @@ export default function TranslationForm({ item }: { item: TranslationItem }) {
       </h2>
       <div className="translation__columns">
         <div>
-          <p className="field__label" id={`${fieldId}-en-label`}>
-            {t('admin.translations.english')}
-          </p>
+          <div className="translation__label-row">
+            <p className="field__label" id={`${fieldId}-en-label`}>
+              {t('admin.translations.english')}
+            </p>
+            <button
+              type="button"
+              className="btn btn--secondary btn--sm"
+              onClick={copyEnglish}
+              aria-describedby={`${fieldId}-en-label`}
+            >
+              <Copy size={16} aria-hidden="true" /> {t('admin.translations.copy')}
+            </button>
+          </div>
           <div
             className="translation__english"
             lang="en"

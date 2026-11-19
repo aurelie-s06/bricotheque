@@ -64,6 +64,9 @@ const fr = {
   'admin.translations.frenchHint':
     'Laisse une ligne vide entre deux paragraphes. Vide le champ pour revenir au texte anglais.',
   'admin.translations.save': 'Enregistrer la traduction',
+  'admin.translations.copy': 'Copier le texte anglais',
+  'admin.translations.copied': 'Texte anglais copié',
+  'admin.translations.copyFailed': 'Copie impossible : sélectionne le texte à la main.',
   'admin.update.lead':
     'La mise à jour récupère les nouveaux sets et minifigs (Rebrickable) puis les prix et dates (Brickset). Elle tourne en arrière-plan : tu peux quitter la page.',
   'admin.update.title': 'Mettre à jour les LEGO',

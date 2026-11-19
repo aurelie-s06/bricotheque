@@ -65,6 +65,9 @@ const en: Record<keyof typeof fr, string> = {
   'admin.translations.frenchHint':
     'Leave an empty line between two paragraphs. Empty the field to go back to the English text.',
   'admin.translations.save': 'Save the translation',
+  'admin.translations.copy': 'Copy the English text',
+  'admin.translations.copied': 'English text copied',
+  'admin.translations.copyFailed': 'Copy failed: select the text by hand.',
   'admin.update.lead':
     'The update gets the new sets and minifigs (Rebrickable), then the prices and dates (Brickset). It runs in the background: you can leave the page.',
   'admin.update.title': 'Update the LEGO data',
