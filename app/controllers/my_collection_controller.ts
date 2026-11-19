@@ -2,6 +2,10 @@ import type { HttpContext } from '@adonisjs/core/http'
 import string from '@adonisjs/core/helpers/string'
 import { Exception } from '@adonisjs/core/exceptions'
 import User from '#models/user'
+import Minifig from '#models/minifig'
+import Collection from '#services/collection'
+import ThemeTree from '#services/catalogue/theme_tree'
+import MinifigTransformer from '#transformers/minifig_transformer'
 import {
   collectionCounts,
   minifigsOfUser,
@@ -30,7 +34,62 @@ async function listProps(userId: number, status: 'owned' | 'wanted', qs: Record<
   return { tab, counts, minifigs: [], ...list }
 }
 
+/** Minifigs shown per page on the "missing minifigs" page */
+const MISSING_PER_PAGE = 48
+
+/** The root theme of the slug and all its subthemes, or every theme */
+async function themeScope(slug: unknown) {
+  const themes = await ThemeTree.load()
+  const theme = typeof slug === 'string' ? themes.bySlug.get(slug) : undefined
+  const root = theme ? themes.ancestorsOf(theme.id)[0] : undefined
+  return { root: root ?? null, ids: root ? themes.descendantIds(root.id) : undefined }
+}
+
 export default class MyCollectionController {
+  /**
+   * GET /ma-collection/minifigs-manquantes?theme=slug: minifigs of the owned
+   * sets (of one theme) that are not in the collection yet
+   */
+  async missingMinifigs({ request, inertia, auth }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const { root, ids } = await themeScope(request.input('theme'))
+    const missing = await new Collection(user).missingMinifigsOfOwnedSets(ids)
+    const page = Math.max(1, Number(request.input('page', 1)) || 1)
+    const minifigs = await Minifig.query()
+      .whereIn(
+        'id',
+        missing.map((row) => row.minifig_id)
+      )
+      .orderBy('name', 'asc')
+      .paginate(page, MISSING_PER_PAGE)
+
+    return inertia.render('collection/missing_minifigs', {
+      theme: root ? { name: root.name, slug: root.slug } : null,
+      minifigs: MinifigTransformer.transform(minifigs.all()),
+      pagination: {
+        currentPage: minifigs.currentPage,
+        lastPage: minifigs.lastPage,
+        total: minifigs.total,
+        perPage: minifigs.perPage,
+      },
+    })
+  }
+
+  /** POST /ma-collection/minifigs-manquantes (theme=slug): adds them all */
+  async addMissingMinifigs({ request, auth, session, response }: HttpContext) {
+    const { ids } = await themeScope(request.input('theme'))
+    const count = await new Collection(auth.getUserOrFail()).addMinifigsOfOwnedSets(ids)
+    session.flash(
+      count > 0 ? 'success' : 'info',
+      serverMessage(
+        resolveLocale(request),
+        count > 0 ? 'collection.ownedMinifigsAdded' : 'collection.noMissingMinifigs',
+        { count }
+      )
+    )
+    return response.redirect().toRoute('dashboard')
+  }
+
   /** GET /ma-collection?tab=sets|minifigs&… */
   async collection({ request, inertia, auth }: HttpContext) {
     const user = auth.getUserOrFail()

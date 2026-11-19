@@ -528,6 +528,32 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['wishlist']>>>
     }
   }
+  'collection.missing_minifigs': {
+    methods: ["GET","HEAD"]
+    pattern: '/ma-collection/minifigs-manquantes'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['missingMinifigs']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['missingMinifigs']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['missingMinifigs']>>>
+    }
+  }
+  'collection.add_missing_minifigs': {
+    methods: ["POST"]
+    pattern: '/ma-collection/minifigs-manquantes'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['addMissingMinifigs']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['addMissingMinifigs']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['addMissingMinifigs']>>>
+    }
+  }
   'wishlist.share': {
     methods: ["POST"]
     pattern: '/ma-wishlist/partage'

@@ -80,9 +80,12 @@ export async function minifigsOfUser(
   qs: Record<string, any>
 ) {
   const filters = parseMinifigFilters(qs)
+  // "doubles=1": only the minifigs owned in more than one copy
+  const doubles = status === 'owned' && qs.doubles === '1'
   const themes = await ThemeTree.load()
   const query = minifigCatalogueQuery(filters, themes).whereIn('id', (sub) => {
     sub.from('user_minifigs').select('minifig_id').where({ user_id: userId, status })
+    if (doubles) sub.where('quantity', '>', 1)
   })
   const page = await query.paginate(filters.page, MINIFIGS_PER_PAGE)
 
@@ -99,7 +102,7 @@ export async function minifigsOfUser(
   return {
     minifigs: MinifigTransformer.transform(page.all()),
     pagination: pagination(page),
-    query: minifigFiltersToQuery(filters),
+    query: { ...minifigFiltersToQuery(filters), ...(doubles ? { doubles: '1' } : {}) },
     themeOptions: themes
       .roots()
       .filter((theme) => (counts.get(theme.id) ?? 0) > 0)

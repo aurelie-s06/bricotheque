@@ -123,10 +123,13 @@ export default class Collection {
 
   /**
    * Minifigs of the sets already in the collection that are not in it yet,
-   * with the largest quantity found in one of these sets.
+   * with the largest quantity found in one of these sets. `setThemeIds`
+   * keeps only the sets of these themes.
    */
-  async missingMinifigsOfOwnedSets(): Promise<{ minifig_id: number; quantity: number }[]> {
-    return db
+  async missingMinifigsOfOwnedSets(
+    setThemeIds?: number[]
+  ): Promise<{ minifig_id: number; quantity: number }[]> {
+    const query = db
       .from('set_minifigs')
       .join('user_sets', 'user_sets.set_id', 'set_minifigs.set_id')
       .where('user_sets.user_id', this.user.id)
@@ -142,6 +145,13 @@ export default class Collection {
       .groupBy('set_minifigs.minifig_id')
       .select('set_minifigs.minifig_id')
       .max('set_minifigs.quantity as quantity')
+    if (setThemeIds) {
+      query.whereIn(
+        'set_minifigs.set_id',
+        db.from('sets').whereIn('theme_id', setThemeIds).select('id')
+      )
+    }
+    return query
   }
 
   async countMissingMinifigsOfOwnedSets() {
@@ -153,8 +163,8 @@ export default class Collection {
    * For members who forgot the "add the minifigs" option: adds the minifigs
    * of every set already in the collection. Returns how many were added.
    */
-  async addMinifigsOfOwnedSets() {
-    const missing = await this.missingMinifigsOfOwnedSets()
+  async addMinifigsOfOwnedSets(setThemeIds?: number[]) {
+    const missing = await this.missingMinifigsOfOwnedSets(setThemeIds)
     if (missing.length === 0) return 0
     const now = new Date()
     for (let index = 0; index < missing.length; index += 500) {

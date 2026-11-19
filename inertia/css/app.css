@@ -1944,6 +1944,19 @@ input[type='number'].input::-webkit-outer-spin-button {
   border-top: 1px dashed var(--line);
 }
 
+.dashboard-card__more {
+  margin-top: var(--space-2);
+}
+
+.missing-actions {
+  margin-bottom: var(--space-2);
+}
+
+.doubles-note {
+  margin-bottom: var(--space-1);
+  font-weight: 600;
+}
+
 .quick-add {
   margin-block: var(--space-2);
 }

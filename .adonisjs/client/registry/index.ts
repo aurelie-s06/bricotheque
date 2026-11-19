@@ -248,6 +248,18 @@ const routes = {
     tokens: [[0,"ma-wishlist"]],
     types: placeholder as Registry['wishlist.index']['types'],
   },
+  'collection.missing_minifigs': {
+    methods: ["GET","HEAD"],
+    pattern: '/ma-collection/minifigs-manquantes',
+    tokens: [[0,"ma-collection"],[0,"minifigs-manquantes"]],
+    types: placeholder as Registry['collection.missing_minifigs']['types'],
+  },
+  'collection.add_missing_minifigs': {
+    methods: ["POST"],
+    pattern: '/ma-collection/minifigs-manquantes',
+    tokens: [[0,"ma-collection"],[0,"minifigs-manquantes"]],
+    types: placeholder as Registry['collection.add_missing_minifigs']['types'],
+  },
   'wishlist.share': {
     methods: ["POST"],
     pattern: '/ma-wishlist/partage',

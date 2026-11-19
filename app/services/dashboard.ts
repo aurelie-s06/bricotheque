@@ -1,8 +1,12 @@
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import BrickSet from '#models/brick_set'
+import Minifig from '#models/minifig'
 import ThemeTree from '#services/catalogue/theme_tree'
 import { themePath } from '#helpers/urls'
+
+/** Minifigs owned more than once shown on the dashboard */
+export const DOUBLES_SHOWN = 6
 
 /** Themes shown in the chart; the rest is grouped in "Others" */
 export const THEMES_IN_CHART = 8
@@ -47,7 +51,69 @@ export default class Dashboard {
       byDecade: this.#byDecade(owned),
       ...(await this.#topSets(owned)),
       wishlist: await this.#wishlistAlerts(today),
+      doubles: await this.#doubles(),
+      missingMinifigs: await this.#missingMinifigsByTheme(),
     }
+  }
+
+  /** Minifigs owned in more than one copy, the most copies first */
+  async #doubles() {
+    const rows: { minifig_id: number; quantity: number }[] = await db
+      .from('user_minifigs')
+      .where({ user_id: this.userId, status: 'owned' })
+      .where('quantity', '>', 1)
+      .orderBy('quantity', 'desc')
+      .orderBy('minifig_id', 'asc')
+      .select('minifig_id', 'quantity')
+    const shown = rows.slice(0, DOUBLES_SHOWN)
+    const minifigs = await Minifig.query().whereIn(
+      'id',
+      shown.map((row) => row.minifig_id)
+    )
+    const byId = new Map(minifigs.map((minifig) => [minifig.id, minifig]))
+    return {
+      count: rows.length,
+      /** Copies beyond the first one: what could be traded */
+      extraCopies: rows.reduce((total, row) => total + row.quantity - 1, 0),
+      top: shown
+        .filter((row) => byId.has(row.minifig_id))
+        .map((row) => ({ minifig: byId.get(row.minifig_id)!, quantity: row.quantity })),
+    }
+  }
+
+  /**
+   * Minifigs of the owned sets that are not in the collection, per root
+   * theme of these sets ("12 Star Wars minifigs missing").
+   */
+  async #missingMinifigsByTheme() {
+    const rows: { minifig_id: number; theme_id: number }[] = await db
+      .from('set_minifigs')
+      .join('user_sets', 'user_sets.set_id', 'set_minifigs.set_id')
+      .join('sets', 'sets.id', 'set_minifigs.set_id')
+      .where({ 'user_sets.user_id': this.userId, 'user_sets.status': 'owned' })
+      .whereNotIn(
+        'set_minifigs.minifig_id',
+        db
+          .from('user_minifigs')
+          .where({ user_id: this.userId, status: 'owned' })
+          .select('minifig_id')
+      )
+      .distinct('set_minifigs.minifig_id', 'sets.theme_id')
+    if (rows.length === 0) return []
+
+    const themes = await ThemeTree.load()
+    const byRoot = new Map<number, Set<number>>()
+    for (const row of rows) {
+      const root = themes.ancestorsOf(row.theme_id)[0]
+      if (!root) continue
+      const minifigs = byRoot.get(root.id) ?? new Set()
+      minifigs.add(row.minifig_id)
+      byRoot.set(root.id, minifigs)
+    }
+    return [...byRoot.entries()]
+      .map(([id, minifigs]) => ({ theme: themes.byId.get(id)!, count: minifigs.size }))
+      .sort((a, b) => b.count - a.count || a.theme.name.localeCompare(b.theme.name))
+      .map(({ theme, count }) => ({ name: theme.name, slug: theme.slug, count }))
   }
 
   #figures(owned: OwnedSetRow[], minifigs: { quantity: number }[]) {

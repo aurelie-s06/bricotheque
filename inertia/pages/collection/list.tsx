@@ -154,6 +154,12 @@ export default function CollectionList(props: Props) {
           )}
 
           <section className="catalogue__results" aria-label={t('sets.resultsLabel')}>
+            {tab === 'minifigs' && props.query.doubles === '1' && (
+              <p className="doubles-note">
+                {t('doubles.filtered')}{' '}
+                <Link href="/ma-collection?tab=minifigs">{t('doubles.showAll')}</Link>
+              </p>
+            )}
             <p className="text-muted results-count" role="status">
               {tc('sets.results', pagination.total)}
               {pagination.lastPage > 1 &&

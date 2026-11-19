@@ -25,6 +25,10 @@ type Props = InertiaProps<{
   retiringSoon: Data.BrickSet[]
   retired: Data.BrickSet[]
   wishlistDates: Record<string, string | null>
+  doubles: { count: number; extraCopies: number }
+  doublesTop: Data.Minifig[]
+  doublesQuantities: Record<string, number>
+  missingMinifigs: { name: string; slug: string; count: number }[]
 }>
 
 function Tile({ label, value, hint }: { label: string; value: string; hint?: string }) {
@@ -71,8 +75,21 @@ function SetList({
 }
 
 export default function DashboardPage(props: Props) {
-  const { figures, byTheme, byDecade, biggest, oldest, retiringSoon, retired, wishlistDates } =
-    props
+  const {
+    figures,
+    byTheme,
+    byDecade,
+    biggest,
+    oldest,
+    retiringSoon,
+    retired,
+    wishlistDates,
+    doubles,
+    doublesTop,
+    doublesQuantities,
+    missingMinifigs,
+  } = props
+  const missingTotal = missingMinifigs.reduce((total, row) => total + row.count, 0)
   const { t, tc, tn, formatNumber, dateNode } = useI18n()
 
   return (
@@ -165,6 +182,76 @@ export default function DashboardPage(props: Props) {
               </section>
             )}
           </div>
+
+          <section className="dashboard-alerts" aria-labelledby="minifigs-title">
+            <h2 id="minifigs-title">{t('dashboard.minifigsSection')}</h2>
+            <div className="dashboard-grid">
+              <section className="card dashboard-card" aria-labelledby="missing-title">
+                <h3 id="missing-title">{t('missing.title')}</h3>
+                {missingTotal > 0 ? (
+                  <>
+                    <p className="field__hint">{tc('missing.summary', missingTotal)}</p>
+                    <BrickChart
+                      caption={t('missing.chartCaption')}
+                      labelHeader={t('dashboard.theme')}
+                      valueHeader={t('missing.chartValue')}
+                      rows={missingMinifigs.map((row) => ({
+                        label: row.name,
+                        url: `/ma-collection/minifigs-manquantes?theme=${row.slug}`,
+                        value: row.count,
+                      }))}
+                    />
+                    <p className="dashboard-card__more">
+                      <Link href="/ma-collection/minifigs-manquantes">{t('missing.seeAll')}</Link>
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-muted">
+                    {figures.sets > 0 ? t('missing.noneShort') : t('missing.noSets')}
+                  </p>
+                )}
+              </section>
+              <section className="card dashboard-card" aria-labelledby="doubles-title">
+                <h3 id="doubles-title">{t('doubles.title')}</h3>
+                {doubles.count > 0 ? (
+                  <>
+                    <p className="field__hint">
+                      {tc('doubles.summary', doubles.count)}{' '}
+                      {tc('doubles.extra', doubles.extraCopies)}
+                    </p>
+                    <ol className="set-list">
+                      {doublesTop.map((minifig) => (
+                        <li key={minifig.id} className="set-list__item">
+                          <SetImage
+                            src={minifig.imgUrl}
+                            alt={t('image.minifig', { figNum: minifig.figNum, name: minifig.name })}
+                            className="set-list__image"
+                            thumb
+                          />
+                          <div className="set-list__text">
+                            <Link href={minifig.url} className="set-list__name">
+                              {minifig.name}
+                            </Link>
+                            <span className="text-muted set-list__meta">
+                              {minifig.figNum} ·{' '}
+                              {tc('doubles.copies', doublesQuantities[minifig.id] ?? 2)}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                    <p className="dashboard-card__more">
+                      <Link href="/ma-collection?tab=minifigs&doubles=1">
+                        {t('doubles.seeAll')}
+                      </Link>
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-muted">{t('doubles.none')}</p>
+                )}
+              </section>
+            </div>
+          </section>
 
           <section className="dashboard-alerts" aria-labelledby="alerts-title">
             <h2 id="alerts-title">{t('dashboard.wishlistAlerts')}</h2>

@@ -49,5 +49,7 @@ declare module '@adonisjs/inertia/types' {
     'sets/show': ExtractProps<(typeof import('../../inertia/pages/sets/show.tsx'))['default']>
     'themes/index': ExtractProps<(typeof import('../../inertia/pages/themes/index.tsx'))['default']>
     'themes/show': ExtractProps<(typeof import('../../inertia/pages/themes/show.tsx'))['default']>
+    'collection/missing_minifigs': ExtractProps<(typeof import('../../inertia/pages/collection/missing_minifigs.tsx'))['default']>
+    '._dashboard': ExtractProps<(typeof import('../../inertia/pages/._dashboard.tsx'))['default']>
   }
 }

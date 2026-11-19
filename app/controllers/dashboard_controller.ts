@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Dashboard from '#services/dashboard'
 import BrickSetTransformer from '#transformers/brick_set_transformer'
+import MinifigTransformer from '#transformers/minifig_transformer'
 
 export default class DashboardController {
   /** GET /tableau-de-bord */
@@ -17,6 +18,12 @@ export default class DashboardController {
       oldest: BrickSetTransformer.transform(data.oldest),
       retiringSoon: BrickSetTransformer.transform(data.wishlist.retiringSoon),
       retired: BrickSetTransformer.transform(data.wishlist.retired),
+      doubles: { count: data.doubles.count, extraCopies: data.doubles.extraCopies },
+      doublesTop: MinifigTransformer.transform(data.doubles.top.map((row) => row.minifig)),
+      doublesQuantities: Object.fromEntries(
+        data.doubles.top.map((row) => [row.minifig.id, row.quantity])
+      ),
+      missingMinifigs: data.missingMinifigs,
       wishlistDates: Object.fromEntries(
         [...withDate(data.wishlist.retiringSoon), ...withDate(data.wishlist.retired)].map(
           (entry) => [entry.id, entry.until]

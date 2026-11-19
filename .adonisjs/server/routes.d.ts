@@ -44,6 +44,8 @@ export type ScannedRoutes = {
     'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
+    'collection.missing_minifigs': { paramsTuple?: []; params?: {} }
+    'collection.add_missing_minifigs': { paramsTuple?: []; params?: {} }
     'wishlist.share': { paramsTuple?: []; params?: {} }
     'wishlist.unshare': { paramsTuple?: []; params?: {} }
     'collection.quick_add': { paramsTuple?: []; params?: {} }
@@ -109,6 +111,7 @@ export type ScannedRoutes = {
     'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
+    'collection.missing_minifigs': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.stats': { paramsTuple?: []; params?: {} }
@@ -152,6 +155,7 @@ export type ScannedRoutes = {
     'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
     'wishlist.index': { paramsTuple?: []; params?: {} }
+    'collection.missing_minifigs': { paramsTuple?: []; params?: {} }
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.stats': { paramsTuple?: []; params?: {} }
@@ -176,6 +180,7 @@ export type ScannedRoutes = {
     'session.destroy': { paramsTuple?: []; params?: {} }
     'account.add_owned_minifigs': { paramsTuple?: []; params?: {} }
     'account.minifig_prompt': { paramsTuple?: []; params?: {} }
+    'collection.add_missing_minifigs': { paramsTuple?: []; params?: {} }
     'wishlist.share': { paramsTuple?: []; params?: {} }
     'wishlist.unshare': { paramsTuple?: []; params?: {} }
     'collection.quick_add': { paramsTuple?: []; params?: {} }

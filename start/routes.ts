@@ -127,6 +127,12 @@ router
     router.get('tableau-de-bord', [controllers.Dashboard, 'show']).as('dashboard')
     router.get('ma-collection', [controllers.MyCollection, 'collection']).as('collection.index')
     router.get('ma-wishlist', [controllers.MyCollection, 'wishlist']).as('wishlist.index')
+    router
+      .get('ma-collection/minifigs-manquantes', [controllers.MyCollection, 'missingMinifigs'])
+      .as('collection.missing_minifigs')
+    router
+      .post('ma-collection/minifigs-manquantes', [controllers.MyCollection, 'addMissingMinifigs'])
+      .as('collection.add_missing_minifigs')
     router.post('ma-wishlist/partage', [controllers.MyCollection, 'share']).as('wishlist.share')
     router
       .post('ma-wishlist/partage/desactiver', [controllers.MyCollection, 'unshare'])
