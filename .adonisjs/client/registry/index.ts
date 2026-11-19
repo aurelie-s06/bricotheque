@@ -320,6 +320,30 @@ const routes = {
     tokens: [[0,"admin"],[0,"utilisateurs"],[1,"id"]],
     types: placeholder as Registry['admin.users.destroy']['types'],
   },
+  'admin.manual': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/ajouts',
+    tokens: [[0,"admin"],[0,"ajouts"]],
+    types: placeholder as Registry['admin.manual']['types'],
+  },
+  'admin.manual.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/ajouts/nouveau',
+    tokens: [[0,"admin"],[0,"ajouts"],[0,"nouveau"]],
+    types: placeholder as Registry['admin.manual.create']['types'],
+  },
+  'admin.manual.store': {
+    methods: ["POST"],
+    pattern: '/admin/ajouts/:kind',
+    tokens: [[0,"admin"],[0,"ajouts"],[1,"kind"]],
+    types: placeholder as Registry['admin.manual.store']['types'],
+  },
+  'admin.manual.merge': {
+    methods: ["POST"],
+    pattern: '/admin/ajouts/:kind/:id/fusion',
+    tokens: [[0,"admin"],[0,"ajouts"],[1,"kind"],[1,"id"],[0,"fusion"]],
+    types: placeholder as Registry['admin.manual.merge']['types'],
+  },
   'admin.images': {
     methods: ["GET","HEAD"],
     pattern: '/admin/images',

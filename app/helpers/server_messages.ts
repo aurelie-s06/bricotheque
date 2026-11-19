@@ -25,6 +25,15 @@ const fr = {
   'admin.users.wrongUsername': 'Le pseudo saisi ne correspond pas à ce compte.',
   'admin.users.deleted': 'Le compte de {username} a été supprimé.',
   'admin.catalogue.saved': 'Les corrections de « {name} » sont enregistrées.',
+  'admin.manual.created': '« {name} » est ajouté au catalogue.',
+  'admin.manual.unknownTheme': 'Choisis un thème dans la liste.',
+  'admin.manual.setExists': 'Le set {setNum} existe déjà dans le catalogue.',
+  'admin.merge.notFound':
+    'Aucun élément importé ne correspond : choisis un doublon ou vérifie le numéro.',
+  'admin.merge.notManual': 'Seul un élément ajouté à la main peut être fusionné.',
+  'admin.merge.notImported': 'L’élément choisi doit venir des imports, pas d’un ajout à la main.',
+  'admin.merge.done':
+    'Fusion faite : collections, wishlists, traduction, image et corrections sont reportées sur la fiche importée.',
   'admin.catalogue.released':
     'Les champs choisis de « {name} » seront de nouveau mis à jour par les imports.',
   'auth.invalidCredentials': 'Adresse e-mail ou mot de passe incorrect.',
@@ -115,6 +124,15 @@ const en: Record<MessageKey, string> = {
   'admin.users.wrongUsername': 'The username typed does not match this account.',
   'admin.users.deleted': 'The account of {username} was deleted.',
   'admin.catalogue.saved': 'The corrections of “{name}” are saved.',
+  'admin.manual.created': '“{name}” is added to the catalogue.',
+  'admin.manual.unknownTheme': 'Choose a theme from the list.',
+  'admin.manual.setExists': 'Set {setNum} is already in the catalogue.',
+  'admin.merge.notFound': 'No imported item matches: choose a duplicate or check the number.',
+  'admin.merge.notManual': 'Only an item added by hand can be merged.',
+  'admin.merge.notImported':
+    'The chosen item must come from the imports, not from a manual addition.',
+  'admin.merge.done':
+    'Merged: collections, wishlists, translation, picture and fixes are moved to the imported page.',
   'admin.catalogue.released': 'The chosen fields of “{name}” will be updated by the imports again.',
   'auth.invalidCredentials': 'Incorrect email address or password.',
   'auth.tooManyAttempts': 'Too many attempts. For your security, try again in {minutes} min.',

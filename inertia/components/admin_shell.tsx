@@ -1,7 +1,15 @@
 import { type ReactNode } from 'react'
 import { usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
-import { Image, Languages, LayoutDashboard, PencilLine, RefreshCw, Users } from 'lucide-react'
+import {
+  Image,
+  Languages,
+  LayoutDashboard,
+  PencilLine,
+  SquarePlus,
+  RefreshCw,
+  Users,
+} from 'lucide-react'
 import Seo from '~/components/seo'
 import Breadcrumb from '~/components/breadcrumb'
 import { useI18n } from '~/i18n'
@@ -9,6 +17,7 @@ import { useI18n } from '~/i18n'
 const ITEMS = [
   { href: '/admin', label: 'admin.nav.dashboard', icon: LayoutDashboard },
   { href: '/admin/catalogue', label: 'admin.nav.catalogue', icon: PencilLine },
+  { href: '/admin/ajouts', label: 'admin.nav.manual', icon: SquarePlus },
   { href: '/admin/images', label: 'admin.nav.images', icon: Image },
   { href: '/admin/traductions', label: 'admin.nav.translations', icon: Languages },
   { href: '/admin/mises-a-jour', label: 'admin.nav.updates', icon: RefreshCw },

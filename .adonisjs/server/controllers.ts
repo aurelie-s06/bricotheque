@@ -9,6 +9,7 @@ export const controllers = {
     Admin: () => import('#controllers/admin/admin_controller'),
     Catalogue: () => import('#controllers/admin/catalogue_controller'),
     Images: () => import('#controllers/admin/images_controller'),
+    Manual: () => import('#controllers/admin/manual_controller'),
     Translations: () => import('#controllers/admin/translations_controller'),
     Updates: () => import('#controllers/admin/updates_controller'),
     Users: () => import('#controllers/admin/users_controller'),

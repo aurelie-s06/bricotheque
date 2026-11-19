@@ -684,6 +684,58 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/users_controller').default['destroy']>>>
     }
   }
+  'admin.manual': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/ajouts'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['index']>>>
+    }
+  }
+  'admin.manual.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/ajouts/nouveau'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['create']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['create']>>>
+    }
+  }
+  'admin.manual.store': {
+    methods: ["POST"]
+    pattern: '/admin/ajouts/:kind'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { kind: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['store']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['store']>>>
+    }
+  }
+  'admin.manual.merge': {
+    methods: ["POST"]
+    pattern: '/admin/ajouts/:kind/:id/fusion'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['merge']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['merge']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/manual_controller').default['merge']>>>
+    }
+  }
   'admin.images': {
     methods: ["GET","HEAD"]
     pattern: '/admin/images'

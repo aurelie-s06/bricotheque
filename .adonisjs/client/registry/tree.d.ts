@@ -82,6 +82,11 @@ export interface ApiDefinition {
       role: typeof routes['admin.users.role']
       destroy: typeof routes['admin.users.destroy']
     }
+    manual: typeof routes['admin.manual'] & {
+      create: typeof routes['admin.manual.create']
+      store: typeof routes['admin.manual.store']
+      merge: typeof routes['admin.manual.merge']
+    }
     images: typeof routes['admin.images'] & {
       edit: typeof routes['admin.images.edit']
       update: typeof routes['admin.images.update']

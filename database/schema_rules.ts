@@ -42,6 +42,12 @@ export default {
       columns: {
         availability_status: enumOf(['upcoming', 'available', 'retired', 'unknown']),
         kind: enumOf(['set', 'book', 'gear', 'parts', 'bundle']),
+        is_manual: boolean,
+      },
+    },
+    minifigs: {
+      columns: {
+        is_manual: boolean,
       },
     },
     user_sets: {

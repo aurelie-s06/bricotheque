@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
+import ManualItems from '#services/catalogue/manual_items'
 
 const count = async (query: ReturnType<typeof db.from>) => {
   const [row] = await query.count('* as total')
@@ -34,6 +35,7 @@ export default class AdminController {
         untranslated: await count(
           db.from('sets').whereNotNull('description').whereNull('description_fr')
         ),
+        pendingMerges: await ManualItems.pendingMerges(),
       },
       lastUpdate: lastUpdate?.finishedAt ? new Date(lastUpdate.finishedAt).toISOString() : null,
     })

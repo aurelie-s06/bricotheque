@@ -177,6 +177,17 @@ router
     router
       .delete('utilisateurs/:id', [controllers.admin.Users, 'destroy'])
       .as('admin.users.destroy')
+    router.get('ajouts', [controllers.admin.Manual, 'index']).as('admin.manual')
+    router.get('ajouts/nouveau', [controllers.admin.Manual, 'create']).as('admin.manual.create')
+    router
+      .post('ajouts/:kind', [controllers.admin.Manual, 'store'])
+      .as('admin.manual.store')
+      .where('kind', /^(sets|minifigs)$/)
+    router
+      .post('ajouts/:kind/:id/fusion', [controllers.admin.Manual, 'merge'])
+      .as('admin.manual.merge')
+      .where('kind', /^(sets|minifigs)$/)
+      .where('id', router.matchers.number())
     router.get('images', [controllers.admin.Images, 'index']).as('admin.images')
     router.get('images/:kind/:id', [controllers.admin.Images, 'edit']).as('admin.images.edit')
     router.put('images/:kind/:id', [controllers.admin.Images, 'update']).as('admin.images.update')

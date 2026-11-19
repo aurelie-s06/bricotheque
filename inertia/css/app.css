@@ -2798,6 +2798,18 @@ a:not([class]):visited {
   border: 0;
 }
 
+.admin-merge {
+  display: grid;
+  gap: var(--space-1);
+  padding-top: var(--space-1);
+  border-top: 1px dashed var(--line);
+}
+
+.admin-merge__alert {
+  font-weight: 700;
+  color: var(--brick-red-dark);
+}
+
 .admin-user__facts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

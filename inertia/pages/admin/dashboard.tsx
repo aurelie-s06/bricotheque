@@ -12,6 +12,7 @@ type Props = InertiaProps<{
     setsWithoutImage: number
     minifigsWithoutImage: number
     untranslated: number
+    pendingMerges: number
   }
   lastUpdate: string | null
 }>
@@ -48,6 +49,11 @@ export default function AdminDashboard({ figures, lastUpdate }: Props) {
           href="/admin/images?type=minifigs"
         />
         <Tile label={t('admin.figures.untranslated')} value={formatNumber(figures.untranslated)} />
+        <Tile
+          label={t('admin.figures.pendingMerges')}
+          value={formatNumber(figures.pendingMerges)}
+          href="/admin/ajouts"
+        />
       </dl>
       <p>
         {t('admin.lastUpdate')} {lastUpdate ? dateNode(lastUpdate) : t('admin.never')} ·{' '}
