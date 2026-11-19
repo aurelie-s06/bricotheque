@@ -48,6 +48,14 @@ export default function SetImage({
 
   const reported = useRef(false)
 
+  // Fade-in once loaded. Only after hydration: without JavaScript (or for
+  // a picture already in the cache) the picture shows at once, never hidden.
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    const element = image.current
+    if (element && !element.complete) setLoading(true)
+  }, [])
+
   const next = useCallback(() => setStage((current) => (current === 0 ? 1 : 2)), [])
 
   // The error event can fire before hydration: check the image once mounted
@@ -76,13 +84,19 @@ export default function SetImage({
   return (
     <img
       ref={image}
-      className={`set-image ${className}`.trim()}
+      className={`set-image ${loading ? 'set-image--loading' : ''} ${className}`
+        .replace(/\s+/g, ' ')
+        .trim()}
       src={current}
       srcSet={srcSet}
       alt={alt}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
-      onError={next}
+      onLoad={() => setLoading(false)}
+      onError={() => {
+        setLoading(false)
+        next()
+      }}
     />
   )
 }

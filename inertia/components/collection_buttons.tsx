@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { router, usePage } from '@inertiajs/react'
 import { Check, Heart, Lock, PartyPopper } from 'lucide-react'
 import { useI18n } from '~/i18n'
@@ -48,6 +48,25 @@ function ActionForm({
 }
 
 /**
+ * True for a moment when `pressed` turns on after a click (not on page
+ * load): the button then "snaps" like a brick clicked into place.
+ */
+function useSnap(pressed: boolean) {
+  const previous = useRef(pressed)
+  const [snap, setSnap] = useState(false)
+  useEffect(() => {
+    if (pressed && !previous.current) {
+      setSnap(true)
+      const timer = setTimeout(() => setSnap(false), 400)
+      previous.current = pressed
+      return () => clearTimeout(timer)
+    }
+    previous.current = pressed
+  }, [pressed])
+  return snap
+}
+
+/**
  * "Je l'ai" / "Je le veux" toggle buttons (aria-pressed), and "Je l'ai eu !"
  * on wishlist items. Visitors get links to the login page, which brings
  * them back here.
@@ -71,6 +90,10 @@ export default function CollectionButtons({
   const { t } = useI18n()
   const ids = props.collectionIds
   const className = `collection-buttons collection-buttons--${size}`
+  const owned = ids ? (kind === 'sets' ? ids.ownedSets : ids.ownedMinifigs).includes(id) : false
+  const wanted = ids ? (kind === 'sets' ? ids.wantedSets : ids.wantedMinifigs).includes(id) : false
+  const ownedSnap = useSnap(owned)
+  const wantedSnap = useSnap(wanted)
 
   if (!ids) {
     const login = `/connexion?retour=${encodeURIComponent(url)}`
@@ -90,9 +113,6 @@ export default function CollectionButtons({
       </div>
     )
   }
-
-  const owned = (kind === 'sets' ? ids.ownedSets : ids.ownedMinifigs).includes(id)
-  const wanted = (kind === 'sets' ? ids.wantedSets : ids.wantedMinifigs).includes(id)
 
   return (
     <div className={className}>
@@ -118,7 +138,7 @@ export default function CollectionButtons({
         {(busy) => (
           <button
             type="submit"
-            className="collection-button collection-button--own"
+            className={`collection-button collection-button--own${ownedSnap ? ' collection-button--snap' : ''}`}
             aria-pressed={owned}
             disabled={busy}
           >
@@ -135,7 +155,7 @@ export default function CollectionButtons({
         {(busy) => (
           <button
             type="submit"
-            className="collection-button collection-button--want"
+            className={`collection-button collection-button--want${wantedSnap ? ' collection-button--snap' : ''}`}
             aria-pressed={wanted}
             disabled={busy}
           >

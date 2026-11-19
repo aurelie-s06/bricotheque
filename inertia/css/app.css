@@ -1630,6 +1630,30 @@ input[type='number'].input::-webkit-outer-spin-button {
   object-fit: contain;
 }
 
+/* While loading: a grey silhouette that shimmers, then the picture fades in */
+.set-image--loading {
+  background: linear-gradient(100deg, var(--paper) 30%, #eceae4 50%, var(--paper) 70%) 0 0 / 300%
+    100%;
+  border-radius: var(--radius);
+  animation: image-shimmer 1.2s linear infinite;
+}
+
+.set-image:not(.set-image--loading) {
+  animation: image-fade-in 0.3s ease-out;
+}
+
+@keyframes image-shimmer {
+  to {
+    background-position: -150% 0;
+  }
+}
+
+@keyframes image-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 .set-card__body {
   display: flex;
   flex: 1;
@@ -2712,6 +2736,41 @@ input[type='number'].input::-webkit-outer-spin-button {
 .collection-button:disabled {
   opacity: 0.6;
   cursor: progress;
+}
+
+/* Pressed like a brick */
+.collection-button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* Turned on: squeezed, then clicked into place */
+.collection-button--snap {
+  animation: brick-snap 0.4s ease-out;
+}
+
+@keyframes brick-snap {
+  0% {
+    transform: translateY(2px) scale(0.94);
+  }
+  55% {
+    transform: translateY(-2px) scale(1.04);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .set-image--loading,
+  .set-image:not(.set-image--loading),
+  .collection-button--snap {
+    animation: none;
+  }
+
+  .collection-button:active:not(:disabled) {
+    transform: none;
+  }
 }
 
 .collection-button--own[aria-pressed='true'] {
