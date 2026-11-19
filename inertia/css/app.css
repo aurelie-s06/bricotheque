@@ -1944,6 +1944,30 @@ input[type='number'].input::-webkit-outer-spin-button {
   border-top: 1px dashed var(--line);
 }
 
+.news-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-1) 0;
+  border-block: 1px solid var(--line);
+  font-weight: 600;
+}
+
+@media (max-width: 559px) {
+  .news-nav__current {
+    order: 3;
+    flex-basis: 100%;
+    text-align: center;
+  }
+}
+
+.news-nav__current {
+  margin-inline: auto;
+}
+
 .completion {
   display: grid;
   gap: var(--space-2);

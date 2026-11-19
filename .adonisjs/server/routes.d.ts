@@ -7,6 +7,8 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'sets.index': { paramsTuple?: []; params?: {} }
     'sets.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
+    'news.current': { paramsTuple?: []; params?: {} }
+    'news.month': { paramsTuple: [ParamValue]; params: {'month': ParamValue} }
     'themes.index': { paramsTuple?: []; params?: {} }
     'themes.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'minifigs.index': { paramsTuple?: []; params?: {} }
@@ -89,6 +91,8 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'sets.index': { paramsTuple?: []; params?: {} }
     'sets.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
+    'news.current': { paramsTuple?: []; params?: {} }
+    'news.month': { paramsTuple: [ParamValue]; params: {'month': ParamValue} }
     'themes.index': { paramsTuple?: []; params?: {} }
     'themes.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'minifigs.index': { paramsTuple?: []; params?: {} }
@@ -134,6 +138,8 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'sets.index': { paramsTuple?: []; params?: {} }
     'sets.show': { paramsTuple: [ParamValue]; params: {'ref': ParamValue} }
+    'news.current': { paramsTuple?: []; params?: {} }
+    'news.month': { paramsTuple: [ParamValue]; params: {'month': ParamValue} }
     'themes.index': { paramsTuple?: []; params?: {} }
     'themes.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'minifigs.index': { paramsTuple?: []; params?: {} }

@@ -47,6 +47,32 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/sets_controller').default['show']>>>
     }
   }
+  'news.current': {
+    methods: ["GET","HEAD"]
+    pattern: '/nouveautes'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/news_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/news_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/news_controller').default['show']>>>
+    }
+  }
+  'news.month': {
+    methods: ["GET","HEAD"]
+    pattern: '/nouveautes/:month'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { month: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/news_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/news_controller').default['show']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/news_controller').default['show']>>>
+    }
+  }
   'themes.index': {
     methods: ["GET","HEAD"]
     pattern: '/themes'

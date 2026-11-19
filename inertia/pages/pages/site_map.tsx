@@ -33,6 +33,9 @@ export default function SiteMap({ themes, user }: Props) {
           </ul>
         </li>
         <li>
+          <Link href="/nouveautes">{t('nav.news')}</Link>
+        </li>
+        <li>
           <Link href="/recherche">{t('search.title')}</Link>
         </li>
       </ul>

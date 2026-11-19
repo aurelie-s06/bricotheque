@@ -7,6 +7,10 @@ export interface ApiDefinition {
     index: typeof routes['sets.index']
     show: typeof routes['sets.show']
   }
+  news: {
+    current: typeof routes['news.current']
+    month: typeof routes['news.month']
+  }
   themes: {
     index: typeof routes['themes.index']
     show: typeof routes['themes.show']

@@ -40,6 +40,7 @@ declare module '@adonisjs/inertia/types' {
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>
     'minifigs/index': ExtractProps<(typeof import('../../inertia/pages/minifigs/index.tsx'))['default']>
     'minifigs/show': ExtractProps<(typeof import('../../inertia/pages/minifigs/show.tsx'))['default']>
+    'news/show': ExtractProps<(typeof import('../../inertia/pages/news/show.tsx'))['default']>
     'pages/about': ExtractProps<(typeof import('../../inertia/pages/pages/about.tsx'))['default']>
     'pages/legal': ExtractProps<(typeof import('../../inertia/pages/pages/legal.tsx'))['default']>
     'pages/privacy': ExtractProps<(typeof import('../../inertia/pages/pages/privacy.tsx'))['default']>

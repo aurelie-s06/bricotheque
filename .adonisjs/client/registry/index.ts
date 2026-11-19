@@ -26,6 +26,18 @@ const routes = {
     tokens: [[0,"sets"],[1,"ref"]],
     types: placeholder as Registry['sets.show']['types'],
   },
+  'news.current': {
+    methods: ["GET","HEAD"],
+    pattern: '/nouveautes',
+    tokens: [[0,"nouveautes"]],
+    types: placeholder as Registry['news.current']['types'],
+  },
+  'news.month': {
+    methods: ["GET","HEAD"],
+    pattern: '/nouveautes/:month',
+    tokens: [[0,"nouveautes"],[1,"month"]],
+    types: placeholder as Registry['news.month']['types'],
+  },
   'themes.index': {
     methods: ["GET","HEAD"],
     pattern: '/themes',

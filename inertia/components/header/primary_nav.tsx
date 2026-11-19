@@ -3,7 +3,7 @@ import NavLink from '~/components/nav_link'
 import { useI18n } from '~/i18n'
 
 /**
- * The three catalogue sections. Sets and minifigs lead back to the last
+ * The catalogue sections and the news of the month. Sets and minifigs lead back to the last
  * filtered list of the visit.
  */
 export default function PrimaryNav({ className }: { className: string }) {
@@ -28,6 +28,11 @@ export default function PrimaryNav({ className }: { className: string }) {
       <li>
         <NavLink route="themes.index" className="primary-nav__link">
           {t('nav.themes')}
+        </NavLink>
+      </li>
+      <li>
+        <NavLink route="news.current" className="primary-nav__link">
+          {t('nav.news')}
         </NavLink>
       </li>
     </ul>

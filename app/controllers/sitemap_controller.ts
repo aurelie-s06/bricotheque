@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import env from '#start/env'
 import ThemeTree from '#services/catalogue/theme_tree'
@@ -10,6 +11,7 @@ export const PUBLIC_PAGES = [
   '/sets',
   '/minifigs',
   '/themes',
+  '/nouveautes',
   '/a-propos',
   '/plan-du-site',
   '/mentions-legales',
@@ -97,8 +99,19 @@ export default class SitemapController {
 
   async #entries(name: SitemapName): Promise<{ path: string; lastmod: string | null }[]> {
     switch (name) {
-      case 'pages':
-        return PUBLIC_PAGES.map((path) => ({ path, lastmod: null }))
+      case 'pages': {
+        // The news of the last 12 months, after the main pages
+        const months = Array.from({ length: 12 }, (_, index) =>
+          DateTime.utc()
+            .startOf('month')
+            .minus({ months: index + 1 })
+            .toFormat('yyyy-LL')
+        )
+        return [...PUBLIC_PAGES, ...months.map((month) => `/nouveautes/${month}`)].map((path) => ({
+          path,
+          lastmod: null,
+        }))
+      }
       case 'themes': {
         const themes = await ThemeTree.load()
         const counts = await themes.setCounts()

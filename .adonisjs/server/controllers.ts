@@ -22,6 +22,7 @@ export const controllers = {
   Minifigs: () => import('#controllers/minifigs_controller'),
   MyCollection: () => import('#controllers/my_collection_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
+  News: () => import('#controllers/news_controller'),
   Pages: () => import('#controllers/pages_controller'),
   PasswordReset: () => import('#controllers/password_reset_controller'),
   Search: () => import('#controllers/search_controller'),

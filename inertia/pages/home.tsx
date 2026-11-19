@@ -52,7 +52,7 @@ export default function Home({ announcements, latestSets }: Props) {
       <section aria-labelledby="latest-title" className="home-section">
         <div className="home-section__header">
           <h2 id="latest-title">{t('home.latestSets')}</h2>
-          <Link href="/sets">{t('home.allSets')}</Link>
+          <Link href="/nouveautes">{t('home.newsOfTheMonth')}</Link>
         </div>
         <ul className="card-grid">
           {latestSets.map((set) => (

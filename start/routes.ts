@@ -20,6 +20,11 @@ router.get('/', [controllers.Home, 'index']).as('home')
  */
 router.get('sets', [controllers.Sets, 'index']).as('sets.index')
 router.get('sets/:ref', [controllers.Sets, 'show']).as('sets.show')
+router.get('nouveautes', [controllers.News, 'show']).as('news.current')
+router
+  .get('nouveautes/:month', [controllers.News, 'show'])
+  .where('month', /^\d{4}-\d{2}$/)
+  .as('news.month')
 router.get('themes', [controllers.Themes, 'index']).as('themes.index')
 router.get('themes/:slug', [controllers.Themes, 'show']).as('themes.show')
 
