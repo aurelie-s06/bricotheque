@@ -13,6 +13,7 @@ export default class DashboardController {
     return inertia.render('dashboard', {
       figures: data.figures,
       byTheme: data.byTheme,
+      completion: data.completion,
       byDecade: data.byDecade,
       biggest: BrickSetTransformer.transform(data.biggest),
       oldest: BrickSetTransformer.transform(data.oldest),

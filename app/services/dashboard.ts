@@ -15,6 +15,7 @@ export const RETIRING_SOON = { months: 6 }
 
 type OwnedSetRow = {
   set_id: number
+  kind: string
   quantity: number
   year: number | null
   theme_id: number
@@ -34,6 +35,7 @@ export default class Dashboard {
       .where({ 'user_sets.user_id': this.userId, 'user_sets.status': 'owned' })
       .select(
         'user_sets.set_id',
+        'sets.kind',
         'user_sets.quantity',
         'sets.year',
         'sets.theme_id',
@@ -48,6 +50,7 @@ export default class Dashboard {
     return {
       figures: this.#figures(owned, minifigs),
       byTheme: await this.#byTheme(owned),
+      completion: await this.#completion(owned),
       byDecade: this.#byDecade(owned),
       ...(await this.#topSets(owned)),
       wishlist: await this.#wishlistAlerts(today),
@@ -146,6 +149,35 @@ export default class Dashboard {
     const others = sorted.slice(THEMES_IN_CHART).reduce((total, entry) => total + entry.count, 0)
     if (others > 0) shown.push({ name: '', url: null, count: others }) // "Others", named by the page
     return shown
+  }
+
+  /**
+   * Completion of each root theme the member collects: owned sets out of
+   * the sets of the catalogue (subthemes included, books and gear excluded).
+   */
+  async #completion(owned: OwnedSetRow[]) {
+    const themes = await ThemeTree.load()
+    const ownedByRoot = new Map<number, number>()
+    for (const row of owned) {
+      if (row.kind !== 'set') continue
+      const root = themes.ancestorsOf(row.theme_id)[0]
+      if (root) ownedByRoot.set(root.id, (ownedByRoot.get(root.id) ?? 0) + 1)
+    }
+    if (ownedByRoot.size === 0) return []
+    const totals = await themes.setCounts()
+    return [...ownedByRoot.entries()]
+      .map(([id, count]) => {
+        const theme = themes.byId.get(id)!
+        const total = Math.max(totals.get(id) ?? 0, count)
+        return {
+          name: theme.name,
+          url: themePath(theme),
+          owned: count,
+          total,
+          percent: Math.floor((count / total) * 100),
+        }
+      })
+      .sort((a, b) => b.owned - a.owned || b.percent - a.percent || a.name.localeCompare(b.name))
   }
 
   /** Owned sets per decade, in chronological order (empty decades included) */

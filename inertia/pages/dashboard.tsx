@@ -19,6 +19,7 @@ type Props = InertiaProps<{
     pieces: number
   }
   byTheme: { name: string; url: string | null; count: number }[]
+  completion: { name: string; url: string; owned: number; total: number; percent: number }[]
   byDecade: { decade: number; count: number }[]
   biggest: Data.BrickSet[]
   oldest: Data.BrickSet[]
@@ -38,6 +39,39 @@ function Tile({ label, value, hint }: { label: string; value: string; hint?: str
       <dd className="stat-tile__value">{value}</dd>
       {hint && <dd className="stat-tile__hint">{hint}</dd>}
     </div>
+  )
+}
+
+type Completion = { name: string; url: string; owned: number; total: number; percent: number }
+
+/** Themes shown before the "show the others" disclosure */
+const COMPLETION_SHOWN = 6
+
+/** One theme: "Harry Potter · 18 sets out of 140 (12 %)" and a progress bar */
+function CompletionRow({ row }: { row: Completion }) {
+  const { t, formatNumber } = useI18n()
+  return (
+    <li className="completion__row">
+      <div className="completion__text">
+        <Link href={row.url} className="completion__name">
+          {row.name}
+        </Link>
+        <span className="completion__value">
+          {t('completion.value', {
+            owned: formatNumber(row.owned),
+            total: formatNumber(row.total),
+            // A few sets out of a big theme: "< 1 %" rather than a misleading "0 %"
+            percent: row.percent === 0 && row.owned > 0 ? '<\u00a01' : row.percent,
+          })}
+        </span>
+      </div>
+      <span className="completion__track" aria-hidden="true">
+        <span
+          className="completion__bar"
+          style={{ width: `${row.owned > 0 ? Math.max(2, row.percent) : 0}%` }}
+        />
+      </span>
+    </li>
   )
 }
 
@@ -78,6 +112,7 @@ export default function DashboardPage(props: Props) {
   const {
     figures,
     byTheme,
+    completion,
     byDecade,
     biggest,
     oldest,
@@ -150,6 +185,30 @@ export default function DashboardPage(props: Props) {
                     value: row.count,
                   }))}
                 />
+              </section>
+            )}
+
+            {completion.length > 0 && (
+              <section className="card dashboard-card" aria-labelledby="completion-title">
+                <h2 id="completion-title">{t('completion.title')}</h2>
+                <p className="field__hint">{t('completion.hint')}</p>
+                <ul className="completion">
+                  {completion.slice(0, COMPLETION_SHOWN).map((row) => (
+                    <CompletionRow key={row.url} row={row} />
+                  ))}
+                </ul>
+                {completion.length > COMPLETION_SHOWN && (
+                  <details className="completion__more">
+                    <summary>
+                      {tc('completion.others', completion.length - COMPLETION_SHOWN)}
+                    </summary>
+                    <ul className="completion">
+                      {completion.slice(COMPLETION_SHOWN).map((row) => (
+                        <CompletionRow key={row.url} row={row} />
+                      ))}
+                    </ul>
+                  </details>
+                )}
               </section>
             )}
 

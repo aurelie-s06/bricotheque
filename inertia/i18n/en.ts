@@ -721,6 +721,12 @@ const en: Record<keyof typeof fr, string> = {
   'doubles.none': 'No duplicate minifig.',
   'doubles.filtered': 'Only the minifigs in several copies.',
   'doubles.showAll': 'Show all my minifigs',
+  'completion.title': 'Completion per theme',
+  'completion.hint':
+    'Sets of your collection out of all the sets of the theme (subthemes included, books and gear excluded).',
+  'completion.value': '{owned} of {total} · {percent}%',
+  'completion.others_one': 'Show the other theme',
+  'completion.others_other': 'Show the {count} other themes',
   'dashboard.title': 'Dashboard',
   'dashboard.metaDescription': 'The key figures of my set and minifig collection.',
   'dashboard.empty': 'Your dashboard is empty',

@@ -32,6 +32,7 @@ declare module '@adonisjs/inertia/types' {
     'auth/reset_password': ExtractProps<(typeof import('../../inertia/pages/auth/reset_password.tsx'))['default']>
     'auth/signup': ExtractProps<(typeof import('../../inertia/pages/auth/signup.tsx'))['default']>
     'collection/list': ExtractProps<(typeof import('../../inertia/pages/collection/list.tsx'))['default']>
+    'collection/missing_minifigs': ExtractProps<(typeof import('../../inertia/pages/collection/missing_minifigs.tsx'))['default']>
     'dashboard': ExtractProps<(typeof import('../../inertia/pages/dashboard.tsx'))['default']>
     'errors/forbidden': ExtractProps<(typeof import('../../inertia/pages/errors/forbidden.tsx'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
@@ -49,7 +50,5 @@ declare module '@adonisjs/inertia/types' {
     'sets/show': ExtractProps<(typeof import('../../inertia/pages/sets/show.tsx'))['default']>
     'themes/index': ExtractProps<(typeof import('../../inertia/pages/themes/index.tsx'))['default']>
     'themes/show': ExtractProps<(typeof import('../../inertia/pages/themes/show.tsx'))['default']>
-    'collection/missing_minifigs': ExtractProps<(typeof import('../../inertia/pages/collection/missing_minifigs.tsx'))['default']>
-    '._dashboard': ExtractProps<(typeof import('../../inertia/pages/._dashboard.tsx'))['default']>
   }
 }

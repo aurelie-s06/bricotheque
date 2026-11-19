@@ -76,6 +76,28 @@ test.group('Dashboard', (group) => {
     })
   })
 
+  test('gives the completion of each collected theme', async ({ client, assert }) => {
+    const user = await createUser()
+    await UserSet.create({ userId: user.id, setId: await setId('75192-1'), status: 'owned' })
+    await UserSet.create({ userId: user.id, setId: await setId('8880-1'), status: 'owned' })
+    // A book does not count in the completion
+    await UserSet.create({ userId: user.id, setId: await setId('0003977811-1'), status: 'owned' })
+
+    const response = await client.get('/tableau-de-bord').loginAs(user).withInertia()
+    const rows = response.inertiaProps.completion.map(
+      (row: { name: string; owned: number; total: number; percent: number }) => [
+        row.name,
+        row.owned,
+        row.total,
+        row.percent,
+      ]
+    )
+    assert.deepEqual(rows, [
+      ['Technic', 1, 1, 100],
+      ['Star Wars', 1, 2, 50],
+    ])
+  })
+
   test('splits the collection by root theme and by decade', async ({ client, assert }) => {
     const user = await createUser()
     for (const setNum of ['75192-1', '75192-2', '8880-1', '0003977811-1']) {

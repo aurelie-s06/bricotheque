@@ -1944,6 +1944,60 @@ input[type='number'].input::-webkit-outer-spin-button {
   border-top: 1px dashed var(--line);
 }
 
+.completion {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.completion__row {
+  display: grid;
+  gap: 6px;
+}
+
+.completion__text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px var(--space-1);
+  font-size: 0.9375rem;
+}
+
+.completion__name {
+  font-weight: 600;
+}
+
+.completion__value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.completion__track {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.completion__bar {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: var(--ink-muted);
+}
+
+.completion__more {
+  margin-top: var(--space-2);
+}
+
+.completion__more summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
 .dashboard-card__more {
   margin-top: var(--space-2);
 }

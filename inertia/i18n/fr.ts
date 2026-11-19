@@ -725,6 +725,12 @@ const fr = {
   'doubles.none': 'Aucune minifig en double.',
   'doubles.filtered': 'Seulement les minifigs en plusieurs exemplaires.',
   'doubles.showAll': 'Afficher toutes mes minifigs',
+  'completion.title': 'Complétion par thème',
+  'completion.hint':
+    'Sets de ta collection sur l’ensemble des sets du thème (sous-thèmes compris, hors livres et produits dérivés).',
+  'completion.value': '{owned} sur {total} · {percent}\u00a0%',
+  'completion.others_one': 'Afficher l’autre thème',
+  'completion.others_other': 'Afficher les {count} autres thèmes',
   'dashboard.title': 'Tableau de bord',
   'dashboard.metaDescription': 'Les chiffres clés de ma collection de sets et de minifigs.',
   'dashboard.empty': 'Ton tableau de bord est vide',
