@@ -307,6 +307,11 @@ const en: Record<keyof typeof fr, string> = {
   'search.submit': 'Search',
 
   // Home
+  'home.figureSets': 'sets',
+  'home.figureMinifigs': 'minifigs',
+  'home.figureThemes': 'themes',
+  'home.bigThemes': 'Big themes right now',
+  'home.allThemes': 'All themes',
   'home.title': 'Every set and minifig, one collection',
   'home.lead':
     'Find any set or minifig, past or present, and keep track of your collection and your wishlist.',

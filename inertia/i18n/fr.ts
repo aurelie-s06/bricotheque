@@ -307,6 +307,11 @@ const fr = {
   'search.submit': 'Rechercher',
 
   // Home
+  'home.figureSets': 'sets',
+  'home.figureMinifigs': 'minifigs',
+  'home.figureThemes': 'thèmes',
+  'home.bigThemes': 'Les grands thèmes du moment',
+  'home.allThemes': 'Tous les thèmes',
   'home.title': 'Tous les sets et minifigs, une seule collection',
   'home.lead':
     'Retrouve n’importe quel set ou minifig, d’hier comme d’aujourd’hui, et garde la trace de ta collection et de tes envies.',

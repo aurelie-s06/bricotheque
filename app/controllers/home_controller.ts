@@ -1,11 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import BrickSet from '#models/brick_set'
 import BrickSetTransformer from '#transformers/brick_set_transformer'
+import HomeShowcase from '#services/catalogue/home_showcase'
 
 export default class HomeController {
   /**
-   * GET /: search and latest announcements (sets not on sale yet, nearest
-   * release first). The sets already out are on the "Nouveautés" page.
+   * GET /: search over a mosaic of the latest sets, figures of the
+   * catalogue, the big themes of the moment and the latest announcements
+   * (sets not on sale yet, nearest release first).
    */
   async index({ inertia }: HttpContext) {
     const announcements = await BrickSet.query()
@@ -16,6 +18,7 @@ export default class HomeController {
       .limit(8)
 
     return inertia.render('home', {
+      showcase: await HomeShowcase.get(),
       announcements: BrickSetTransformer.transform(announcements),
     })
   }
