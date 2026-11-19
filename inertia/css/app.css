@@ -521,7 +521,9 @@ a:hover {
 
 /* ---------- Logo (provisional text logo) ---------- */
 .logo {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.5rem;
@@ -533,6 +535,35 @@ a:hover {
 
 .logo:hover {
   color: var(--ink);
+}
+
+.logo__mark {
+  flex: none;
+}
+
+/* Small phones: the header keeps room for the language, account and menu */
+@media (max-width: 400px) {
+  .logo {
+    gap: 6px;
+    font-size: 1.125rem;
+  }
+
+  .logo__mark {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Very small phones: the "B" brick alone (the link keeps its name for screen readers) */
+@media (max-width: 359px) {
+  .logo__name {
+    display: none;
+  }
+
+  .logo__mark {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /* ---------- Search form ---------- */
