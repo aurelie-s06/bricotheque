@@ -671,6 +671,20 @@ const en: Record<keyof typeof fr, string> = {
   'account.missingMinifigs_other':
     'Forgot the option? {count} minifigs from the sets you already added are not in your collection.',
   'account.addOwnedMinifigs': 'Add the minifigs of my sets',
+  'quickAdd.titleOwned': 'Quick add of sets by number',
+  'quickAdd.titleWanted': 'Quick add to the wishlist by number',
+  'quickAdd.label': 'Set numbers',
+  'quickAdd.hint':
+    'Separate the numbers with commas, spaces or new lines (300 at most). “75192” means version 1; for another version, type “75192-2”.',
+  'quickAdd.submit': 'Add these sets',
+  'quickAdd.added_one': '{count} set added.',
+  'quickAdd.added_other': '{count} sets added.',
+  'quickAdd.minifigs_one': 'With {count} minifig.',
+  'quickAdd.minifigs_other': 'With {count} minifigs.',
+  'quickAdd.alreadyThere_one': '{count} already there',
+  'quickAdd.alreadyThere_other': '{count} already there',
+  'quickAdd.unknown_one': '{count} number not found in the catalogue:',
+  'quickAdd.unknown_other': '{count} numbers not found in the catalogue:',
   'account.preferencesTitle': 'Preferences',
   'account.autoAddMinifigs':
     'When I add a set to my collection, also add its minifigs to my minifig collection',

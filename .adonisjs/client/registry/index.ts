@@ -260,6 +260,12 @@ const routes = {
     tokens: [[0,"ma-wishlist"],[0,"partage"],[0,"desactiver"]],
     types: placeholder as Registry['wishlist.unshare']['types'],
   },
+  'collection.quick_add': {
+    methods: ["POST"],
+    pattern: '/collection/ajout-rapide',
+    tokens: [[0,"collection"],[0,"ajout-rapide"]],
+    types: placeholder as Registry['collection.quick_add']['types'],
+  },
   'collection.acquire': {
     methods: ["POST"],
     pattern: '/collection/:kind/:id/acquired',

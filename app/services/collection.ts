@@ -19,6 +19,24 @@ export type CollectionIds = {
   wantedMinifigs: number[]
 }
 
+/** At most this many numbers in one quick add */
+export const QUICK_ADD_MAX = 300
+
+/**
+ * Set numbers typed by hand ("75192, 10294-1 42115"): separated by commas,
+ * spaces, semicolons or new lines. "75192" means version 1 ("75192-1").
+ */
+export function parseSetNumbers(text: string) {
+  const tokens = text
+    .split(/[\s,;]+/)
+    .map((token) => token.trim().toLowerCase())
+    .filter(Boolean)
+  return [...new Set(tokens)].slice(0, QUICK_ADD_MAX).map((typed) => ({
+    typed,
+    setNum: /-\d+$/.test(typed) ? typed : `${typed}-1`,
+  }))
+}
+
 const notFound = (kind: CollectionKind, id: number) =>
   new Exception(`${kind} ${id} introuvable`, { status: 404, code: 'E_ITEM_NOT_FOUND' })
 
@@ -152,6 +170,41 @@ export default class Collection {
       )
     }
     return missing.length
+  }
+
+  /**
+   * Adds many sets typed by number. Returns what was added, what was
+   * already there, the numbers not found and the minifigs added with them.
+   */
+  async quickAdd(text: string, status: CollectionStatus) {
+    const numbers = parseSetNumbers(text)
+    const sets: { id: number; set_num: string }[] = numbers.length
+      ? await db
+          .from('sets')
+          .whereIn(
+            'set_num',
+            numbers.map((number) => number.setNum)
+          )
+          .select('id', 'set_num')
+      : []
+    const byNum = new Map(sets.map((set) => [set.set_num.toLowerCase(), Number(set.id)]))
+    const ids = await this.ids()
+    const already = new Set(status === 'owned' ? ids.ownedSets : ids.wantedSets)
+
+    const result = { added: 0, alreadyThere: 0, minifigs: 0, unknown: [] as string[] }
+    for (const number of numbers) {
+      const id = byNum.get(number.setNum)
+      if (id === undefined) {
+        result.unknown.push(number.typed)
+      } else if (already.has(id)) {
+        result.alreadyThere++
+      } else {
+        result.minifigs += await this.add('sets', id, status)
+        already.add(id)
+        result.added++
+      }
+    }
+    return result
   }
 
   /** The collection entry of a set or a minifig, or null */

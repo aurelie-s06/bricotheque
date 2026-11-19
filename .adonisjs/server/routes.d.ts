@@ -46,6 +46,7 @@ export type ScannedRoutes = {
     'wishlist.index': { paramsTuple?: []; params?: {} }
     'wishlist.share': { paramsTuple?: []; params?: {} }
     'wishlist.unshare': { paramsTuple?: []; params?: {} }
+    'collection.quick_add': { paramsTuple?: []; params?: {} }
     'collection.acquire': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'collection.add_set_minifigs': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.set_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -177,6 +178,7 @@ export type ScannedRoutes = {
     'account.minifig_prompt': { paramsTuple?: []; params?: {} }
     'wishlist.share': { paramsTuple?: []; params?: {} }
     'wishlist.unshare': { paramsTuple?: []; params?: {} }
+    'collection.quick_add': { paramsTuple?: []; params?: {} }
     'collection.acquire': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'collection.add_set_minifigs': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }

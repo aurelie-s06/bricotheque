@@ -675,6 +675,20 @@ const fr = {
   'account.missingMinifigs_other':
     'Option oubliée ? {count} minifigs de tes sets déjà enregistrés ne sont pas dans ta collection.',
   'account.addOwnedMinifigs': 'Ajouter les minifigs de mes sets',
+  'quickAdd.titleOwned': 'Ajout rapide de sets par numéro',
+  'quickAdd.titleWanted': 'Ajout rapide à la wishlist par numéro',
+  'quickAdd.label': 'Numéros des sets',
+  'quickAdd.hint':
+    'Sépare les numéros par des virgules, des espaces ou des retours à la ligne (300 au plus). « 75192 » correspond à la version 1 ; pour une autre version, écris « 75192-2 ».',
+  'quickAdd.submit': 'Ajouter ces sets',
+  'quickAdd.added_one': '{count} set ajouté.',
+  'quickAdd.added_other': '{count} sets ajoutés.',
+  'quickAdd.minifigs_one': 'Avec {count} minifig.',
+  'quickAdd.minifigs_other': 'Avec {count} minifigs.',
+  'quickAdd.alreadyThere_one': '{count} déjà présent',
+  'quickAdd.alreadyThere_other': '{count} déjà présents',
+  'quickAdd.unknown_one': '{count} numéro introuvable dans le catalogue :',
+  'quickAdd.unknown_other': '{count} numéros introuvables dans le catalogue :',
   'account.preferencesTitle': 'Préférences',
   'account.autoAddMinifigs':
     'Quand j’ajoute un set à ma collection, ajouter aussi ses minifigs à ma collection de minifigs',

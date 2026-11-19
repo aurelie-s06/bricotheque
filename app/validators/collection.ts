@@ -12,3 +12,9 @@ export const minifigDetailsValidator = vine.create({
 export const preferencesValidator = vine.create({
   autoAddMinifigs: vine.boolean().optional(),
 })
+
+/** Quick add: set numbers separated by commas, spaces or new lines */
+export const quickAddValidator = vine.create({
+  numbers: vine.string().trim().minLength(1).maxLength(5000),
+  status: vine.enum(['owned', 'wanted'] as const),
+})

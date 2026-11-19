@@ -11,6 +11,7 @@ import MinifigFilters from '~/components/minifig_filters'
 import Pagination, { type PaginationData } from '~/components/pagination'
 import { type InertiaProps } from '~/types'
 import SharePanel from '~/components/share_panel'
+import QuickAdd from '~/components/quick_add'
 import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
@@ -93,6 +94,7 @@ export default function CollectionList(props: Props) {
       )}
 
       {mode === 'wishlist' && <SharePanel shareUrl={props.shareUrl} />}
+      {mode !== 'shared' && <QuickAdd status={mode === 'collection' ? 'owned' : 'wanted'} />}
 
       <nav className="tabs" aria-label={t('collection.tabs')}>
         <ul className="tabs__list">

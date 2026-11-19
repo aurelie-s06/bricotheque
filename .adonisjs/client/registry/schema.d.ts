@@ -554,6 +554,19 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/my_collection_controller').default['unshare']>>>
     }
   }
+  'collection.quick_add': {
+    methods: ["POST"]
+    pattern: '/collection/ajout-rapide'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/collection').quickAddValidator)>|InferInput<(typeof import('#helpers/locale').resolveLocale)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/collection').quickAddValidator)>|InferInput<(typeof import('#helpers/locale').resolveLocale)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['quickAdd']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['quickAdd']>>> | { status: 422; response: { errors: SimpleError[] } }
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/collection_actions_controller').default['quickAdd']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'collection.acquire': {
     methods: ["POST"]
     pattern: '/collection/:kind/:id/acquired'

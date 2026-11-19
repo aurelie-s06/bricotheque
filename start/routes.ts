@@ -133,6 +133,9 @@ router
       .as('wishlist.unshare')
 
     router
+      .post('collection/ajout-rapide', [controllers.CollectionActions, 'quickAdd'])
+      .as('collection.quick_add')
+    router
       .post('collection/:kind/:id/acquired', [controllers.CollectionActions, 'acquire'])
       .where('kind', /^(sets|minifigs)$/)
       .where('id', router.matchers.number())

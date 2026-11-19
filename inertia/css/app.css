@@ -1944,6 +1944,47 @@ input[type='number'].input::-webkit-outer-spin-button {
   border-top: 1px dashed var(--line);
 }
 
+.quick-add {
+  margin-block: var(--space-2);
+}
+
+.quick-add__summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.quick-add[open] .quick-add__summary {
+  margin-bottom: var(--space-2);
+}
+
+.quick-add__form {
+  display: grid;
+  gap: var(--half);
+  max-width: 640px;
+}
+
+.quick-add__input {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.quick-add__form .btn {
+  margin-top: var(--space-1);
+}
+
+.quick-add__result {
+  margin-bottom: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.quick-add__unknown {
+  font-family: ui-monospace, monospace;
+  overflow-wrap: anywhere;
+}
+
 .minifig-prompt {
   display: grid;
   gap: var(--space-1);

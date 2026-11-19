@@ -60,7 +60,18 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     const info: string | undefined = session?.flashMessages.get('info')
     const error: string | undefined = session?.flashMessages.get('error')
 
-    return { success, info, error }
+    /** Result of the quick add by set numbers (shown above the list) */
+    const quickAdd:
+      | {
+          added: number
+          alreadyThere: number
+          minifigs: number
+          unknown: string[]
+          status: 'owned' | 'wanted'
+        }
+      | undefined = session?.flashMessages.get('quickAdd')
+
+    return { success, info, error, quickAdd }
   }
 
   async handle(ctx: HttpContext, next: NextFn) {

@@ -64,6 +64,7 @@ export interface ApiDefinition {
   dashboard: typeof routes['dashboard']
   collection: {
     index: typeof routes['collection.index']
+    quickAdd: typeof routes['collection.quick_add']
     acquire: typeof routes['collection.acquire']
     addSetMinifigs: typeof routes['collection.add_set_minifigs']
     setDetails: typeof routes['collection.set_details']

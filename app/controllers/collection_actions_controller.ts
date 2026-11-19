@@ -2,7 +2,11 @@ import type { HttpContext } from '@adonisjs/core/http'
 import BrickSet from '#models/brick_set'
 import Minifig from '#models/minifig'
 import Collection, { type CollectionKind, type CollectionStatus } from '#services/collection'
-import { minifigDetailsValidator, setDetailsValidator } from '#validators/collection'
+import {
+  minifigDetailsValidator,
+  quickAddValidator,
+  setDetailsValidator,
+} from '#validators/collection'
 import { validationMessages } from '#validators/messages'
 import { resolveLocale } from '#helpers/locale'
 import { serverMessage } from '#helpers/server_messages'
@@ -52,6 +56,19 @@ export default class CollectionActionsController {
             : 'collection.addedOwned'
       session.flash('success', serverMessage(locale, key, { name, count: minifigs }))
     }
+    return response.redirect().back()
+  }
+
+  /**
+   * POST /collection/ajout-rapide: adds the sets typed by number to the
+   * collection (status=owned) or the wishlist (status=wanted)
+   */
+  async quickAdd({ request, auth, session, response }: HttpContext) {
+    const { numbers, status } = await request.validateUsing(quickAddValidator, {
+      messagesProvider: validationMessages(resolveLocale(request)),
+    })
+    const result = await new Collection(auth.getUserOrFail()).quickAdd(numbers, status)
+    session.flash('quickAdd', { ...result, status })
     return response.redirect().back()
   }
 
