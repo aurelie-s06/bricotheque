@@ -7,6 +7,7 @@ export const controllers = {
   Account: () => import('#controllers/account_controller'),
   admin: {
     Admin: () => import('#controllers/admin/admin_controller'),
+    Catalogue: () => import('#controllers/admin/catalogue_controller'),
     Images: () => import('#controllers/admin/images_controller'),
     Translations: () => import('#controllers/admin/translations_controller'),
     Updates: () => import('#controllers/admin/updates_controller'),

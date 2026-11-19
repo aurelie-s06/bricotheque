@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
+import { keepLocked } from '#services/catalogue/locked_fields'
 
 export type ImportStats = {
   /** rows read from the CSV */
@@ -27,7 +28,8 @@ export function nowForSql() {
 /**
  * Compares a batch with what is stored, then writes only new and changed
  * rows with a single INSERT … ON DUPLICATE KEY UPDATE. Columns that are not
- * listed (e.g. Brickset data) are never touched.
+ * listed (e.g. Brickset data) are never touched, nor the columns corrected
+ * by hand when the table has `locked_fields` (`lockable`).
  */
 export async function upsertBatch<Row extends Record<string, string | number | null>>(options: {
   table: string
@@ -35,8 +37,9 @@ export async function upsertBatch<Row extends Record<string, string | number | n
   columns: readonly (keyof Row & string)[]
   rows: Row[]
   stats: ImportStats
+  lockable?: boolean
 }) {
-  const { table, key, columns, rows, stats } = options
+  const { table, key, columns, rows, stats, lockable = false } = options
 
   // A key listed twice in the same batch: keep the last one
   const unique = [...new Map(rows.map((row) => [row[key], row])).values()]
@@ -47,10 +50,15 @@ export async function upsertBatch<Row extends Record<string, string | number | n
       key,
       unique.map((row) => row[key] as string)
     )
-    .select(key, ...columns)
+    .select(key, ...columns, ...(lockable ? ['locked_fields'] : []))
   const storedByKey = new Map(stored.map((row) => [row[key], row]))
 
-  const toWrite = unique.filter((row) => {
+  const withLocks = unique.map((row) => {
+    const current = storedByKey.get(row[key])
+    return current && lockable ? keepLocked(row, current, columns) : row
+  })
+
+  const toWrite = withLocks.filter((row) => {
     const current = storedByKey.get(row[key])
     if (!current) {
       stats.created++

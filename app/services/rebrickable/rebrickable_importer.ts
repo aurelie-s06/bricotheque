@@ -271,11 +271,25 @@ export default class RebrickableImporter {
   }
 
   #upsertSets(rows: SetRow[], stats: ImportStats) {
-    return upsertBatch({ table: 'sets', key: 'set_num', columns: SET_COLUMNS, rows, stats })
+    return upsertBatch({
+      table: 'sets',
+      key: 'set_num',
+      columns: SET_COLUMNS,
+      rows,
+      stats,
+      lockable: true,
+    })
   }
 
   #upsertMinifigs(rows: MinifigRow[], stats: ImportStats) {
-    return upsertBatch({ table: 'minifigs', key: 'fig_num', columns: MINIFIG_COLUMNS, rows, stats })
+    return upsertBatch({
+      table: 'minifigs',
+      key: 'fig_num',
+      columns: MINIFIG_COLUMNS,
+      rows,
+      stats,
+      lockable: true,
+    })
   }
 
   /**

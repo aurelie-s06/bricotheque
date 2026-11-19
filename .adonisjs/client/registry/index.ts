@@ -344,6 +344,30 @@ const routes = {
     tokens: [[0,"admin"],[0,"images"],[1,"kind"],[1,"id"],[0,"cassee"]],
     types: placeholder as Registry['admin.images.broken']['types'],
   },
+  'admin.catalogue': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/catalogue',
+    tokens: [[0,"admin"],[0,"catalogue"]],
+    types: placeholder as Registry['admin.catalogue']['types'],
+  },
+  'admin.catalogue.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/catalogue/:kind/:id',
+    tokens: [[0,"admin"],[0,"catalogue"],[1,"kind"],[1,"id"]],
+    types: placeholder as Registry['admin.catalogue.edit']['types'],
+  },
+  'admin.catalogue.update': {
+    methods: ["PUT"],
+    pattern: '/admin/catalogue/:kind/:id',
+    tokens: [[0,"admin"],[0,"catalogue"],[1,"kind"],[1,"id"]],
+    types: placeholder as Registry['admin.catalogue.update']['types'],
+  },
+  'admin.catalogue.release': {
+    methods: ["POST"],
+    pattern: '/admin/catalogue/:kind/:id/liberer',
+    tokens: [[0,"admin"],[0,"catalogue"],[1,"kind"],[1,"id"],[0,"liberer"]],
+    types: placeholder as Registry['admin.catalogue.release']['types'],
+  },
   'admin.translations': {
     methods: ["GET","HEAD"],
     pattern: '/admin/traductions',

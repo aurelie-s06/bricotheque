@@ -736,6 +736,58 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/images_controller').default['reportBroken']>>>
     }
   }
+  'admin.catalogue': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/catalogue'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['index']>>>
+    }
+  }
+  'admin.catalogue.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/catalogue/:kind/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['edit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['edit']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['edit']>>>
+    }
+  }
+  'admin.catalogue.update': {
+    methods: ["PUT"]
+    pattern: '/admin/catalogue/:kind/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['update']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['update']>>>
+    }
+  }
+  'admin.catalogue.release': {
+    methods: ["POST"]
+    pattern: '/admin/catalogue/:kind/:id/liberer'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { kind: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['release']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['release']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/catalogue_controller').default['release']>>>
+    }
+  }
   'admin.translations': {
     methods: ["GET","HEAD"]
     pattern: '/admin/traductions'

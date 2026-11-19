@@ -24,6 +24,9 @@ const fr = {
     'Tu ne peux pas faire cette action sur ton propre compte : passe par la page Mon compte.',
   'admin.users.wrongUsername': 'Le pseudo saisi ne correspond pas à ce compte.',
   'admin.users.deleted': 'Le compte de {username} a été supprimé.',
+  'admin.catalogue.saved': 'Les corrections de « {name} » sont enregistrées.',
+  'admin.catalogue.released':
+    'Les champs choisis de « {name} » seront de nouveau mis à jour par les imports.',
   'auth.invalidCredentials': 'Adresse e-mail ou mot de passe incorrect.',
   'auth.tooManyAttempts': 'Trop de tentatives. Pour ta sécurité, réessaie dans {minutes} min.',
   'auth.loginRequired': 'Connecte-toi pour accéder à cette page.',
@@ -111,6 +114,8 @@ const en: Record<MessageKey, string> = {
   'admin.users.notSelf': 'You cannot do this on your own account: use the My account page.',
   'admin.users.wrongUsername': 'The username typed does not match this account.',
   'admin.users.deleted': 'The account of {username} was deleted.',
+  'admin.catalogue.saved': 'The corrections of “{name}” are saved.',
+  'admin.catalogue.released': 'The chosen fields of “{name}” will be updated by the imports again.',
   'auth.invalidCredentials': 'Incorrect email address or password.',
   'auth.tooManyAttempts': 'Too many attempts. For your security, try again in {minutes} min.',
   'auth.loginRequired': 'Please log in to access this page.',

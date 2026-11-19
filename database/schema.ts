@@ -61,7 +61,7 @@ export class JobSchema extends BaseModel {
 }
 
 export class MinifigSchema extends BaseModel {
-  static $columns = ['createdAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'figNum', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'mainThemeId', 'name', 'numParts', 'slug', 'updatedAt', 'yearFirst'] as const
+  static $columns = ['createdAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'figNum', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'lockedFields', 'mainThemeId', 'name', 'numParts', 'slug', 'updatedAt', 'yearFirst'] as const
   $columns = MinifigSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -83,6 +83,8 @@ export class MinifigSchema extends BaseModel {
   declare imgUrl: string | null
   @column()
   declare imgUrlManual: string | null
+  @column()
+  declare lockedFields: string | null
   @column()
   declare mainThemeId: number | null
   @column()
@@ -135,7 +137,7 @@ export class SetMinifigSchema extends BaseModel {
 }
 
 export class SetSchema extends BaseModel {
-  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'kind', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
+  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgBrokenAt', 'imgUrl', 'imgUrlManual', 'kind', 'lockedFields', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
   $columns = SetSchema.$columns
   @column()
   declare availabilityStatus: 'upcoming' | 'available' | 'retired' | 'unknown'
@@ -175,6 +177,8 @@ export class SetSchema extends BaseModel {
   declare imgUrlManual: string | null
   @column()
   declare kind: 'set' | 'book' | 'gear' | 'parts' | 'bundle'
+  @column()
+  declare lockedFields: string | null
   @column()
   declare name: string
   @column()

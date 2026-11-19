@@ -183,6 +183,22 @@ router
     router
       .post('images/:kind/:id/cassee', [controllers.admin.Images, 'reportBroken'])
       .as('admin.images.broken')
+    router.get('catalogue', [controllers.admin.Catalogue, 'index']).as('admin.catalogue')
+    router
+      .get('catalogue/:kind/:id', [controllers.admin.Catalogue, 'edit'])
+      .as('admin.catalogue.edit')
+      .where('kind', /^(sets|minifigs)$/)
+      .where('id', router.matchers.number())
+    router
+      .put('catalogue/:kind/:id', [controllers.admin.Catalogue, 'update'])
+      .as('admin.catalogue.update')
+      .where('kind', /^(sets|minifigs)$/)
+      .where('id', router.matchers.number())
+    router
+      .post('catalogue/:kind/:id/liberer', [controllers.admin.Catalogue, 'release'])
+      .as('admin.catalogue.release')
+      .where('kind', /^(sets|minifigs)$/)
+      .where('id', router.matchers.number())
     router.get('traductions', [controllers.admin.Translations, 'index']).as('admin.translations')
     router
       .put('traductions/:id', [controllers.admin.Translations, 'update'])

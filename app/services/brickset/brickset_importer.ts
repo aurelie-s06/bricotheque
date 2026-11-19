@@ -4,6 +4,7 @@ import { setTimeout as sleep } from 'node:timers/promises'
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import { updateById, nowForSql } from '#services/rebrickable/bulk'
+import { keepLocked, parseLocked } from '#services/catalogue/locked_fields'
 import {
   availabilityStatus,
   bricksetColumns,
@@ -79,7 +80,7 @@ const DATA_COLUMNS = [
   'description',
 ] as const
 
-type StoredSet = { id: number; set_num: string } & BricksetColumns
+type StoredSet = { id: number; set_num: string; locked_fields: string | null } & BricksetColumns
 
 export class QuotaReachedError extends Error {}
 
@@ -229,6 +230,7 @@ export default class BricksetImporter {
         'id',
         'year',
         'availability_status',
+        'locked_fields',
         db.raw("DATE_FORMAT(date_first_available, '%Y-%m-%d') as date_first_available"),
         db.raw("DATE_FORMAT(date_last_available, '%Y-%m-%d') as date_last_available")
       )
@@ -239,12 +241,15 @@ export default class BricksetImporter {
       id: number
       year: number | null
       availability_status: string
+      locked_fields: string | null
       date_first_available: string | null
       date_last_available: string | null
     }[] = await query
 
     const updates = []
     for (const set of sets) {
+      // A status chosen by hand in the back office is kept
+      if (parseLocked(set.locked_fields).has('availability_status')) continue
       const status = availabilityStatus(
         {
           year: set.year,
@@ -350,6 +355,7 @@ export default class BricksetImporter {
         'rrp_gbp',
         'subtheme',
         'description',
+        'locked_fields',
         db.raw("DATE_FORMAT(date_first_available, '%Y-%m-%d') as date_first_available"),
         db.raw("DATE_FORMAT(date_last_available, '%Y-%m-%d') as date_last_available")
       )
@@ -363,7 +369,8 @@ export default class BricksetImporter {
         this.#stats.skipped++
         continue
       }
-      const values = bricksetColumns(set)
+      // Values corrected by hand in the back office stay as they are
+      const values = keepLocked(bricksetColumns(set), current, DATA_COLUMNS)
       const changed = DATA_COLUMNS.some((column) => !sameValue(current[column], values[column]))
       if (changed) {
         this.#stats.updated++

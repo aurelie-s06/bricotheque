@@ -2708,8 +2708,11 @@ a:not([class]):visited {
 }
 
 .admin-image-link {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
   margin-top: var(--space-1);
-  text-align: center;
 }
 
 .admin-update {
@@ -2772,6 +2775,27 @@ a:not([class]):visited {
 
 .table-scroll {
   overflow-x: auto;
+}
+
+.admin-edit {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 800px;
+  margin-top: var(--space-3);
+}
+
+.admin-edit__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-2);
+}
+
+.admin-edit__fields {
+  display: grid;
+  gap: var(--half);
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  border: 0;
 }
 
 .admin-user__facts {
