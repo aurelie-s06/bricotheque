@@ -16,6 +16,14 @@ const fr = {
   'admin.update.queued':
     'Mise à jour demandée : elle démarre au prochain passage de la tâche planifiée (quelques minutes au plus).',
   'admin.update.alreadyRunning': 'Une mise à jour est déjà en attente ou en cours.',
+  'admin.users.confirmationSent': 'Un nouveau lien de confirmation a été envoyé à {email}.',
+  'admin.users.alreadyVerified': 'Cette adresse est déjà confirmée.',
+  'admin.users.adminGiven': '{username} est maintenant administrateur·rice.',
+  'admin.users.adminRemoved': '{username} n’est plus administrateur·rice.',
+  'admin.users.notSelf':
+    'Tu ne peux pas faire cette action sur ton propre compte : passe par la page Mon compte.',
+  'admin.users.wrongUsername': 'Le pseudo saisi ne correspond pas à ce compte.',
+  'admin.users.deleted': 'Le compte de {username} a été supprimé.',
   'auth.invalidCredentials': 'Adresse e-mail ou mot de passe incorrect.',
   'auth.tooManyAttempts': 'Trop de tentatives. Pour ta sécurité, réessaie dans {minutes} min.',
   'auth.loginRequired': 'Connecte-toi pour accéder à cette page.',
@@ -96,6 +104,13 @@ const en: Record<MessageKey, string> = {
   'admin.update.queued':
     'Update requested: it starts at the next run of the scheduled task (a few minutes at most).',
   'admin.update.alreadyRunning': 'An update is already pending or running.',
+  'admin.users.confirmationSent': 'A new confirmation link was sent to {email}.',
+  'admin.users.alreadyVerified': 'This address is already confirmed.',
+  'admin.users.adminGiven': '{username} is now an administrator.',
+  'admin.users.adminRemoved': '{username} is no longer an administrator.',
+  'admin.users.notSelf': 'You cannot do this on your own account: use the My account page.',
+  'admin.users.wrongUsername': 'The username typed does not match this account.',
+  'admin.users.deleted': 'The account of {username} was deleted.',
   'auth.invalidCredentials': 'Incorrect email address or password.',
   'auth.tooManyAttempts': 'Too many attempts. For your security, try again in {minutes} min.',
   'auth.loginRequired': 'Please log in to access this page.',

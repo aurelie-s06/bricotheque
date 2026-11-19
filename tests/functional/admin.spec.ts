@@ -3,6 +3,8 @@ import { DateTime } from 'luxon'
 import ace from '@adonisjs/core/services/ace'
 import testUtils from '@adonisjs/core/services/test_utils'
 import db from '@adonisjs/lucid/services/db'
+import mail from '@adonisjs/mail/services/main'
+import { ConfirmEmailMail } from '#mails/account_mails'
 import User from '#models/user'
 import Job from '#models/job'
 import BrickSet from '#models/brick_set'
@@ -243,5 +245,150 @@ test.group('Back office: data updates', (group) => {
     const response = await client.post('/admin/mises-a-jour').loginAs(member).withCsrfToken()
     response.assertStatus(404)
     assert.lengthOf(await Job.all(), 0)
+  })
+})
+
+test.group('Back office: users', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+  group.each.setup(() => resetRateLimits())
+  group.each.setup(() => seedCatalogue())
+  group.each.teardown(() => mail.restore())
+
+  const setId = async (setNum: string) => {
+    const row = await db.from('sets').where('set_num', setNum).first()
+    return Number(row.id)
+  }
+
+  test('searches the users and shows one account with its collection', async ({
+    client,
+    assert,
+  }) => {
+    const admin = await createAdmin()
+    const fan = await createUser({ emailVerifiedAt: null })
+    await db.table('user_sets').insert([
+      {
+        user_id: fan.id,
+        set_id: await setId('75192-1'),
+        status: 'owned',
+        quantity: 2,
+        created_at: new Date(),
+      },
+      {
+        user_id: fan.id,
+        set_id: await setId('8880-1'),
+        status: 'wanted',
+        quantity: 1,
+        created_at: new Date(),
+      },
+    ])
+
+    const search = await client.get('/admin/utilisateurs?q=fan@').loginAs(admin).withInertia()
+    assert.lengthOf(search.inertiaProps.users, 1)
+    assert.deepInclude(search.inertiaProps.users[0], {
+      username: 'fan',
+      isVerified: false,
+      sets: 1,
+    })
+
+    const show = await client.get(`/admin/utilisateurs/${fan.id}`).loginAs(admin).withInertia()
+    show.assertInertiaComponent('admin/user_show')
+    assert.deepEqual(show.inertiaProps.counts.sets, { owned: 1, wanted: 1 })
+    assert.deepInclude(show.inertiaProps.lists.setsOwned[0], { number: '75192-1', quantity: 2 })
+    assert.equal(show.inertiaProps.lists.setsWanted[0].number, '8880-1')
+    assert.isFalse(show.inertiaProps.account.isSelf)
+
+    const missing = await client.get('/admin/utilisateurs/999999').loginAs(admin)
+    missing.assertStatus(404)
+  })
+
+  test('sends the confirmation email again to an unconfirmed account', async ({ client }) => {
+    const { mails } = mail.fake()
+    const admin = await createAdmin()
+    const fan = await createUser({ emailVerifiedAt: null })
+
+    await client.post(`/admin/utilisateurs/${fan.id}/confirmation`).loginAs(admin).withCsrfToken()
+    mails.assertSent(ConfirmEmailMail, ({ message }) => message.hasTo('fan@example.com'))
+  })
+
+  test('gives and removes the administrator role, never on oneself', async ({ client, assert }) => {
+    const admin = await createAdmin()
+    const fan = await createUser()
+
+    await client
+      .put(`/admin/utilisateurs/${fan.id}/role`)
+      .form({ admin: '1' })
+      .loginAs(admin)
+      .withCsrfToken()
+    await fan.refresh()
+    assert.isTrue(fan.isAdmin)
+
+    await client
+      .put(`/admin/utilisateurs/${fan.id}/role`)
+      .form({ admin: '0' })
+      .loginAs(admin)
+      .withCsrfToken()
+    await fan.refresh()
+    assert.isFalse(fan.isAdmin)
+
+    const self = await client
+      .put(`/admin/utilisateurs/${admin.id}/role`)
+      .form({ admin: '0' })
+      .loginAs(admin)
+      .withCsrfToken()
+      .redirects(0)
+    assert.exists(formErrors(self).form)
+    await admin.refresh()
+    assert.isTrue(admin.isAdmin)
+  })
+
+  test('deletes an account only with the right username, with its collection', async ({
+    client,
+    assert,
+  }) => {
+    const admin = await createAdmin()
+    const fan = await createUser()
+    await db.table('user_sets').insert({
+      user_id: fan.id,
+      set_id: await setId('75192-1'),
+      status: 'owned',
+      quantity: 1,
+      created_at: new Date(),
+    })
+
+    const wrong = await client
+      .delete(`/admin/utilisateurs/${fan.id}`)
+      .form({ understand: 'on', username: 'someone' })
+      .loginAs(admin)
+      .withCsrfToken()
+      .redirects(0)
+    assert.exists(formErrors(wrong).username)
+    assert.isNotNull(await db.from('users').where('id', fan.id).first())
+
+    const unticked = await client
+      .delete(`/admin/utilisateurs/${fan.id}`)
+      .form({ username: 'fan' })
+      .loginAs(admin)
+      .withCsrfToken()
+      .redirects(0)
+    assert.exists(formErrors(unticked).understand)
+
+    const done = await client
+      .delete(`/admin/utilisateurs/${fan.id}`)
+      .form({ understand: 'on', username: 'fan' })
+      .loginAs(admin)
+      .withCsrfToken()
+      .redirects(0)
+    done.assertHeader('location', '/admin/utilisateurs')
+    assert.isNull(await db.from('users').where('id', fan.id).first())
+    assert.isNull(await db.from('user_sets').where('user_id', fan.id).first())
+
+    const self = await client
+      .delete(`/admin/utilisateurs/${admin.id}`)
+      .form({ understand: 'on', username: 'admin' })
+      .loginAs(admin)
+      .withCsrfToken()
+      .redirects(0)
+    assert.exists(formErrors(self).form)
+    assert.isNotNull(await db.from('users').where('id', admin.id).first())
   })
 })

@@ -10,6 +10,7 @@ export const controllers = {
     Images: () => import('#controllers/admin/images_controller'),
     Translations: () => import('#controllers/admin/translations_controller'),
     Updates: () => import('#controllers/admin/updates_controller'),
+    Users: () => import('#controllers/admin/users_controller'),
   },
   CollectionActions: () => import('#controllers/collection_actions_controller'),
   Dashboard: () => import('#controllers/dashboard_controller'),

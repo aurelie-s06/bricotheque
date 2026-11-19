@@ -296,6 +296,30 @@ const routes = {
     tokens: [[0,"admin"],[0,"utilisateurs"]],
     types: placeholder as Registry['admin.users']['types'],
   },
+  'admin.users.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/utilisateurs/:id',
+    tokens: [[0,"admin"],[0,"utilisateurs"],[1,"id"]],
+    types: placeholder as Registry['admin.users.show']['types'],
+  },
+  'admin.users.confirmation': {
+    methods: ["POST"],
+    pattern: '/admin/utilisateurs/:id/confirmation',
+    tokens: [[0,"admin"],[0,"utilisateurs"],[1,"id"],[0,"confirmation"]],
+    types: placeholder as Registry['admin.users.confirmation']['types'],
+  },
+  'admin.users.role': {
+    methods: ["PUT"],
+    pattern: '/admin/utilisateurs/:id/role',
+    tokens: [[0,"admin"],[0,"utilisateurs"],[1,"id"],[0,"role"]],
+    types: placeholder as Registry['admin.users.role']['types'],
+  },
+  'admin.users.destroy': {
+    methods: ["DELETE"],
+    pattern: '/admin/utilisateurs/:id',
+    tokens: [[0,"admin"],[0,"utilisateurs"],[1,"id"]],
+    types: placeholder as Registry['admin.users.destroy']['types'],
+  },
   'admin.images': {
     methods: ["GET","HEAD"],
     pattern: '/admin/images',

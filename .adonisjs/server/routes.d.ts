@@ -52,6 +52,10 @@ export type ScannedRoutes = {
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
+    'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users.confirmation': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users.role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.images': { paramsTuple?: []; params?: {} }
     'admin.images.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.images.update': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
@@ -92,6 +96,7 @@ export type ScannedRoutes = {
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
+    'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.images': { paramsTuple?: []; params?: {} }
     'admin.images.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.translations': { paramsTuple?: []; params?: {} }
@@ -128,6 +133,7 @@ export type ScannedRoutes = {
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
+    'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.images': { paramsTuple?: []; params?: {} }
     'admin.images.edit': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.translations': { paramsTuple?: []; params?: {} }
@@ -145,6 +151,7 @@ export type ScannedRoutes = {
     'collection.acquire': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'collection.add_set_minifigs': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
+    'admin.users.confirmation': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.images.broken': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.updates.store': { paramsTuple?: []; params?: {} }
   }
@@ -155,11 +162,13 @@ export type ScannedRoutes = {
     'account.update_preferences': { paramsTuple?: []; params?: {} }
     'collection.set_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.minifig_details': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.users.role': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.images.update': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'admin.translations.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   DELETE: {
     'account.destroy': { paramsTuple?: []; params?: {} }
+    'admin.users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

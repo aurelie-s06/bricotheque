@@ -76,7 +76,12 @@ export interface ApiDefinition {
   }
   admin: {
     dashboard: typeof routes['admin.dashboard']
-    users: typeof routes['admin.users']
+    users: typeof routes['admin.users'] & {
+      show: typeof routes['admin.users.show']
+      confirmation: typeof routes['admin.users.confirmation']
+      role: typeof routes['admin.users.role']
+      destroy: typeof routes['admin.users.destroy']
+    }
     images: typeof routes['admin.images'] & {
       edit: typeof routes['admin.images.edit']
       update: typeof routes['admin.images.update']

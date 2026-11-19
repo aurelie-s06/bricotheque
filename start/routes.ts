@@ -166,7 +166,17 @@ router.get('wishlist/:token', [controllers.MyCollection, 'shared']).as('wishlist
 router
   .group(() => {
     router.get('/', [controllers.admin.Admin, 'dashboard']).as('admin.dashboard')
-    router.get('utilisateurs', [controllers.admin.Admin, 'users']).as('admin.users')
+    router.get('utilisateurs', [controllers.admin.Users, 'index']).as('admin.users')
+    router.get('utilisateurs/:id', [controllers.admin.Users, 'show']).as('admin.users.show')
+    router
+      .post('utilisateurs/:id/confirmation', [controllers.admin.Users, 'resendConfirmation'])
+      .as('admin.users.confirmation')
+    router
+      .put('utilisateurs/:id/role', [controllers.admin.Users, 'updateRole'])
+      .as('admin.users.role')
+    router
+      .delete('utilisateurs/:id', [controllers.admin.Users, 'destroy'])
+      .as('admin.users.destroy')
     router.get('images', [controllers.admin.Images, 'index']).as('admin.images')
     router.get('images/:kind/:id', [controllers.admin.Images, 'edit']).as('admin.images.edit')
     router.put('images/:kind/:id', [controllers.admin.Images, 'update']).as('admin.images.update')

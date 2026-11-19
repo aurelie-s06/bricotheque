@@ -23,6 +23,7 @@ const messages: Record<Locale, Record<string, string>> = {
     'range': 'Le champ « {{ field }} » doit être compris entre {{ min }} et {{ max }}.',
     'enum': 'Choisis une valeur dans la liste.',
     'boolean': 'Valeur invalide.',
+    'accepted': 'Coche cette case pour confirmer.',
   },
   en: {
     'required': 'The “{{ field }}” field is required.',
@@ -41,6 +42,7 @@ const messages: Record<Locale, Record<string, string>> = {
     'range': 'The “{{ field }}” field must be between {{ min }} and {{ max }}.',
     'enum': 'Choose a value from the list.',
     'boolean': 'Invalid value.',
+    'accepted': 'Tick this box to confirm.',
   },
 }
 

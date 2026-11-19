@@ -18,6 +18,7 @@ declare module '@adonisjs/inertia/types' {
     'admin/images': ExtractProps<(typeof import('../../inertia/pages/admin/images.tsx'))['default']>
     'admin/translations': ExtractProps<(typeof import('../../inertia/pages/admin/translations.tsx'))['default']>
     'admin/updates': ExtractProps<(typeof import('../../inertia/pages/admin/updates.tsx'))['default']>
+    'admin/user_show': ExtractProps<(typeof import('../../inertia/pages/admin/user_show.tsx'))['default']>
     'admin/users': ExtractProps<(typeof import('../../inertia/pages/admin/users.tsx'))['default']>
     'auth/check_email': ExtractProps<(typeof import('../../inertia/pages/auth/check_email.tsx'))['default']>
     'auth/forgot_password': ExtractProps<(typeof import('../../inertia/pages/auth/forgot_password.tsx'))['default']>

@@ -7,7 +7,7 @@ const count = async (query: ReturnType<typeof db.from>) => {
 }
 
 /**
- * Back office: dashboard and users.
+ * Back office: dashboard.
  */
 export default class AdminController {
   /** GET /admin */
@@ -36,38 +36,6 @@ export default class AdminController {
         ),
       },
       lastUpdate: lastUpdate?.finishedAt ? new Date(lastUpdate.finishedAt).toISOString() : null,
-    })
-  }
-
-  /** GET /admin/utilisateurs */
-  async users({ inertia, request }: HttpContext) {
-    const page = Math.max(1, Number(request.input('page', 1)) || 1)
-    const result = await db
-      .from('users')
-      .leftJoin('user_sets', (join) => {
-        join.on('user_sets.user_id', 'users.id').andOnVal('user_sets.status', 'owned')
-      })
-      .groupBy('users.id', 'users.username', 'users.email', 'users.created_at', 'users.is_admin')
-      .orderBy('users.created_at', 'desc')
-      .select('users.id', 'users.username', 'users.email', 'users.created_at', 'users.is_admin')
-      .count('user_sets.id as sets')
-      .paginate(page, 50)
-
-    return inertia.render('admin/users', {
-      users: result.all().map((row) => ({
-        id: Number(row.id),
-        username: String(row.username),
-        email: String(row.email),
-        createdAt: new Date(row.created_at).toISOString().slice(0, 10),
-        isAdmin: Boolean(row.is_admin),
-        sets: Number(row.sets),
-      })),
-      pagination: {
-        currentPage: result.currentPage,
-        lastPage: result.lastPage,
-        total: result.total,
-        perPage: result.perPage,
-      },
     })
   }
 }

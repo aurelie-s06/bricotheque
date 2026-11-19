@@ -18,7 +18,16 @@ const ITEMS = [
  * Frame of the back office pages: same look as the site, a menu on the
  * left (above on a phone) and the page content.
  */
-export default function AdminShell({ title, children }: { title: string; children: ReactNode }) {
+export default function AdminShell({
+  title,
+  parent,
+  children,
+}: {
+  title: string
+  /** Section page above this one in the breadcrumb (e.g. the users list) */
+  parent?: { name: string; url: string }
+  children: ReactNode
+}) {
   const { t } = useI18n()
   const { url } = usePage()
   const path = url.split('?')[0]
@@ -30,7 +39,11 @@ export default function AdminShell({ title, children }: { title: string; childre
           { name: t('breadcrumb.home'), url: '/' },
           ...(path === '/admin'
             ? [{ name: t('admin.title') }]
-            : [{ name: t('admin.title'), url: '/admin' }, { name: title }]),
+            : [
+                { name: t('admin.title'), url: '/admin' },
+                ...(parent ? [parent] : []),
+                { name: title },
+              ]),
         ]}
       />
       <div className="admin">
