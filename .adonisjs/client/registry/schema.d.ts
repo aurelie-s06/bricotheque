@@ -450,6 +450,32 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'account.add_owned_minifigs': {
+    methods: ["POST"]
+    pattern: '/mon-compte/minifigs'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['addOwnedMinifigs']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['addOwnedMinifigs']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['addOwnedMinifigs']>>>
+    }
+  }
+  'account.minifig_prompt': {
+    methods: ["POST"]
+    pattern: '/mon-compte/minifigs/proposition'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/account_controller').default['answerMinifigPrompt']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/account_controller').default['answerMinifigPrompt']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/account_controller').default['answerMinifigPrompt']>>>
+    }
+  }
   'account.update_preferences': {
     methods: ["PUT"]
     pattern: '/mon-compte/preferences'

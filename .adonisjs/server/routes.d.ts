@@ -38,6 +38,8 @@ export type ScannedRoutes = {
     'account.update_email': { paramsTuple?: []; params?: {} }
     'account.update_password': { paramsTuple?: []; params?: {} }
     'account.destroy': { paramsTuple?: []; params?: {} }
+    'account.add_owned_minifigs': { paramsTuple?: []; params?: {} }
+    'account.minifig_prompt': { paramsTuple?: []; params?: {} }
     'account.update_preferences': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'collection.index': { paramsTuple?: []; params?: {} }
@@ -171,6 +173,8 @@ export type ScannedRoutes = {
     'password.send': { paramsTuple?: []; params?: {} }
     'password.update': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'account.add_owned_minifigs': { paramsTuple?: []; params?: {} }
+    'account.minifig_prompt': { paramsTuple?: []; params?: {} }
     'wishlist.share': { paramsTuple?: []; params?: {} }
     'wishlist.unshare': { paramsTuple?: []; params?: {} }
     'collection.acquire': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }

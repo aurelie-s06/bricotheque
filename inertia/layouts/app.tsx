@@ -7,6 +7,7 @@ import AccountMenu from '~/components/header/account_menu'
 import MobileMenu from '~/components/header/mobile_menu'
 import SearchForm from '~/components/search_form'
 import Toaster from '~/components/toaster'
+import MinifigPrompt from '~/components/minifig_prompt'
 import LanguageSwitcher from '~/components/language_switcher'
 import { useI18n } from '~/i18n'
 
@@ -49,7 +50,10 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </header>
 
       <main id="contenu" className="site-main" tabIndex={-1}>
-        <div className="container">{children}</div>
+        <div className="container">
+          <MinifigPrompt />
+          {children}
+        </div>
       </main>
 
       <footer className="site-footer">

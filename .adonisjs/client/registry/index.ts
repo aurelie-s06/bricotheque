@@ -212,6 +212,18 @@ const routes = {
     tokens: [[0,"mon-compte"]],
     types: placeholder as Registry['account.destroy']['types'],
   },
+  'account.add_owned_minifigs': {
+    methods: ["POST"],
+    pattern: '/mon-compte/minifigs',
+    tokens: [[0,"mon-compte"],[0,"minifigs"]],
+    types: placeholder as Registry['account.add_owned_minifigs']['types'],
+  },
+  'account.minifig_prompt': {
+    methods: ["POST"],
+    pattern: '/mon-compte/minifigs/proposition',
+    tokens: [[0,"mon-compte"],[0,"minifigs"],[0,"proposition"]],
+    types: placeholder as Registry['account.minifig_prompt']['types'],
+  },
   'account.update_preferences': {
     methods: ["PUT"],
     pattern: '/mon-compte/preferences',

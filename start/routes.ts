@@ -114,6 +114,12 @@ router
       .as('account.update_password')
     router.delete('mon-compte', [controllers.Account, 'destroy']).as('account.destroy')
     router
+      .post('mon-compte/minifigs', [controllers.Account, 'addOwnedMinifigs'])
+      .as('account.add_owned_minifigs')
+    router
+      .post('mon-compte/minifigs/proposition', [controllers.Account, 'answerMinifigPrompt'])
+      .as('account.minifig_prompt')
+    router
       .put('mon-compte/preferences', [controllers.Account, 'updatePreferences'])
       .as('account.update_preferences')
 

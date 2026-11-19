@@ -656,6 +656,21 @@ const en: Record<keyof typeof fr, string> = {
   'details.noCondition': 'Not specified',
   'details.save': 'Save',
   'details.addSetMinifigs': 'Add the minifigs of this set to my collection',
+  'minifigPrompt.title': 'Add the minifigs of your sets too?',
+  'minifigPrompt.text':
+    'When you add a set to your collection, Bricothèque can automatically add the minifigs it contains.',
+  'minifigPrompt.missing_one':
+    'If you accept, the minifig of the sets you already added will be added too.',
+  'minifigPrompt.missing_other':
+    'If you accept, the {count} minifigs of the sets you already added will be added too.',
+  'minifigPrompt.yes': 'Yes, add the minifigs',
+  'minifigPrompt.no': 'No thanks',
+  'minifigPrompt.hint': 'You can change your mind at any time in',
+  'account.missingMinifigs_one':
+    'Forgot the option? 1 minifig from the sets you already added is not in your collection.',
+  'account.missingMinifigs_other':
+    'Forgot the option? {count} minifigs from the sets you already added are not in your collection.',
+  'account.addOwnedMinifigs': 'Add the minifigs of my sets',
   'account.preferencesTitle': 'Preferences',
   'account.autoAddMinifigs':
     'When I add a set to my collection, also add its minifigs to my minifig collection',

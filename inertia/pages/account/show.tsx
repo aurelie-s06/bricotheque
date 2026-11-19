@@ -12,6 +12,7 @@ import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
   account: { username: string; email: string; createdAt: string; autoAddMinifigs: boolean }
+  missingMinifigs: number
   shareUrl: string | null
 }>
 
@@ -66,8 +67,8 @@ function SaveButton({
  * password, preferences, shared wishlist), then the account deletion,
  * apart at the bottom and confirmed.
  */
-export default function AccountShow({ account, shareUrl }: Props) {
-  const { t, tn, dateNode } = useI18n()
+export default function AccountShow({ account, missingMinifigs, shareUrl }: Props) {
+  const { t, tc, tn, dateNode } = useI18n()
 
   return (
     <>
@@ -205,6 +206,18 @@ export default function AccountShow({ account, shareUrl }: Props) {
               </>
             )}
           </Form>
+          {missingMinifigs > 0 && (
+            <div className="account-section__extra">
+              <p className="text-muted">{tc('account.missingMinifigs', missingMinifigs)}</p>
+              <Form route="account.add_owned_minifigs">
+                {({ processing }) => (
+                  <button type="submit" className="btn btn--secondary" disabled={processing}>
+                    {t('account.addOwnedMinifigs')}
+                  </button>
+                )}
+              </Form>
+            </div>
+          )}
         </AccountCard>
 
         <SharePanel shareUrl={shareUrl} />

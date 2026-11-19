@@ -64,6 +64,7 @@ export default {
     users: {
       columns: {
         is_admin: boolean,
+        minifig_prompt_answered: boolean,
       },
     },
     jobs: {

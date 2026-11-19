@@ -57,6 +57,8 @@ export interface ApiDefinition {
     updateEmail: typeof routes['account.update_email']
     updatePassword: typeof routes['account.update_password']
     destroy: typeof routes['account.destroy']
+    addOwnedMinifigs: typeof routes['account.add_owned_minifigs']
+    minifigPrompt: typeof routes['account.minifig_prompt']
     updatePreferences: typeof routes['account.update_preferences']
   }
   dashboard: typeof routes['dashboard']

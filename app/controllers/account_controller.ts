@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import Collection from '#services/collection'
 import hash from '@adonisjs/core/services/hash'
 import { preferencesValidator } from '#validators/collection'
 import {
@@ -28,6 +29,8 @@ export default class AccountController {
         createdAt: user.createdAt.toISODate()!,
         autoAddMinifigs: user.autoAddMinifigs,
       },
+      /** Minifigs of the owned sets not in the collection yet */
+      missingMinifigs: await new Collection(user).countMissingMinifigsOfOwnedSets(),
       shareUrl: user.wishlistShareToken
         ? `${request.protocol()}://${request.host()}/wishlist/${user.wishlistShareToken}`
         : null,
@@ -84,9 +87,46 @@ export default class AccountController {
       messagesProvider: validationMessages(locale),
     })
     user.autoAddMinifigs = data.autoAddMinifigs ?? false
+    // The member chose: no need to ask any more
+    user.minifigPromptAnswered = true
     await user.save()
     session.flash('success', serverMessage(locale, 'collection.preferencesSaved'))
     return response.redirect().toRoute('account.show')
+  }
+
+  /** POST /mon-compte/minifigs: adds the minifigs of the sets already in the collection */
+  async addOwnedMinifigs({ request, auth, session, response }: HttpContext) {
+    const count = await new Collection(auth.getUserOrFail()).addMinifigsOfOwnedSets()
+    session.flash(
+      count > 0 ? 'success' : 'info',
+      serverMessage(
+        resolveLocale(request),
+        count > 0 ? 'collection.ownedMinifigsAdded' : 'collection.noMissingMinifigs',
+        { count }
+      )
+    )
+    return response.redirect().back()
+  }
+
+  /**
+   * POST /mon-compte/minifigs/proposition (answer=yes|no): answer to the
+   * question asked after the first set. "yes" turns the option on and adds
+   * the minifigs of the sets already there.
+   */
+  async answerMinifigPrompt({ request, auth, session, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    const locale = resolveLocale(request)
+    const yes = request.input('answer') === 'yes'
+    user.minifigPromptAnswered = true
+    if (yes) user.autoAddMinifigs = true
+    await user.save()
+    if (yes) {
+      const count = await new Collection(user).addMinifigsOfOwnedSets()
+      session.flash('success', serverMessage(locale, 'collection.autoMinifigsOn', { count }))
+    } else {
+      session.flash('info', serverMessage(locale, 'collection.autoMinifigsOff'))
+    }
+    return response.redirect().back()
   }
 
   /** PUT /mon-compte/mot-de-passe */

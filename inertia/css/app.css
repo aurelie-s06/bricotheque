@@ -1935,6 +1935,37 @@ input[type='number'].input::-webkit-outer-spin-button {
   margin: 0;
 }
 
+.account-section__extra {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--line);
+}
+
+.minifig-prompt {
+  display: grid;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+  box-shadow: inset 4px 0 0 var(--brick-yellow);
+}
+
+.minifig-prompt__title {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.minifig-prompt__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.minifig-prompt__hint {
+  font-size: 0.875rem;
+}
+
 .account-danger-zone {
   max-width: 640px;
   margin-top: var(--space-6);

@@ -103,6 +103,57 @@ export default class Collection {
     return added
   }
 
+  /**
+   * Minifigs of the sets already in the collection that are not in it yet,
+   * with the largest quantity found in one of these sets.
+   */
+  async missingMinifigsOfOwnedSets(): Promise<{ minifig_id: number; quantity: number }[]> {
+    return db
+      .from('set_minifigs')
+      .join('user_sets', 'user_sets.set_id', 'set_minifigs.set_id')
+      .where('user_sets.user_id', this.user.id)
+      .where('user_sets.status', 'owned')
+      .whereNotIn(
+        'set_minifigs.minifig_id',
+        db
+          .from('user_minifigs')
+          .where('user_id', this.user.id)
+          .where('status', 'owned')
+          .select('minifig_id')
+      )
+      .groupBy('set_minifigs.minifig_id')
+      .select('set_minifigs.minifig_id')
+      .max('set_minifigs.quantity as quantity')
+  }
+
+  async countMissingMinifigsOfOwnedSets() {
+    const missing = await this.missingMinifigsOfOwnedSets()
+    return missing.length
+  }
+
+  /**
+   * For members who forgot the "add the minifigs" option: adds the minifigs
+   * of every set already in the collection. Returns how many were added.
+   */
+  async addMinifigsOfOwnedSets() {
+    const missing = await this.missingMinifigsOfOwnedSets()
+    if (missing.length === 0) return 0
+    const now = new Date()
+    for (let index = 0; index < missing.length; index += 500) {
+      await db.table('user_minifigs').insert(
+        missing.slice(index, index + 500).map((row) => ({
+          user_id: this.user.id,
+          minifig_id: row.minifig_id,
+          status: 'owned',
+          quantity: Number(row.quantity) || 1,
+          created_at: now,
+          updated_at: now,
+        }))
+      )
+    }
+    return missing.length
+  }
+
   /** The collection entry of a set or a minifig, or null */
   ownedSet(setId: number) {
     return UserSet.query().where({ userId: this.user.id, setId, status: 'owned' }).first()

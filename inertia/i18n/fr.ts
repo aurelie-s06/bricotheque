@@ -660,6 +660,21 @@ const fr = {
   'details.noCondition': 'Non précisé',
   'details.save': 'Enregistrer',
   'details.addSetMinifigs': 'Ajouter les minifigs du set à ma collection',
+  'minifigPrompt.title': 'Ajouter aussi les minifigs de tes sets ?',
+  'minifigPrompt.text':
+    'Quand tu enregistres un set dans ta collection, Bricothèque peut y ajouter automatiquement les minifigs qu’il contient.',
+  'minifigPrompt.missing_one':
+    'Si tu acceptes, la minifig de tes sets déjà enregistrés sera ajoutée aussi.',
+  'minifigPrompt.missing_other':
+    'Si tu acceptes, les {count} minifigs de tes sets déjà enregistrés seront ajoutées aussi.',
+  'minifigPrompt.yes': 'Oui, ajouter les minifigs',
+  'minifigPrompt.no': 'Non merci',
+  'minifigPrompt.hint': 'Tu pourras changer d’avis à tout moment dans',
+  'account.missingMinifigs_one':
+    'Option oubliée ? 1 minifig de tes sets déjà enregistrés n’est pas dans ta collection.',
+  'account.missingMinifigs_other':
+    'Option oubliée ? {count} minifigs de tes sets déjà enregistrés ne sont pas dans ta collection.',
+  'account.addOwnedMinifigs': 'Ajouter les minifigs de mes sets',
   'account.preferencesTitle': 'Préférences',
   'account.autoAddMinifigs':
     'Quand j’ajoute un set à ma collection, ajouter aussi ses minifigs à ma collection de minifigs',

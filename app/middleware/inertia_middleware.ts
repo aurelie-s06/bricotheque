@@ -5,6 +5,15 @@ import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import { resolveLocale } from '#helpers/locale'
 import { catalogueUrls } from '#helpers/catalogue_memory'
 import Collection from '#services/collection'
+import type User from '#models/user'
+
+async function minifigPrompt(user: User | undefined) {
+  if (!user || user.autoAddMinifigs || user.minifigPromptAnswered) return null
+  const collection = new Collection(user)
+  const { ownedSets } = await collection.ids()
+  if (ownedSets.length === 0) return null
+  return { missing: await collection.countMissingMinifigsOfOwnedSets() }
+}
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
@@ -29,6 +38,11 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       catalogueUrls: ctx.inertia.always(catalogueUrls(ctx)),
       /** What the visitor owns and wants, for the buttons of every page */
       collectionIds: ctx.inertia.always(auth?.user ? await new Collection(auth.user).ids() : null),
+      /**
+       * Asked once, after the first set in the collection: add the minifigs
+       * of the sets too? (null: nothing to ask)
+       */
+      minifigPrompt: ctx.inertia.always(await minifigPrompt(auth?.user)),
       /** For the plain forms that must work without JavaScript */
       csrfToken: ctx.inertia.always(request?.csrfToken ?? ''),
     }

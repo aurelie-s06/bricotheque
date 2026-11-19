@@ -70,6 +70,12 @@ const fr = {
   'collection.minifigsAdded': '{count} minifig(s) du set ajoutée(s) à ta collection.',
   'collection.detailsSaved': 'Les informations de « {name} » sont enregistrées.',
   'collection.preferencesSaved': 'Tes préférences sont enregistrées.',
+  'collection.ownedMinifigsAdded': '{count} minifig(s) de tes sets ajoutée(s) à ta collection.',
+  'collection.noMissingMinifigs': 'Les minifigs de tes sets sont déjà toutes dans ta collection.',
+  'collection.autoMinifigsOn':
+    'C’est noté : les minifigs de tes prochains sets seront ajoutées. {count} minifig(s) de tes sets actuels viennent d’être ajoutée(s).',
+  'collection.autoMinifigsOff':
+    'C’est noté. Tu pourras changer d’avis dans Mon compte › Préférences.',
   'wishlist.shared': 'Ta wishlist est partagée : copie le lien pour l’envoyer.',
   'wishlist.unshared': 'Partage désactivé.',
   'mail.resetSubject': 'Réinitialisation de ton mot de passe',
@@ -174,6 +180,11 @@ const en: Record<MessageKey, string> = {
   'collection.minifigsAdded': '{count} minifig(s) from the set added to your collection.',
   'collection.detailsSaved': 'The details of “{name}” are saved.',
   'collection.preferencesSaved': 'Your preferences are saved.',
+  'collection.ownedMinifigsAdded': '{count} minifig(s) from your sets added to your collection.',
+  'collection.noMissingMinifigs': 'The minifigs of your sets are all in your collection already.',
+  'collection.autoMinifigsOn':
+    'Done: the minifigs of your next sets will be added. {count} minifig(s) from your current sets were just added.',
+  'collection.autoMinifigsOff': 'Noted. You can change your mind in My account › Preferences.',
   'wishlist.shared': 'Your wishlist is shared: copy the link to send it.',
   'wishlist.unshared': 'Sharing turned off.',
   'mail.resetSubject': 'Reset your password',
