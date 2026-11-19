@@ -1,6 +1,7 @@
 import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 import SyncJob from '#services/jobs/sync_job'
+import SiteHealth from '#services/admin/site_health'
 
 /**
  * Runs the jobs asked for in the back office. Meant for cron, every minute:
@@ -13,6 +14,8 @@ export default class JobsWork extends BaseCommand {
   static options: CommandOptions = { startApp: true }
 
   async run() {
+    // Lets the back office check that the cron task really runs
+    await SiteHealth.recordHeartbeat()
     let job = await SyncJob.claim()
     if (!job) {
       this.logger.info('Aucun job en attente')

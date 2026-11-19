@@ -2,6 +2,7 @@ import { type ReactNode } from 'react'
 import { usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import {
+  Activity,
   ChartColumn,
   Image,
   Languages,
@@ -24,6 +25,7 @@ const ITEMS = [
   { href: '/admin/mises-a-jour', label: 'admin.nav.updates', icon: RefreshCw },
   { href: '/admin/utilisateurs', label: 'admin.nav.users', icon: Users },
   { href: '/admin/statistiques', label: 'admin.nav.stats', icon: ChartColumn },
+  { href: '/admin/sante', label: 'admin.nav.health', icon: Activity },
 ] as const
 
 /**

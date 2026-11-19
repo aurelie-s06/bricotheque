@@ -632,6 +632,58 @@ export interface Registry {
       rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/stats_controller').default['index']>>>
     }
   }
+  'admin.health': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/sante'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['index']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['index']>>>
+    }
+  }
+  'admin.health.brickset': {
+    methods: ["POST"]
+    pattern: '/admin/sante/brickset'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['brickset']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['brickset']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['brickset']>>>
+    }
+  }
+  'admin.health.email': {
+    methods: ["POST"]
+    pattern: '/admin/sante/email'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['email']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['email']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['email']>>>
+    }
+  }
+  'admin.health.clearLog': {
+    methods: ["POST"]
+    pattern: '/admin/sante/journaux/:name/vider'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { name: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['clearLog']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['clearLog']>>>
+      rawResponse: ExtractRawResponse<Awaited<ReturnType<import('#controllers/admin/health_controller').default['clearLog']>>>
+    }
+  }
   'admin.users': {
     methods: ["GET","HEAD"]
     pattern: '/admin/utilisateurs'

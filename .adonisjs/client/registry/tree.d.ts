@@ -77,6 +77,11 @@ export interface ApiDefinition {
   admin: {
     dashboard: typeof routes['admin.dashboard']
     stats: typeof routes['admin.stats']
+    health: typeof routes['admin.health'] & {
+      brickset: typeof routes['admin.health.brickset']
+      email: typeof routes['admin.health.email']
+      clearLog: typeof routes['admin.health.clearLog']
+    }
     users: typeof routes['admin.users'] & {
       show: typeof routes['admin.users.show']
       confirmation: typeof routes['admin.users.confirmation']

@@ -167,6 +167,15 @@ router
   .group(() => {
     router.get('/', [controllers.admin.Admin, 'dashboard']).as('admin.dashboard')
     router.get('statistiques', [controllers.admin.Stats, 'index']).as('admin.stats')
+    router.get('sante', [controllers.admin.Health, 'index']).as('admin.health')
+    router
+      .post('sante/brickset', [controllers.admin.Health, 'brickset'])
+      .as('admin.health.brickset')
+    router.post('sante/email', [controllers.admin.Health, 'email']).as('admin.health.email')
+    router
+      .post('sante/journaux/:name/vider', [controllers.admin.Health, 'clearLog'])
+      .as('admin.health.clearLog')
+      .where('name', /^(jobs|sync)$/)
     router.get('utilisateurs', [controllers.admin.Users, 'index']).as('admin.users')
     router.get('utilisateurs/:id', [controllers.admin.Users, 'show']).as('admin.users.show')
     router

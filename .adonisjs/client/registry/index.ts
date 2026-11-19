@@ -296,6 +296,30 @@ const routes = {
     tokens: [[0,"admin"],[0,"statistiques"]],
     types: placeholder as Registry['admin.stats']['types'],
   },
+  'admin.health': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/sante',
+    tokens: [[0,"admin"],[0,"sante"]],
+    types: placeholder as Registry['admin.health']['types'],
+  },
+  'admin.health.brickset': {
+    methods: ["POST"],
+    pattern: '/admin/sante/brickset',
+    tokens: [[0,"admin"],[0,"sante"],[0,"brickset"]],
+    types: placeholder as Registry['admin.health.brickset']['types'],
+  },
+  'admin.health.email': {
+    methods: ["POST"],
+    pattern: '/admin/sante/email',
+    tokens: [[0,"admin"],[0,"sante"],[0,"email"]],
+    types: placeholder as Registry['admin.health.email']['types'],
+  },
+  'admin.health.clearLog': {
+    methods: ["POST"],
+    pattern: '/admin/sante/journaux/:name/vider',
+    tokens: [[0,"admin"],[0,"sante"],[0,"journaux"],[1,"name"],[0,"vider"]],
+    types: placeholder as Registry['admin.health.clearLog']['types'],
+  },
   'admin.users': {
     methods: ["GET","HEAD"],
     pattern: '/admin/utilisateurs',

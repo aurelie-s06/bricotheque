@@ -430,7 +430,7 @@ test.group('Back office: statistics', (group) => {
       setsOwned: 3,
       setsWanted: 1,
     })
-    assert.lengthOf(signups, 12)
+    assert.lengthOf(signups, 6)
     assert.equal(signups.at(-1).value, 3)
     assert.deepEqual(
       top.setsOwned.map((row: { number: string; value: number }) => [row.number, row.value]),

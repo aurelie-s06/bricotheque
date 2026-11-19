@@ -68,3 +68,15 @@ export class SecurityAlertMail extends NoticeMail {
     })
   }
 }
+
+/** Sent from the back office to check that the emails leave the server */
+export class TestMail extends NoticeMail {
+  constructor(user: User, locale: Locale) {
+    const t = translator(locale)
+    super(user.email, locale, {
+      subject: t('mail.testSubject'),
+      greeting: t('mail.resetGreeting', { username: user.username }),
+      paragraphs: [t('mail.testIntro')],
+    })
+  }
+}

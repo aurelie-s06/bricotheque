@@ -233,6 +233,8 @@ Ne supprime pas les lignes `Passenger…` écrites par cPanel.
 
 ## En cas de problème
 
+Commence par **Administration › Santé du site** : elle indique si la tâche cron passe, la date des dernières mises à jour, la taille de la base, et affiche la fin de `tmp/jobs.log` et `tmp/sync.log`. Elle permet aussi de s'envoyer un e-mail de test et de vérifier le quota Brickset.
+
 | Symptôme                                          | Piste                                                                                                                     |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Erreur 503 / « Incomplete response »              | Le site n'a pas démarré : `stderr.log` dans `/home/USER/bricotheque`. Souvent une variable manquante dans `.env`.         |

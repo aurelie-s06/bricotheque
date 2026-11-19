@@ -52,6 +52,10 @@ export type ScannedRoutes = {
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.stats': { paramsTuple?: []; params?: {} }
+    'admin.health': { paramsTuple?: []; params?: {} }
+    'admin.health.brickset': { paramsTuple?: []; params?: {} }
+    'admin.health.email': { paramsTuple?: []; params?: {} }
+    'admin.health.clearLog': { paramsTuple: [ParamValue]; params: {'name': ParamValue} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.users.confirmation': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -105,6 +109,7 @@ export type ScannedRoutes = {
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.stats': { paramsTuple?: []; params?: {} }
+    'admin.health': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.manual': { paramsTuple?: []; params?: {} }
@@ -147,6 +152,7 @@ export type ScannedRoutes = {
     'wishlist.shared': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.stats': { paramsTuple?: []; params?: {} }
+    'admin.health': { paramsTuple?: []; params?: {} }
     'admin.users': { paramsTuple?: []; params?: {} }
     'admin.users.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.manual': { paramsTuple?: []; params?: {} }
@@ -170,6 +176,9 @@ export type ScannedRoutes = {
     'collection.acquire': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }
     'collection.add_set_minifigs': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.toggle': { paramsTuple: [ParamValue,ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue,'status': ParamValue} }
+    'admin.health.brickset': { paramsTuple?: []; params?: {} }
+    'admin.health.email': { paramsTuple?: []; params?: {} }
+    'admin.health.clearLog': { paramsTuple: [ParamValue]; params: {'name': ParamValue} }
     'admin.users.confirmation': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.manual.store': { paramsTuple: [ParamValue]; params: {'kind': ParamValue} }
     'admin.manual.merge': { paramsTuple: [ParamValue,ParamValue]; params: {'kind': ParamValue,'id': ParamValue} }

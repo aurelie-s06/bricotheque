@@ -3,8 +3,8 @@ import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import { minifigPath, setPath } from '#helpers/urls'
 
-const TOP = 10
-const MONTHS = 12
+const TOP = 5
+const MONTHS = 6
 
 const total = async (query: ReturnType<typeof db.from>) => {
   const [row] = await query.count('* as total')
@@ -59,7 +59,7 @@ async function topMinifigs(status: 'owned' | 'wanted') {
   }))
 }
 
-/** Sign-ups of the last 12 months, months without sign-up included */
+/** Sign-ups of the last 6 months, months without sign-up included */
 async function signupsByMonth(today: DateTime) {
   const first = today.startOf('month').minus({ months: MONTHS - 1 })
   const rows: { month: string; total: number }[] = await db
