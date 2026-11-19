@@ -3,10 +3,12 @@ import type { CommandOptions } from '@adonisjs/core/types/ace'
 import SyncJob from '#services/jobs/sync_job'
 import WishlistAlerts from '#services/wishlist_alerts'
 import ImageHealth, { NIGHTLY_LIMIT } from '#services/admin/image_health'
+import DbBackup from '#services/admin/db_backup'
 
 /**
  * Full data update now (Rebrickable, then Brickset), e.g. from a nightly
- * cron, then the wishlist alerts and a batch of picture checks. It shares the lock of the back office: it does nothing when an
+ * cron, after the weekly backup of the database, then the wishlist alerts
+ * and a batch of picture checks. It shares the lock of the back office: it does nothing when an
  * update is already pending or running.
  */
 export default class SyncAll extends BaseCommand {
@@ -15,6 +17,17 @@ export default class SyncAll extends BaseCommand {
   static options: CommandOptions = { startApp: true }
 
   async run() {
+    // Once a week, a backup of the database first (before anything changes)
+    try {
+      if (await DbBackup.isDue()) {
+        const backup = await DbBackup.run()
+        this.logger.success(`Sauvegarde de la base : storage/backups/${backup.name}`)
+      }
+    } catch (error) {
+      this.logger.error(`Sauvegarde de la base en échec : ${(error as Error).message}`)
+      this.exitCode = 1
+    }
+
     const job = await SyncJob.enqueue(null)
     if (!job) {
       this.logger.warning('Une mise à jour est déjà en attente ou en cours : rien à faire')

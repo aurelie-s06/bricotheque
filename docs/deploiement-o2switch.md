@@ -182,7 +182,7 @@ cPanel › **Tâches Cron** › ajoute deux tâches. Remplace le chemin `nodeven
 source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque && node ace jobs:work >> tmp/jobs.log 2>&1
 ```
 
-**Mise à jour automatique de la nuit**, tous les jours à 3 h 30. Elle envoie ensuite les alertes wishlist par e-mail aux membres qui les ont activées, puis vérifie un lot de 5 000 images (les cassées apparaissent dans Administration › Images manquantes) :
+**Mise à jour automatique de la nuit**, tous les jours à 3 h 30. Une fois par semaine, elle commence par une sauvegarde de la base. Elle envoie ensuite les alertes wishlist par e-mail aux membres qui les ont activées, puis vérifie un lot de 5 000 images (les cassées apparaissent dans Administration › Images manquantes) :
 
 ```
 source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque && node ace sync:all >> tmp/sync.log 2>&1
@@ -217,6 +217,13 @@ Ne supprime pas les lignes `Passenger…` écrites par cPanel.
   3. au bout de 2 à 5 minutes : « Terminée », notification, liste des nouveautés et historique mis à jour ;
   4. s'il reste « En attente », regarde `tmp/jobs.log` dans le Gestionnaire de fichiers : en général, c'est le chemin `nodevenv` du cron qui est faux.
 - [ ] Sur ton Mac, `A11Y_BASE_URL=https://bricotheque.exemple.fr npm run test:a11y` ne signale aucune erreur.
+
+## Sauvegardes de la base
+
+Une fois par semaine, la tâche de nuit `sync:all` exporte toute la base dans `/home/USER/bricotheque/storage/backups` (fichiers `bricotheque-AAAA-MM-JJ-HHMM.sql.gz`, les 4 derniers sont gardés). Ce dossier est hors de `public_html` et n'est jamais écrasé par une mise à jour.
+
+- **Sauvegarde à la main** : `node ace db:backup` dans le Terminal (environnement activé).
+- **Restaurer** : cPanel › **phpMyAdmin** › base `USER_bricotheque` › **Importer** › le fichier `.sql.gz` › **Importer**, puis **Setup Node.js App** › **Restart**.
 
 ## Mettre à jour le site plus tard
 
