@@ -1025,6 +1025,66 @@ input[type='number'].input::-webkit-outer-spin-button {
   margin-bottom: var(--space-3);
 }
 
+.page-header__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-2);
+}
+
+/* ---------- Window (native <dialog>) ---------- */
+.modal {
+  /* centred in the window (the reset sets every margin to 0) */
+  margin: auto;
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: var(--space-3);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 48px rgb(0 0 0 / 0.2);
+}
+
+.modal::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+
+.modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.modal__title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.modal__close {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  color: var(--ink);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
 /* ---------- Breadcrumb ---------- */
 .breadcrumb {
   margin-bottom: var(--space-3);
@@ -1944,28 +2004,62 @@ input[type='number'].input::-webkit-outer-spin-button {
   border-top: 1px dashed var(--line);
 }
 
-.news-nav {
+.news-months {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Recent months: one row, scrolls sideways on a phone */
+.news-months__list {
+  display: flex;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 4px 2px 8px;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: thin;
+}
+
+.news-months__pill {
+  display: inline-block;
+  padding: 6px 14px;
+  white-space: nowrap;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.news-months__pill:hover {
+  border-color: var(--ink-muted);
+}
+
+.news-months__pill[aria-current='page'] {
+  color: var(--surface);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.news-months__other fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.news-months__fields {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-1) var(--space-2);
-  margin-bottom: var(--space-3);
-  padding: var(--space-1) 0;
-  border-block: 1px solid var(--line);
-  font-weight: 600;
+  gap: var(--space-1);
+  margin-top: var(--half);
 }
 
-@media (max-width: 559px) {
-  .news-nav__current {
-    order: 3;
-    flex-basis: 100%;
-    text-align: center;
-  }
-}
-
-.news-nav__current {
-  margin-inline: auto;
+.news-months__fields .input {
+  width: auto;
 }
 
 .completion {
@@ -2035,19 +2129,6 @@ input[type='number'].input::-webkit-outer-spin-button {
   font-weight: 600;
 }
 
-.quick-add {
-  margin-block: var(--space-2);
-}
-
-.quick-add__summary {
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.quick-add[open] .quick-add__summary {
-  margin-bottom: var(--space-2);
-}
-
 .quick-add__form {
   display: grid;
   gap: var(--half);
@@ -2057,10 +2138,6 @@ input[type='number'].input::-webkit-outer-spin-button {
 .quick-add__input {
   min-height: 88px;
   resize: vertical;
-}
-
-.quick-add__form .btn {
-  margin-top: var(--space-1);
 }
 
 .quick-add__result {

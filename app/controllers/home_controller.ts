@@ -1,22 +1,13 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { DateTime } from 'luxon'
 import BrickSet from '#models/brick_set'
 import BrickSetTransformer from '#transformers/brick_set_transformer'
 
 export default class HomeController {
   /**
-   * GET /: search, latest announcements (sets not on sale yet, nearest
-   * release first) and latest released sets.
+   * GET /: search and latest announcements (sets not on sale yet, nearest
+   * release first). The sets already out are on the "Nouveautés" page.
    */
   async index({ inertia }: HttpContext) {
-    const latestSets = await BrickSet.query()
-      .where('kind', 'set')
-      .whereNotNull('date_first_available')
-      .where('date_first_available', '<=', DateTime.utc().toISODate()!)
-      .orderBy('date_first_available', 'desc')
-      .orderBy('set_num', 'asc')
-      .limit(8)
-
     const announcements = await BrickSet.query()
       .where('kind', 'set')
       .where('availability_status', 'upcoming')
@@ -26,7 +17,6 @@ export default class HomeController {
 
     return inertia.render('home', {
       announcements: BrickSetTransformer.transform(announcements),
-      latestSets: BrickSetTransformer.transform(latestSets),
     })
   }
 }

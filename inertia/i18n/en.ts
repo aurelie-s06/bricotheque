@@ -301,25 +301,24 @@ const en: Record<keyof typeof fr, string> = {
   'home.announcements': 'Latest announcements',
   'home.allAnnouncements': 'See all announcements',
   'nav.news': 'New sets',
+  'news.lead':
+    'The sets that came out that month, newest first. The page is updated every night; the coming sets are on the home page.',
+  'news.metaDescription':
+    'LEGO® sets out in {month}: {count} sets, with their release date, price and minifigs.',
+  'news.recentMonths': 'Last months',
+  'news.otherMonth': 'Other month',
+  'news.month': 'Month',
+  'news.year': 'Year',
+  'news.show': 'Show',
+  'news.seeUpcoming': 'See the coming sets',
+  'news.empty': 'No set out in {month} yet.',
+  'news.total_one': '{count} set out',
+  'news.total_other': '{count} sets out',
   'news.title': 'New sets of {month}',
   'news.titleVowel': 'New sets of {month}',
-  'news.metaDescription':
-    'LEGO® sets out and announced in {month}: {count} sets, with their release date, price and minifigs.',
-  'news.lead':
-    'The sets out that month and those announced for later in the month. The page is updated every night.',
-  'news.monthsNav': 'Previous and next month',
-  'news.thisMonth': 'This month',
-  'news.released': 'Out',
-  'news.upcoming': 'Coming',
   'news.outOn': 'Out on {date}',
-  'news.empty': 'No set known for {month} yet.',
-  'news.total_one': '{count} set that month.',
-  'news.total_other': '{count} sets that month.',
-  'home.newsOfTheMonth': 'All the new sets of the month',
   'home.releaseOn': 'Release planned on {date}',
   'home.releaseTbc': 'Date to be confirmed',
-  'home.latestSets': 'Latest releases',
-  'home.allSets': 'Full catalogue',
 
   // Catalogue
   'sets.title': 'Set catalogue',
@@ -687,8 +686,10 @@ const en: Record<keyof typeof fr, string> = {
   'account.missingMinifigs_other':
     'Forgot the option? {count} minifigs from the sets you already added are not in your collection.',
   'account.addOwnedMinifigs': 'Add the minifigs of my sets',
-  'quickAdd.titleOwned': 'Quick add of sets by number',
-  'quickAdd.titleWanted': 'Quick add to the wishlist by number',
+  'quickAdd.open': 'Add by numbers',
+  'quickAdd.close': 'Close',
+  'quickAdd.titleOwned': 'Add sets to my collection',
+  'quickAdd.titleWanted': 'Add sets to my wishlist',
   'quickAdd.label': 'Set numbers',
   'quickAdd.hint':
     'Separate the numbers with commas, spaces or new lines (300 at most). “75192” means version 1; for another version, type “75192-2”.',

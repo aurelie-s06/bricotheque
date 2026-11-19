@@ -264,13 +264,15 @@ test.group('Catalogue: themes and home', (group) => {
     const home = await client.get('/').withInertia()
     assert.deepEqual(setNums({ sets: home.inertiaProps.announcements }), ['75192-2', '8880-1'])
     assert.equal(home.inertiaProps.announcements[0].releaseDate, next)
-    assert.notInclude(setNums({ sets: home.inertiaProps.latestSets }), '8880-1')
   })
 
-  test('the home page shows the latest released sets', async ({ client, assert }) => {
+  test('the home page only shows the coming sets (the others are in the news)', async ({
+    client,
+    assert,
+  }) => {
     const response = await client.get('/').withInertia()
     response.assertStatus(200)
     assert.notProperty(response.inertiaProps, 'popularThemes')
-    assert.deepEqual(setNums({ sets: response.inertiaProps.latestSets }), ['75192-1'])
+    assert.notProperty(response.inertiaProps, 'latestSets')
   })
 })

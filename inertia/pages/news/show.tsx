@@ -9,34 +9,41 @@ import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
   month: string
-  isCurrent: boolean
-  previous: string | null
-  next: string | null
-  released: Data.BrickSet[]
-  upcoming: Data.BrickSet[]
+  thisMonth: string
+  recentMonths: string[]
+  firstYear: number
+  sets: Data.BrickSet[]
 }>
 
-export default function NewsShow({ month, isCurrent, previous, next, released, upcoming }: Props) {
+const monthUrl = (month: string, thisMonth: string) =>
+  month === thisMonth ? '/nouveautes' : `/nouveautes/${month}`
+
+export default function NewsShow({ month, thisMonth, recentMonths, firstYear, sets }: Props) {
   const { t, tc, tn, dateNode, locale } = useI18n()
+  const intlLocale = locale === 'fr' ? 'fr-FR' : 'en-GB'
   // Same text on the server and in the browser: fixed time zone
-  const format = (value: string) =>
-    new Intl.DateTimeFormat(locale === 'fr' ? 'fr-FR' : 'en-GB', {
-      month: 'long',
-      year: 'numeric',
-      timeZone: 'UTC',
-    }).format(new Date(`${value}-01T12:00:00Z`))
-  const monthName = format(month)
+  const format = (value: string, options: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat(intlLocale, { ...options, timeZone: 'UTC' }).format(
+      new Date(`${value}-01T12:00:00Z`)
+    )
+  const monthName = format(month, { month: 'long', year: 'numeric' })
   // French elision: "Nouveautés d’octobre", "Nouveautés de mars"
   const title = t(/^[aeiouyéèêh]/i.test(monthName) ? 'news.titleVowel' : 'news.title', {
     month: monthName,
   })
-  const total = released.length + upcoming.length
+  const isCurrent = month === thisMonth
+  const [shownYear, shownMonth] = month.split('-')
+  const lastYear = Number(thisMonth.slice(0, 4))
+  const years = Array.from({ length: lastYear - firstYear + 1 }, (_, index) => lastYear - index)
+  const monthNames = Array.from({ length: 12 }, (_, index) =>
+    format(`2000-${String(index + 1).padStart(2, '0')}`, { month: 'long' })
+  )
 
   return (
     <>
       <Seo
         title={title}
-        description={t('news.metaDescription', { month: monthName, count: total })}
+        description={t('news.metaDescription', { month: monthName, count: sets.length })}
       />
       <Breadcrumb
         items={[
@@ -51,75 +58,85 @@ export default function NewsShow({ month, isCurrent, previous, next, released, u
         <p className="text-muted">{t('news.lead')}</p>
       </div>
 
-      <nav className="news-nav" aria-label={t('news.monthsNav')}>
-        {previous ? (
-          <Link href={`/nouveautes/${previous}`} rel="prev" className="news-nav__previous">
-            <span aria-hidden="true">‹ </span>
-            {format(previous)}
-          </Link>
-        ) : (
-          <span />
-        )}
-        {!isCurrent && (
-          <Link href="/nouveautes" className="news-nav__current">
-            {t('news.thisMonth')}
-          </Link>
-        )}
-        {next ? (
-          <Link href={`/nouveautes/${next}`} rel="next" className="news-nav__next">
-            {format(next)}
-            <span aria-hidden="true"> ›</span>
-          </Link>
-        ) : (
-          <span />
-        )}
-      </nav>
-
-      {total === 0 && <p className="empty-state">{t('news.empty', { month: monthName })}</p>}
-
-      {released.length > 0 && (
-        <section aria-labelledby="released-title" className="home-section">
-          <h2 id="released-title">
-            {t('news.released')} <span className="text-muted">({released.length})</span>
-          </h2>
-          <ul className="card-grid">
-            {released.map((set) => (
-              <li key={set.id}>
-                <SetCard
-                  set={set}
-                  note={
-                    set.releaseDate ? tn('news.outOn', { date: dateNode(set.releaseDate) }) : null
-                  }
-                />
+      <div className="news-months">
+        <nav aria-label={t('news.recentMonths')} className="news-months__recent">
+          <ul className="news-months__list">
+            {recentMonths.map((recent) => (
+              <li key={recent}>
+                <Link
+                  href={monthUrl(recent, thisMonth)}
+                  className="news-months__pill"
+                  aria-current={recent === month ? 'page' : undefined}
+                >
+                  {format(recent, { month: 'short', year: '2-digit' })}
+                  <span className="visually-hidden">
+                    {' '}
+                    ({format(recent, { month: 'long', year: 'numeric' })})
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
-        </section>
+        </nav>
+
+        <form className="news-months__other" action="/nouveautes" method="get">
+          <fieldset>
+            <legend className="field__label">{t('news.otherMonth')}</legend>
+            <div className="news-months__fields">
+              <label className="visually-hidden" htmlFor="news-month">
+                {t('news.month')}
+              </label>
+              <select id="news-month" name="mois" className="input" defaultValue={shownMonth}>
+                {monthNames.map((name, index) => (
+                  <option key={name} value={String(index + 1).padStart(2, '0')}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+              <label className="visually-hidden" htmlFor="news-year">
+                {t('news.year')}
+              </label>
+              <select id="news-year" name="annee" className="input" defaultValue={shownYear}>
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+              <button type="submit" className="btn btn--secondary">
+                {t('news.show')}
+              </button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+
+      <p className="text-muted results-count" role="status">
+        {tc('news.total', sets.length)}
+      </p>
+      {sets.length === 0 ? (
+        <p className="empty-state">{t('news.empty', { month: monthName })}</p>
+      ) : (
+        <ul className="card-grid">
+          {sets.map((set) => (
+            <li key={set.id}>
+              <SetCard
+                set={set}
+                headingLevel={2}
+                note={
+                  set.releaseDate ? tn('news.outOn', { date: dateNode(set.releaseDate) }) : null
+                }
+              />
+            </li>
+          ))}
+        </ul>
       )}
 
-      {upcoming.length > 0 && (
-        <section aria-labelledby="upcoming-title" className="home-section">
-          <h2 id="upcoming-title">
-            {t('news.upcoming')} <span className="text-muted">({upcoming.length})</span>
-          </h2>
-          <ul className="card-grid">
-            {upcoming.map((set) => (
-              <li key={set.id}>
-                <SetCard
-                  set={set}
-                  note={
-                    set.releaseDate
-                      ? tn('home.releaseOn', { date: dateNode(set.releaseDate) })
-                      : null
-                  }
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
+      {isCurrent && (
+        <p>
+          <Link href="/sets?status=upcoming&sort=release">{t('news.seeUpcoming')}</Link>
+        </p>
       )}
-
-      <p className="text-muted">{tc('news.total', total)}</p>
     </>
   )
 }

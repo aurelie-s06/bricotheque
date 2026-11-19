@@ -301,25 +301,24 @@ const fr = {
   'home.announcements': 'Dernières annonces',
   'home.allAnnouncements': 'Voir toutes les annonces',
   'nav.news': 'Nouveautés',
+  'news.lead':
+    'Les sets sortis ce mois-là, du plus récent au plus ancien. La page se met à jour chaque nuit ; les prochaines sorties sont sur l’accueil.',
+  'news.metaDescription':
+    'Les sets LEGO® sortis en {month} : {count} sets, avec leur date de sortie, leur prix et leurs minifigs.',
+  'news.recentMonths': 'Derniers mois',
+  'news.otherMonth': 'Autre mois',
+  'news.month': 'Mois',
+  'news.year': 'Année',
+  'news.show': 'Afficher',
+  'news.seeUpcoming': 'Voir les prochaines sorties',
+  'news.empty': 'Aucun set sorti en {month} pour l’instant.',
+  'news.total_one': '{count} set sorti',
+  'news.total_other': '{count} sets sortis',
   'news.title': 'Nouveautés de {month}',
   'news.titleVowel': 'Nouveautés d’{month}',
-  'news.metaDescription':
-    'Les sets LEGO® sortis et annoncés en {month} : {count} sets, avec leur date de sortie, leur prix et leurs minifigs.',
-  'news.lead':
-    'Les sets sortis ce mois-là et ceux annoncés pour la suite du mois. La page se met à jour chaque nuit.',
-  'news.monthsNav': 'Mois précédent et suivant',
-  'news.thisMonth': 'Ce mois-ci',
-  'news.released': 'Sortis',
-  'news.upcoming': 'À venir',
   'news.outOn': 'Sorti le {date}',
-  'news.empty': 'Aucun set connu pour {month} pour l’instant.',
-  'news.total_one': '{count} set ce mois-là.',
-  'news.total_other': '{count} sets ce mois-là.',
-  'home.newsOfTheMonth': 'Toutes les nouveautés du mois',
   'home.releaseOn': 'Sortie prévue le {date}',
   'home.releaseTbc': 'Date à confirmer',
-  'home.latestSets': 'Derniers sets sortis',
-  'home.allSets': 'Tout le catalogue',
 
   // Catalogue
   'sets.title': 'Catalogue des sets',
@@ -691,8 +690,10 @@ const fr = {
   'account.missingMinifigs_other':
     'Option oubliée ? {count} minifigs de tes sets déjà enregistrés ne sont pas dans ta collection.',
   'account.addOwnedMinifigs': 'Ajouter les minifigs de mes sets',
-  'quickAdd.titleOwned': 'Ajout rapide de sets par numéro',
-  'quickAdd.titleWanted': 'Ajout rapide à la wishlist par numéro',
+  'quickAdd.open': 'Ajouter par numéros',
+  'quickAdd.close': 'Fermer',
+  'quickAdd.titleOwned': 'Ajouter des sets à ma collection',
+  'quickAdd.titleWanted': 'Ajouter des sets à ma wishlist',
   'quickAdd.label': 'Numéros des sets',
   'quickAdd.hint':
     'Sépare les numéros par des virgules, des espaces ou des retours à la ligne (300 au plus). « 75192 » correspond à la version 1 ; pour une autre version, écris « 75192-2 ».',

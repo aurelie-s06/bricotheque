@@ -72,7 +72,10 @@ export default function CollectionList(props: Props) {
       <Breadcrumb items={[{ name: t('breadcrumb.home'), url: '/' }, { name: title }]} />
 
       <div className="page-header">
-        <h1>{title}</h1>
+        <div className="page-header__row">
+          <h1>{title}</h1>
+          {mode !== 'shared' && <QuickAdd status={mode === 'collection' ? 'owned' : 'wanted'} />}
+        </div>
         <p className="text-muted">
           {tc('count.sets', counts.sets)} ({tc('collection.copies', counts.setCopies)}) ·{' '}
           {tc('count.minifigs', counts.minifigs)} ({tc('collection.copies', counts.minifigCopies)})
@@ -94,7 +97,6 @@ export default function CollectionList(props: Props) {
       )}
 
       {mode === 'wishlist' && <SharePanel shareUrl={props.shareUrl} />}
-      {mode !== 'shared' && <QuickAdd status={mode === 'collection' ? 'owned' : 'wanted'} />}
 
       <nav className="tabs" aria-label={t('collection.tabs')}>
         <ul className="tabs__list">

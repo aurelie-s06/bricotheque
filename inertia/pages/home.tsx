@@ -9,10 +9,9 @@ import { useI18n } from '~/i18n'
 
 type Props = InertiaProps<{
   announcements: Data.BrickSet[]
-  latestSets: Data.BrickSet[]
 }>
 
-export default function Home({ announcements, latestSets }: Props) {
+export default function Home({ announcements }: Props) {
   const { t, tn, dateNode } = useI18n()
   return (
     <>
@@ -48,20 +47,6 @@ export default function Home({ announcements, latestSets }: Props) {
           </ul>
         </section>
       )}
-
-      <section aria-labelledby="latest-title" className="home-section">
-        <div className="home-section__header">
-          <h2 id="latest-title">{t('home.latestSets')}</h2>
-          <Link href="/nouveautes">{t('home.newsOfTheMonth')}</Link>
-        </div>
-        <ul className="card-grid">
-          {latestSets.map((set) => (
-            <li key={set.id}>
-              <SetCard set={set} />
-            </li>
-          ))}
-        </ul>
-      </section>
     </>
   )
 }
