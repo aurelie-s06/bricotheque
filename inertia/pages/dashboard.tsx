@@ -32,16 +32,6 @@ type Props = InertiaProps<{
   missingMinifigs: { name: string; slug: string; count: number }[]
 }>
 
-function Tile({ label, value, hint }: { label: string; value: string; hint?: string }) {
-  return (
-    <div className="stat-tile">
-      <dt className="stat-tile__label">{label}</dt>
-      <dd className="stat-tile__value">{value}</dd>
-      {hint && <dd className="stat-tile__hint">{hint}</dd>}
-    </div>
-  )
-}
-
 type Completion = { name: string; url: string; owned: number; total: number; percent: number }
 
 /** Themes shown before the "show the others" disclosure */
@@ -148,27 +138,59 @@ export default function DashboardPage(props: Props) {
         </div>
       ) : (
         <>
-          <section aria-labelledby="figures-title">
+          <section className="baseplate" aria-labelledby="figures-title">
             <h2 id="figures-title" className="visually-hidden">
               {t('dashboard.figures')}
             </h2>
-            <dl className="stat-tiles">
-              <Tile
-                label={t('dashboard.sets')}
-                value={formatNumber(figures.sets)}
-                hint={tc('collection.copies', figures.setCopies)}
-              />
-              <Tile
-                label={t('dashboard.minifigs')}
-                value={formatNumber(figures.minifigs)}
-                hint={tc('collection.copies', figures.minifigCopies)}
-              />
-              <Tile
-                label={t('dashboard.pieces')}
-                value={formatNumber(figures.pieces)}
-                hint={t('dashboard.piecesHint')}
-              />
+            <dl className="baseplate__bricks">
+              {(
+                [
+                  [
+                    'yellow',
+                    t('dashboard.sets'),
+                    figures.sets,
+                    tc('collection.copies', figures.setCopies),
+                  ],
+                  [
+                    'red',
+                    t('dashboard.minifigs'),
+                    figures.minifigs,
+                    tc('collection.copies', figures.minifigCopies),
+                  ],
+                  ['blue', t('dashboard.pieces'), figures.pieces, t('dashboard.piecesHint')],
+                ] as const
+              ).map(([color, label, value, hint]) => (
+                <div key={label} className={`baseplate__brick baseplate__brick--${color}`}>
+                  <dt className="baseplate__label">{label}</dt>
+                  <dd className="baseplate__value">{formatNumber(value)}</dd>
+                  <dd className="baseplate__hint">{hint}</dd>
+                </div>
+              ))}
             </dl>
+            {completion.length > 0 && (
+              <div className="baseplate__brick baseplate__brick--wide">
+                <p className="baseplate__label">{t('dashboard.mainTheme')}</p>
+                <p className="baseplate__theme">
+                  <Link href={completion[0].url}>{completion[0].name}</Link>{' '}
+                  <span className="baseplate__theme-value">
+                    {t('completion.value', {
+                      owned: formatNumber(completion[0].owned),
+                      total: formatNumber(completion[0].total),
+                      percent:
+                        completion[0].percent === 0 && completion[0].owned > 0
+                          ? '<\u00a01'
+                          : completion[0].percent,
+                    })}
+                  </span>
+                </p>
+                <span className="completion__track" aria-hidden="true">
+                  <span
+                    className="completion__bar baseplate__bar"
+                    style={{ width: `${Math.max(2, completion[0].percent)}%` }}
+                  />
+                </span>
+              </div>
+            )}
           </section>
 
           <div className="dashboard-grid">

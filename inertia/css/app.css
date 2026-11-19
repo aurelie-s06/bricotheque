@@ -2309,6 +2309,149 @@ input[type='number'].input::-webkit-outer-spin-button {
   width: auto;
 }
 
+.baseplate {
+  --baseplate: #2e7d4a;
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  /* a green baseplate covered with studs */
+  background-color: var(--baseplate);
+  background-image:
+    radial-gradient(circle at 50% 45%, rgb(255 255 255 / 0.16) 0 5px, transparent 6px),
+    radial-gradient(circle at 50% 60%, rgb(0 0 0 / 0.18) 0 5px, transparent 6px);
+  background-size: 24px 24px;
+  box-shadow: inset 0 -4px 0 rgb(0 0 0 / 0.18);
+}
+
+.baseplate__bricks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin: 0;
+}
+
+/* a brick laid on the plate: two studs on top, a darker edge below */
+.baseplate__brick {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  margin-top: 10px;
+  padding: var(--space-2);
+  color: var(--ink);
+  background: var(--brick-color, var(--surface));
+  border-radius: 6px;
+  box-shadow: inset 0 -5px 0 rgb(0 0 0 / 0.2);
+}
+
+/* two studs seen from the side, on top of the brick */
+.baseplate__brick::before,
+.baseplate__brick::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  width: 36px;
+  height: 9px;
+  background: var(--brick-color, var(--surface));
+  border-radius: 5px 5px 0 0;
+  box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.25);
+}
+
+.baseplate__brick::before {
+  left: 22%;
+}
+
+.baseplate__brick::after {
+  right: 22%;
+}
+
+.baseplate__brick--yellow {
+  --brick-color: var(--brick-yellow);
+}
+
+.baseplate__brick--red {
+  --brick-color: var(--brick-red);
+  color: #fff;
+}
+
+.baseplate__brick--blue {
+  --brick-color: var(--brick-blue);
+  color: #fff;
+}
+
+.baseplate__label {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+.baseplate__value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.baseplate__hint {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.baseplate__brick--wide {
+  gap: var(--space-1);
+}
+
+.baseplate__theme {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px var(--space-2);
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.baseplate__theme-value {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.baseplate .baseplate__bar {
+  background: var(--brick-green);
+}
+
+/* a phone: sets and minifigs side by side, a little more compact */
+@media (max-width: 599px) {
+  .baseplate {
+    padding: var(--space-2);
+  }
+
+  .baseplate__bricks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .baseplate__brick--blue {
+    grid-column: 1 / -1;
+  }
+
+  .baseplate__value {
+    font-size: 1.75rem;
+  }
+
+  .baseplate__brick::before,
+  .baseplate__brick::after {
+    width: 26px;
+  }
+}
+
 .completion {
   display: grid;
   gap: var(--space-2);

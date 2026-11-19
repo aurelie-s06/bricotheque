@@ -783,6 +783,7 @@ const en: Record<keyof typeof fr, string> = {
   'dashboard.emptyHint':
     'Add sets to your collection with the “I have it” button to see your statistics.',
   'dashboard.figures': 'Key figures',
+  'dashboard.mainTheme': 'Your main theme',
   'dashboard.sets': 'Sets',
   'dashboard.minifigs': 'Minifigs',
   'dashboard.pieces': 'Pieces',

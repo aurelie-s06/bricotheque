@@ -787,6 +787,7 @@ const fr = {
   'dashboard.emptyHint':
     'Ajoute des sets à ta collection avec le bouton « Je l’ai » pour voir tes statistiques.',
   'dashboard.figures': 'Chiffres clés',
+  'dashboard.mainTheme': 'Ton thème principal',
   'dashboard.sets': 'Sets',
   'dashboard.minifigs': 'Minifigs',
   'dashboard.pieces': 'Pièces',
