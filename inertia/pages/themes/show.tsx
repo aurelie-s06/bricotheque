@@ -7,10 +7,21 @@ import Breadcrumb from '~/components/breadcrumb'
 import Pagination, { type PaginationData } from '~/components/pagination'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
+import SetImage from '~/components/set_image'
+import { displaySetNum } from '~/lib/set_number'
 
 type ThemeEntry = { name: string; url: string; count: number }
+type Featured = {
+  setNum: string
+  name: string
+  url: string
+  imgUrl: string | null
+  year: number | null
+  numParts: number
+}
 type Props = InertiaProps<{
-  theme: ThemeEntry
+  theme: ThemeEntry & { firstYear: number | null; lastYear: number | null }
+  featured: Featured | null
   themeChain: { name: string; url: string }[]
   subthemes: ThemeEntry[]
   sets: Data.BrickSet[]
@@ -31,8 +42,15 @@ function byYear(sets: Data.BrickSet[]) {
   return groups
 }
 
-export default function ThemeShow({ theme, themeChain, subthemes, sets, pagination }: Props) {
-  const { t, tc } = useI18n()
+export default function ThemeShow({
+  theme,
+  featured,
+  themeChain,
+  subthemes,
+  sets,
+  pagination,
+}: Props) {
+  const { t, tc, formatNumber } = useI18n()
   const pageSuffix =
     pagination.currentPage > 1 ? t('sets.pageSuffix', { page: pagination.currentPage }) : ''
 
@@ -51,19 +69,75 @@ export default function ThemeShow({ theme, themeChain, subthemes, sets, paginati
         ]}
       />
 
-      <div className="page-header">
-        <h1>{theme.name}</h1>
-        <p className="text-muted">
-          {pagination.total === theme.count
-            ? tc('count.sets', theme.count)
-            : t('theme.productsWithSets', {
-                products: tc('count.products', pagination.total),
-                sets: tc('count.sets', theme.count),
-              })}
-          {pagination.lastPage > 1 &&
-            ` · ${t('sets.pageOf', { page: pagination.currentPage, last: pagination.lastPage, perPage: pagination.perPage })}`}
-        </p>
-      </div>
+      <header className={`theme-banner${featured ? '' : ' theme-banner--plain'}`}>
+        <div className="theme-banner__text">
+          <h1>{theme.name}</h1>
+          <ul className="theme-banner__figures">
+            <li>
+              <strong>{formatNumber(theme.count)}</strong> {tc('theme.figureSets', theme.count)}
+            </li>
+            {theme.firstYear && (
+              <li>
+                <strong>{theme.firstYear}</strong>{' '}
+                {theme.lastYear && theme.lastYear !== theme.firstYear
+                  ? t('theme.figureUntil', { year: theme.lastYear })
+                  : t('theme.figureFirstYear')}
+              </li>
+            )}
+            {subthemes.length > 0 && (
+              <li>
+                <strong>{subthemes.length}</strong> {tc('theme.figureSubthemes', subthemes.length)}
+              </li>
+            )}
+          </ul>
+          {
+            /* the figures above say it all, unless books and gear are listed too */
+            (pagination.total !== theme.count || pagination.lastPage > 1) && (
+              <p className="text-muted">
+                {[
+                  // the number of sets is already in the figures above
+                  pagination.total !== theme.count &&
+                    t('theme.productsWithSets', {
+                      products: tc('count.products', pagination.total),
+                      sets: tc('count.sets', theme.count),
+                    }),
+                  pagination.lastPage > 1 &&
+                    t('sets.pageOf', {
+                      page: pagination.currentPage,
+                      last: pagination.lastPage,
+                      perPage: pagination.perPage,
+                    }),
+                ]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </p>
+            )
+          }
+        </div>
+        {featured && (
+          <figure className="theme-banner__featured">
+            <Link
+              href={featured.url}
+              className="theme-banner__image"
+              tabIndex={-1}
+              aria-hidden="true"
+            >
+              <SetImage src={featured.imgUrl} alt="" eager />
+            </Link>
+            <figcaption>
+              {t('theme.featured')}{' '}
+              <Link href={featured.url}>
+                {displaySetNum(featured.setNum)} {featured.name}
+              </Link>
+              <span className="text-muted">
+                {' '}
+                · {tc('count.pieces', featured.numParts)}
+                {featured.year && ` · ${featured.year}`}
+              </span>
+            </figcaption>
+          </figure>
+        )}
+      </header>
 
       {subthemes.length > 0 && (
         <section aria-labelledby="subthemes-title" className="subthemes">

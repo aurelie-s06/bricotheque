@@ -466,6 +466,13 @@ const en: Record<keyof typeof fr, string> = {
   'theme.title': '{name} theme',
   'theme.metaDescription': 'Sets of the {name} theme, by year.',
   'theme.productsWithSets': '{products}, including {sets}',
+  'theme.figureSets_one': 'set',
+  'theme.figureSets_other': 'sets',
+  'theme.figureUntil': 'to {year}',
+  'theme.figureFirstYear': 'first year',
+  'theme.figureSubthemes_one': 'subtheme',
+  'theme.figureSubthemes_other': 'subthemes',
+  'theme.featured': 'Flagship set:',
   'theme.subthemes': 'Subthemes',
   'theme.unknownYear': 'Unknown year',
 

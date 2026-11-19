@@ -466,6 +466,13 @@ const fr = {
   'theme.title': 'Thème {name}',
   'theme.metaDescription': 'Les sets du thème {name}, classés par année.',
   'theme.productsWithSets': '{products}, dont {sets}',
+  'theme.figureSets_one': 'set',
+  'theme.figureSets_other': 'sets',
+  'theme.figureUntil': 'à {year}',
+  'theme.figureFirstYear': 'première année',
+  'theme.figureSubthemes_one': 'sous-thème',
+  'theme.figureSubthemes_other': 'sous-thèmes',
+  'theme.featured': 'Set phare :',
   'theme.subthemes': 'Sous-thèmes',
   'theme.unknownYear': 'Année inconnue',
 

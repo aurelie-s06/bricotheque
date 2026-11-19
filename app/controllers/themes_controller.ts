@@ -1,10 +1,35 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
+import { DateTime } from 'luxon'
+import db from '@adonisjs/lucid/services/db'
 import BrickSet from '#models/brick_set'
 import ThemeTree from '#services/catalogue/theme_tree'
 import { SETS_PER_PAGE } from '#services/catalogue/set_query'
 import BrickSetTransformer from '#transformers/brick_set_transformer'
-import { themePath } from '#helpers/urls'
+import { setPath, themePath } from '#helpers/urls'
+
+/** Recent years in which the flagship set of a theme is looked for */
+const FEATURED_YEARS = 5
+
+/**
+ * Flagship set of a theme for its banner: the biggest set (most pieces)
+ * of the last years, or of all time, with a picture.
+ */
+async function featuredSet(themeIds: number[]) {
+  const base = () =>
+    BrickSet.query()
+      .whereIn('theme_id', themeIds)
+      .where('kind', 'set')
+      .whereNotNull('img_url')
+      .whereNull('img_broken_at')
+      .where((query) => query.whereNull('year').orWhere('year', '<=', DateTime.utc().year))
+      .orderBy('num_parts', 'desc')
+  return (
+    (await base()
+      .where('year', '>=', DateTime.utc().year - FEATURED_YEARS + 1)
+      .first()) ?? (await base().first())
+  )
+}
 
 export default class ThemesController {
   /**
@@ -59,8 +84,33 @@ export default class ThemesController {
       .orderBy('variant', 'asc')
       .paginate(pageNumber, SETS_PER_PAGE)
 
+    const ids = themes.descendantIds(theme.id)
+    const featured = await featuredSet(ids)
+    const [years] = await db
+      .from('sets')
+      .whereIn('theme_id', ids)
+      .where('kind', 'set')
+      .min('year as first')
+      .max('year as last')
+
     return inertia.render('themes/show', {
-      theme: { name: theme.name, url: themePath(theme), count: counts.get(theme.id) ?? 0 },
+      theme: {
+        name: theme.name,
+        url: themePath(theme),
+        count: counts.get(theme.id) ?? 0,
+        firstYear: years?.first ? Number(years.first) : null,
+        lastYear: years?.last ? Number(years.last) : null,
+      },
+      featured: featured
+        ? {
+            setNum: featured.setNum,
+            name: featured.name,
+            url: setPath(featured),
+            imgUrl: featured.imgUrl,
+            year: featured.year,
+            numParts: featured.numParts,
+          }
+        : null,
       themeChain: themes
         .ancestorsOf(theme.id)
         .map((ancestor) => ({ name: ancestor.name, url: themePath(ancestor) })),
