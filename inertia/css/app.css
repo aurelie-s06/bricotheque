@@ -1816,8 +1816,93 @@ input[type='number'].input::-webkit-outer-spin-button {
 
 @media (min-width: 900px) {
   .set-detail {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    /* a big picture, the facts beside it */
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     align-items: start;
+  }
+
+  /* the picture stays in sight while reading the facts */
+  .set-detail__media {
+    position: sticky;
+    top: var(--space-2);
+  }
+}
+
+/* ---------- Key facts (set page) ---------- */
+.spec-pills {
+  display: grid;
+  /* always 2 × 2: never a lonely pill on its own row */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-1);
+  margin: 0;
+}
+
+.spec-pill {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'icon value'
+    'icon label';
+  align-items: center;
+  column-gap: var(--space-1);
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.spec-pill__icon {
+  grid-area: icon;
+  color: var(--brick-yellow-dark);
+}
+
+.spec-pill__value {
+  grid-area: value;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.spec-pill__label {
+  grid-area: label;
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+}
+
+/* ---------- "Je l'ai" / "Je le veux" bar fixed at the bottom on a phone ---------- */
+@media (max-width: 899px) {
+  .set-detail__actions {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 20;
+    padding: var(--space-1) var(--space-2) calc(var(--space-1) + env(safe-area-inset-bottom));
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -4px 16px rgb(0 0 0 / 0.08);
+  }
+
+  /* one row, whatever the number of buttons (up to 3) */
+  .set-detail__actions .collection-buttons {
+    flex-wrap: nowrap;
+    margin-top: 0;
+    justify-content: center;
+  }
+
+  .set-detail__actions .collection-button {
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    padding: 0 10px;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+  }
+
+  /* room below the page so the bar never hides the footer */
+  body:has(.set-detail__actions) .site-footer {
+    padding-bottom: calc(var(--space-4) + 72px);
   }
 }
 

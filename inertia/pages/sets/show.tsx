@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import { Blocks, CalendarDays, Tag, UserRound } from 'lucide-react'
 import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
@@ -34,6 +35,30 @@ function Prices({ set }: { set: SetDetail }) {
     <>{prices.join(' · ')}</>
   ) : (
     <span className="text-muted">{t('set.unknownPrice')}</span>
+  )
+}
+
+/** Key facts at a glance: pieces, minifigs, year and price in euros */
+function SpecPills({ set }: { set: SetDetail }) {
+  const { t, formatNumber, formatPrice } = useI18n()
+  const price = formatPrice(set.rrpEur, 'EUR')
+  const pills = [
+    { icon: Blocks, label: t('set.pieces'), value: formatNumber(set.numParts) },
+    { icon: UserRound, label: t('set.minifigs'), value: formatNumber(set.numMinifigs) },
+    set.year ? { icon: CalendarDays, label: t('set.year'), value: String(set.year) } : null,
+    price ? { icon: Tag, label: t('set.originalPrice'), value: price } : null,
+  ].filter((pill) => pill !== null)
+
+  return (
+    <dl className="spec-pills">
+      {pills.map(({ icon: Icon, label, value }) => (
+        <div key={label} className="spec-pill">
+          <Icon size={20} aria-hidden="true" className="spec-pill__icon" />
+          <dt className="spec-pill__label">{label}</dt>
+          <dd className="spec-pill__value">{value}</dd>
+        </div>
+      ))}
+    </dl>
   )
 }
 
@@ -176,14 +201,18 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
           <p>
             <StatusBadge status={set.availabilityStatus} />
           </p>
-          <CollectionButtons
-            kind="sets"
-            id={set.id}
-            name={`${displaySetNum(set.setNum)} ${set.name}`}
-            reload="page"
-            showAcquire
-            size="md"
-          />
+          <SpecPills set={set} />
+          {/* On a phone, a bar fixed at the bottom of the screen */}
+          <div className="set-detail__actions">
+            <CollectionButtons
+              kind="sets"
+              id={set.id}
+              name={`${displaySetNum(set.setNum)} ${set.name}`}
+              reload="page"
+              showAcquire
+              size="md"
+            />
+          </div>
 
           <dl className="facts">
             <dt>{t('set.theme')}</dt>
@@ -202,19 +231,6 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
                 <dd>{set.subtheme}</dd>
               </>
             )}
-
-            {set.year && (
-              <>
-                <dt>{t('set.year')}</dt>
-                <dd>{set.year}</dd>
-              </>
-            )}
-
-            <dt>{t('set.pieces')}</dt>
-            <dd>{formatNumber(set.numParts)}</dd>
-
-            <dt>{t('set.minifigs')}</dt>
-            <dd>{formatNumber(set.numMinifigs)}</dd>
 
             <dt>{t('set.originalPrice')}</dt>
             <dd>
