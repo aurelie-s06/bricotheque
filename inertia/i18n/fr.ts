@@ -319,7 +319,7 @@ const fr = {
   'home.allAnnouncements': 'Voir toutes les annonces',
   'nav.news': 'Nouveautés',
   'news.lead':
-    'Les sets sortis ce mois-là, du plus récent au plus ancien. La page se met à jour chaque nuit ; les prochaines sorties sont sur l’accueil.',
+    'Les sets sortis ce mois-là, du plus récent au plus ancien. La page se met à jour chaque nuit ; les mois en pointillés donnent les sorties prévues.',
   'news.metaDescription':
     'Les sets LEGO® sortis en {month} : {count} sets, avec leur date de sortie, leur prix et leurs minifigs.',
   'news.recentMonths': 'Derniers mois',
@@ -331,6 +331,16 @@ const fr = {
   'news.empty': 'Aucun set sorti en {month} pour l’instant.',
   'news.total_one': '{count} set sorti',
   'news.total_other': '{count} sets sortis',
+  'news.titleFuture': 'Sorties prévues en {month}',
+  'news.metaDescriptionFuture':
+    'Les sets LEGO® annoncés pour {month} : {count} sets avec leur date de sortie prévue.',
+  'news.leadFuture':
+    'Les sets annoncés avec une date de sortie ce mois-là. C’est une estimation : les dates peuvent encore changer.',
+  'news.monthsNav': 'Mois passés et à venir',
+  'news.comingLabel': 'sorties prévues',
+  'news.totalFuture_one': '{count} set prévu',
+  'news.totalFuture_other': '{count} sets prévus',
+  'news.emptyFuture': 'Aucune date de sortie connue pour {month} pour l’instant.',
   'news.title': 'Nouveautés de {month}',
   'news.titleVowel': 'Nouveautés d’{month}',
   'news.outOn': 'Sorti le {date}',

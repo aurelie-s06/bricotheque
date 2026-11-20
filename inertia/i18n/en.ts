@@ -319,7 +319,7 @@ const en: Record<keyof typeof fr, string> = {
   'home.allAnnouncements': 'See all announcements',
   'nav.news': 'New sets',
   'news.lead':
-    'The sets that came out that month, newest first. The page is updated every night; the coming sets are on the home page.',
+    'The sets that came out that month, newest first. The page is updated every night; the dashed months show the expected releases.',
   'news.metaDescription':
     'LEGO® sets out in {month}: {count} sets, with their release date, price and minifigs.',
   'news.recentMonths': 'Last months',
@@ -331,6 +331,16 @@ const en: Record<keyof typeof fr, string> = {
   'news.empty': 'No set out in {month} yet.',
   'news.total_one': '{count} set out',
   'news.total_other': '{count} sets out',
+  'news.titleFuture': 'Coming in {month}',
+  'news.metaDescriptionFuture':
+    'LEGO® sets announced for {month}: {count} sets with their expected release date.',
+  'news.leadFuture':
+    'The sets announced with a release date that month. This is an estimate: the dates may still change.',
+  'news.monthsNav': 'Past and coming months',
+  'news.comingLabel': 'expected releases',
+  'news.totalFuture_one': '{count} set expected',
+  'news.totalFuture_other': '{count} sets expected',
+  'news.emptyFuture': 'No release date known for {month} yet.',
   'news.title': 'New sets of {month}',
   'news.titleVowel': 'New sets of {month}',
   'news.outOn': 'Out on {date}',

@@ -48,8 +48,8 @@ test.group('News of the month', (group) => {
     client,
     assert,
   }) => {
-    const nextMonth = DateTime.utc().plus({ months: 1 }).toFormat('yyyy-LL')
-    for (const month of ['1900-01', '2026-13', nextMonth]) {
+    const tooFar = DateTime.utc().plus({ months: 13 }).toFormat('yyyy-LL')
+    for (const month of ['1900-01', '2026-13', tooFar]) {
       const response = await client.get(`/nouveautes/${month}`)
       response.assertStatus(404)
     }
@@ -58,5 +58,33 @@ test.group('News of the month', (group) => {
     assert.include(sitemap.text(), '/nouveautes</loc>')
     const lastMonth = DateTime.utc().startOf('month').minus({ months: 1 }).toFormat('yyyy-LL')
     assert.include(sitemap.text(), `/nouveautes/${lastMonth}</loc>`)
+  })
+
+  test('a coming month lists the sets announced then, and is offered in the row', async ({
+    client,
+    assert,
+  }) => {
+    const nextMonth = DateTime.utc().startOf('month').plus({ months: 2 })
+    await db
+      .from('sets')
+      .where('set_num', '8880-1')
+      .update({
+        date_first_available: nextMonth.plus({ days: 9 }).toISODate(),
+        availability_status: 'upcoming',
+      })
+
+    const current = await client.get('/nouveautes').withInertia()
+    assert.isFalse(current.inertiaProps.isFuture)
+    assert.deepEqual(current.inertiaProps.comingMonths, [
+      { month: nextMonth.toFormat('yyyy-LL'), count: 1 },
+    ])
+
+    const coming = await client.get(`/nouveautes/${nextMonth.toFormat('yyyy-LL')}`).withInertia()
+    coming.assertStatus(200)
+    assert.isTrue(coming.inertiaProps.isFuture)
+    assert.deepEqual(
+      coming.inertiaProps.sets.map((set: { setNum: string }) => set.setNum),
+      ['8880-1']
+    )
   })
 })

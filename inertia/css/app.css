@@ -2460,14 +2460,22 @@ input[type='number'].input::-webkit-outer-spin-button {
 
 .news-months {
   display: grid;
+  /* the row of months scrolls inside the page, never widens it */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-2);
   margin-bottom: var(--space-3);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--line);
 }
 
-/* Recent months: one row, scrolls sideways on a phone */
+/* Months: one row that scrolls sideways */
+.news-months__recent {
+  min-width: 0;
+}
+
 .news-months__list {
+  /* keeps the screen-reader texts of the pills inside the scrolling row */
+  position: relative;
   display: flex;
   gap: var(--space-1);
   margin: 0;
@@ -2491,6 +2499,13 @@ input[type='number'].input::-webkit-outer-spin-button {
 
 .news-months__pill:hover {
   border-color: var(--ink-muted);
+}
+
+.news-months__pill--coming {
+  /* expected releases: an estimate, drawn with a dashed border */
+  border-style: dashed;
+  border-color: var(--brick-blue);
+  color: var(--brick-blue-dark);
 }
 
 .news-months__pill[aria-current='page'] {
