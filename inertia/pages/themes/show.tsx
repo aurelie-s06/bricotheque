@@ -133,21 +133,23 @@ export default function ThemeShow({
               <SetImage src={featured.imgUrl} alt="" eager />
             </div>
             <figcaption className="theme-banner__caption">
-              <span className="theme-banner__label">{t('theme.featured')}</span>
-              <span className="theme-banner__set">
+              <p className="theme-banner__set">
+                <span className="theme-banner__label">{t('theme.featured')}</span>{' '}
                 {displaySetNum(featured.setNum)} {featured.name}
-              </span>
-              <span className="text-muted">
-                {tc('count.pieces', featured.numParts)}
-                {featured.year && ` · ${featured.year}`}
-              </span>
-              <Link href={featured.url} className="btn btn--secondary btn--sm">
-                {t('theme.seeFeatured')}
-                <span className="visually-hidden">
-                  {' '}
-                  {displaySetNum(featured.setNum)} {featured.name}
+              </p>
+              <p className="theme-banner__meta">
+                <span className="text-muted">
+                  {tc('count.pieces', featured.numParts)}
+                  {featured.year && ` · ${featured.year}`}
                 </span>
-              </Link>
+                <Link href={featured.url} className="btn btn--secondary btn--sm">
+                  {t('theme.seeFeatured')}
+                  <span className="visually-hidden">
+                    {' '}
+                    {displaySetNum(featured.setNum)} {featured.name}
+                  </span>
+                </Link>
+              </p>
             </figcaption>
           </figure>
         )}
