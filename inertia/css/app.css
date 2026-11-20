@@ -1943,7 +1943,8 @@ input[type='number'].input::-webkit-outer-spin-button {
   grid-template-areas:
     'icon'
     'value'
-    'label';
+    'label'
+    'note';
   justify-items: center;
   row-gap: 2px;
   padding: 0 var(--space-1);
@@ -1959,6 +1960,14 @@ input[type='number'].input::-webkit-outer-spin-button {
 
 .set-panel .spec-pill__value {
   font-size: 1.125rem;
+}
+
+.spec-pill__note {
+  grid-area: note;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--brick-red-dark);
 }
 
 @media (max-width: 479px) {

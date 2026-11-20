@@ -24,31 +24,41 @@ type Props = InertiaProps<{
 
 const paragraphsOf = (text: string | null) => (text ?? '').split(/\n{2,}/).filter(Boolean)
 
-/** Original price in the currency of the language (euros or dollars) */
-function Prices({ set }: { set: SetDetail }) {
-  const { t, formatSetPrice } = useI18n()
-  const price = formatSetPrice(set)
-  return price ? <>{price}</> : <span className="text-muted">{t('set.unknownPrice')}</span>
-}
-
 /** Key facts at a glance: pieces, minifigs, year and price in euros */
 function SpecPills({ set }: { set: SetDetail }) {
   const { t, formatNumber, formatSetPrice } = useI18n()
   const price = formatSetPrice(set)
+  const retired = set.availabilityStatus === 'retired'
   const pills = [
-    { icon: Blocks, label: t('set.pieces'), value: formatNumber(set.numParts) },
-    { icon: UserRound, label: t('set.minifigs'), value: formatNumber(set.numMinifigs) },
-    set.year ? { icon: CalendarDays, label: t('set.year'), value: String(set.year) } : null,
-    price ? { icon: Tag, label: t('set.originalPrice'), value: price } : null,
+    { icon: Blocks, label: t('set.pieces'), value: formatNumber(set.numParts), note: null },
+    {
+      icon: UserRound,
+      label: t('set.minifigs'),
+      value: formatNumber(set.numMinifigs),
+      note: null,
+    },
+    set.year
+      ? { icon: CalendarDays, label: t('set.year'), value: String(set.year), note: null }
+      : null,
+    price
+      ? {
+          icon: Tag,
+          label: t('set.originalPrice'),
+          value: price,
+          // the price of a retired set is the one it had in the shops
+          note: retired ? t('set.noLongerSoldShort') : null,
+        }
+      : null,
   ].filter((pill) => pill !== null)
 
   return (
     <dl className="spec-pills">
-      {pills.map(({ icon: Icon, label, value }) => (
+      {pills.map(({ icon: Icon, label, value, note }) => (
         <div key={label} className="spec-pill">
           <Icon size={20} aria-hidden="true" className="spec-pill__icon" />
           <dt className="spec-pill__label">{label}</dt>
           <dd className="spec-pill__value">{value}</dd>
+          {note && <dd className="spec-pill__note">{note}</dd>}
         </div>
       ))}
     </dl>
@@ -158,7 +168,6 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
   const { t, formatNumber, locale } = useI18n()
   const lastTheme = themeChain.at(-1)
   const showSubtheme = set.subtheme && set.subtheme !== lastTheme?.name
-  const hasEstimate = set.estimatedValueNew !== null || set.estimatedValueUsed !== null
   const imageAlt = t('image.set', { setNum: displaySetNum(set.setNum), name: set.name })
 
   return (
@@ -227,16 +236,6 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
                 <dd>{set.subtheme}</dd>
               </>
             )}
-
-            <dt>{t('set.originalPrice')}</dt>
-            <dd>
-              <Prices set={set} />
-              {set.availabilityStatus === 'retired' &&
-                !hasEstimate &&
-                (set.rrpEur !== null || set.rrpUsd !== null) && (
-                  <span className="text-muted">{t('set.noLongerSold')}</span>
-                )}
-            </dd>
 
             <EstimatedValue set={set} />
 
