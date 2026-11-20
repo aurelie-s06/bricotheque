@@ -1,3 +1,4 @@
+import { priceColumn, type Locale } from '#helpers/locale'
 import BrickSet from '#models/brick_set'
 import type ThemeTree from '#services/catalogue/theme_tree'
 import type { SetFilters } from '#services/catalogue/set_filters'
@@ -21,7 +22,8 @@ function looksLikeSetNumber(q: string) {
  * Builds the catalogue query from the filters.
  * Unknown theme slugs return no result rather than ignoring the filter.
  */
-export function setCatalogueQuery(filters: SetFilters, themes: ThemeTree) {
+export function setCatalogueQuery(filters: SetFilters, themes: ThemeTree, locale: Locale = 'fr') {
+  const price = priceColumn(locale)
   const query = BrickSet.query()
 
   if (filters.type !== 'all') {
@@ -58,15 +60,19 @@ export function setCatalogueQuery(filters: SetFilters, themes: ThemeTree) {
   if (filters.yearMax !== null) query.where('year', '<=', filters.yearMax)
   if (filters.partsMin !== null) query.where('num_parts', '>=', filters.partsMin)
   if (filters.partsMax !== null) query.where('num_parts', '<=', filters.partsMax)
-  if (filters.priceMin !== null) query.where('rrp_eur', '>=', filters.priceMin)
-  if (filters.priceMax !== null) query.where('rrp_eur', '<=', filters.priceMax)
+  if (filters.priceMin !== null) query.where(price, '>=', filters.priceMin)
+  if (filters.priceMax !== null) query.where(price, '<=', filters.priceMax)
   if (filters.status) query.where('availability_status', filters.status)
 
-  applySort(query, filters)
+  applySort(query, filters, price)
   return query
 }
 
-function applySort(query: ReturnType<typeof BrickSet.query>, filters: SetFilters) {
+function applySort(
+  query: ReturnType<typeof BrickSet.query>,
+  filters: SetFilters,
+  price: 'rrp_eur' | 'rrp_usd'
+) {
   const naturalNumber = () =>
     query.orderByRaw('LENGTH(`number`) ASC').orderBy('number', 'asc').orderBy('variant', 'asc')
 
@@ -90,13 +96,13 @@ function applySort(query: ReturnType<typeof BrickSet.query>, filters: SetFilters
       return query.orderBy('num_parts', 'asc').orderBy('set_num', 'asc')
     case 'price_asc':
       return query
-        .orderByRaw('`rrp_eur` IS NULL')
-        .orderBy('rrp_eur', 'asc')
+        .orderByRaw(`\`${price}\` IS NULL`)
+        .orderBy(price, 'asc')
         .orderBy('set_num', 'asc')
     case 'price_desc':
       return query
-        .orderByRaw('`rrp_eur` IS NULL')
-        .orderBy('rrp_eur', 'desc')
+        .orderByRaw(`\`${price}\` IS NULL`)
+        .orderBy(price, 'desc')
         .orderBy('set_num', 'asc')
     case 'release':
       // Nearest release first; sets without date at the end of their year

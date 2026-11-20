@@ -1,3 +1,4 @@
+import { priceCurrency, type Locale } from '#helpers/locale'
 import db from '@adonisjs/lucid/services/db'
 import ThemeTree from '#services/catalogue/theme_tree'
 import { filtersToQuery, parseSetFilters } from '#services/catalogue/set_filters'
@@ -34,14 +35,15 @@ const pagination = (page: {
 export async function setsOfUser(
   userId: number,
   status: CollectionStatus,
-  qs: Record<string, any>
+  qs: Record<string, any>,
+  locale: Locale = 'fr'
 ) {
   // In a collection, books and gear count too: every type by default
   const filters = parseSetFilters({ type: 'all', ...qs })
   const condition = CONDITIONS.includes(qs.condition) ? (qs.condition as Condition) : null
   const themes = await ThemeTree.load()
 
-  const query = setCatalogueQuery(filters, themes).whereIn('id', (sub) => {
+  const query = setCatalogueQuery(filters, themes, locale).whereIn('id', (sub) => {
     sub.from('user_sets').select('set_id').where({ user_id: userId, status })
     if (condition && status === 'owned') sub.where('condition', condition)
   })
@@ -138,17 +140,21 @@ export async function collectionCounts(userId: number, status: CollectionStatus)
 }
 
 /**
- * Estimated price of a wishlist: BrickLink value (new) when known,
- * otherwise the original price, times the wanted quantity.
+ * Estimated price of a wishlist, in the currency of the language: in euros,
+ * the BrickLink value (new) when known, otherwise the original price; in
+ * dollars, the original US price (the BrickLink values are in euros, so the
+ * minifigs count as unknown prices). Times the wanted quantity.
  */
-export async function wishlistTotal(userId: number) {
+export async function wishlistTotal(userId: number, locale: Locale = 'fr') {
+  const price =
+    locale === 'en' ? 'sets.rrp_usd' : 'COALESCE(sets.estimated_value_new, sets.rrp_eur)'
   const sets = await db
     .from('user_sets')
     .join('sets', 'sets.id', 'user_sets.set_id')
     .where({ 'user_sets.user_id': userId, 'user_sets.status': 'wanted' })
     .select(
-      db.raw('SUM(COALESCE(sets.estimated_value_new, sets.rrp_eur) * user_sets.quantity) as total'),
-      db.raw('SUM(COALESCE(sets.estimated_value_new, sets.rrp_eur) IS NULL) as unknown')
+      db.raw(`SUM(${price} * user_sets.quantity) as total`),
+      db.raw(`SUM(${price} IS NULL) as unknown`)
     )
     .first()
   const minifigs = await db
@@ -156,11 +162,20 @@ export async function wishlistTotal(userId: number) {
     .join('minifigs', 'minifigs.id', 'user_minifigs.minifig_id')
     .where({ 'user_minifigs.user_id': userId, 'user_minifigs.status': 'wanted' })
     .select(
-      db.raw('SUM(minifigs.estimated_value_new * user_minifigs.quantity) as total'),
-      db.raw('SUM(minifigs.estimated_value_new IS NULL) as unknown')
+      db.raw(
+        locale === 'en'
+          ? '0 as total'
+          : 'SUM(minifigs.estimated_value_new * user_minifigs.quantity) as total'
+      ),
+      db.raw(
+        locale === 'en'
+          ? 'COUNT(*) as unknown'
+          : 'SUM(minifigs.estimated_value_new IS NULL) as unknown'
+      )
     )
     .first()
   return {
+    currency: priceCurrency(locale),
     total: Math.round((Number(sets?.total ?? 0) + Number(minifigs?.total ?? 0)) * 100) / 100,
     unknownPrices: Number(sets?.unknown ?? 0) + Number(minifigs?.unknown ?? 0),
   }

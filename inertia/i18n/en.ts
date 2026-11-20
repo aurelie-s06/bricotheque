@@ -365,7 +365,7 @@ const en: Record<keyof typeof fr, string> = {
   'filters.parts': 'Number of pieces',
   'filters.partsMin': 'Minimum number of pieces',
   'filters.partsMax': 'Maximum number of pieces',
-  'filters.price': 'Original price (€)',
+  'filters.price': 'Original price ($)',
   'filters.priceMin': 'Minimum price in euros',
   'filters.priceMax': 'Maximum price in euros',
   'filters.from': 'from',

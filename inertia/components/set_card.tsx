@@ -27,7 +27,7 @@ export default function SetCard({
   /** Extra line under the year (e.g. the release date of an announced set) */
   note?: React.ReactNode
 }) {
-  const { t, tc, formatPrice } = useI18n()
+  const { t, tc, formatSetPrice } = useI18n()
   const Heading = `h${headingLevel}` as const
   const meta = [set.year, set.numParts > 0 ? tc('count.pieces', set.numParts) : null].filter(
     Boolean
@@ -60,9 +60,7 @@ export default function SetCard({
         )}
         <div className="set-card__footer">
           <StatusBadge status={set.availabilityStatus} />
-          {set.rrpEur !== null && (
-            <span className="set-card__price">{formatPrice(set.rrpEur)}</span>
-          )}
+          {formatSetPrice(set) && <span className="set-card__price">{formatSetPrice(set)}</span>}
         </div>
         {showButtons && (
           <CollectionButtons

@@ -38,7 +38,7 @@ export default function SetFilters({
   /** Condition of owned sets (collection page) */
   showCondition?: boolean
 }) {
-  const { t, formatPrice } = useI18n()
+  const { t, formatPrice, priceCurrency } = useI18n()
   const value = (key: string) => query[key] ?? ''
 
   const active: ActiveFilter[] = []
@@ -76,7 +76,7 @@ export default function SetFilters({
       label: t('filters.chip', {
         name: t('filters.priceShort'),
         value: rangeLabel(t, query.price_min, query.price_max, (price) =>
-          formatPrice(Number(price))!
+          formatPrice(Number(price), priceCurrency)!
         ),
       }),
     })

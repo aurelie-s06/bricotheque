@@ -26,7 +26,7 @@ type Props = InertiaProps<{
   query: Record<string, string>
   themeOptions: ThemeOption[]
   entries: Record<string, CollectionEntry>
-  wishlistTotal: { total: number; unknownPrices: number } | null
+  wishlistTotal: { total: number; unknownPrices: number; currency: string } | null
   shareUrl: string | null
 }>
 
@@ -87,7 +87,9 @@ export default function CollectionList(props: Props) {
       {props.wishlistTotal && totalItems > 0 && (
         <div className="wishlist-total" role="status">
           <p className="wishlist-total__amount">
-            {t('wishlist.total', { price: formatPrice(props.wishlistTotal.total)! })}
+            {t('wishlist.total', {
+              price: formatPrice(props.wishlistTotal.total, props.wishlistTotal.currency)!,
+            })}
           </p>
           <p className="field__hint">
             {t('wishlist.totalHint')}{' '}

@@ -12,7 +12,7 @@ import {
   setsOfUser,
   wishlistTotal,
 } from '#services/collection_lists'
-import { resolveLocale } from '#helpers/locale'
+import { resolveLocale, type Locale } from '#helpers/locale'
 import { serverMessage } from '#helpers/server_messages'
 
 type Tab = 'sets' | 'minifigs'
@@ -21,7 +21,12 @@ const tabOf = (value: unknown): Tab => (value === 'minifigs' ? 'minifigs' : 'set
 /**
  * List of one tab, for the collection, the wishlist and the shared wishlist.
  */
-async function listProps(userId: number, status: 'owned' | 'wanted', qs: Record<string, any>) {
+async function listProps(
+  userId: number,
+  status: 'owned' | 'wanted',
+  qs: Record<string, any>,
+  locale: Locale
+) {
   const tab = tabOf(qs.type === 'minifigs' ? 'minifigs' : qs.tab)
   const filters = { ...qs }
   delete filters.tab
@@ -30,7 +35,7 @@ async function listProps(userId: number, status: 'owned' | 'wanted', qs: Record<
     const list = await minifigsOfUser(userId, status, filters)
     return { tab, counts, sets: [], ...list }
   }
-  const list = await setsOfUser(userId, status, filters)
+  const list = await setsOfUser(userId, status, filters, locale)
   return { tab, counts, minifigs: [], ...list }
 }
 
@@ -96,7 +101,7 @@ export default class MyCollectionController {
     return inertia.render('collection/list', {
       mode: 'collection' as const,
       owner: null,
-      ...(await listProps(user.id, 'owned', request.qs())),
+      ...(await listProps(user.id, 'owned', request.qs(), resolveLocale(request))),
       wishlistTotal: null,
       shareUrl: null,
     })
@@ -108,8 +113,8 @@ export default class MyCollectionController {
     return inertia.render('collection/list', {
       mode: 'wishlist' as const,
       owner: null,
-      ...(await listProps(user.id, 'wanted', request.qs())),
-      wishlistTotal: await wishlistTotal(user.id),
+      ...(await listProps(user.id, 'wanted', request.qs(), resolveLocale(request))),
+      wishlistTotal: await wishlistTotal(user.id, resolveLocale(request)),
       shareUrl: user.wishlistShareToken ? this.#shareUrl(request, user.wishlistShareToken) : null,
     })
   }
@@ -123,8 +128,8 @@ export default class MyCollectionController {
     return inertia.render('collection/list', {
       mode: 'shared' as const,
       owner: { username: owner.username },
-      ...(await listProps(owner.id, 'wanted', request.qs())),
-      wishlistTotal: await wishlistTotal(owner.id),
+      ...(await listProps(owner.id, 'wanted', request.qs(), resolveLocale(request))),
+      wishlistTotal: await wishlistTotal(owner.id, resolveLocale(request)),
       shareUrl: null,
     })
   }

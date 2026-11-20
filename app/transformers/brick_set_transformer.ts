@@ -22,6 +22,7 @@ export default class BrickSetTransformer extends BaseTransformer<BrickSet> {
         'numMinifigs',
         'availabilityStatus',
         'rrpEur',
+        'rrpUsd',
       ]),
       // A picture pasted in the back office wins over the imported one
       imgUrl: this.resource.imgUrlManual ?? this.resource.imgUrl,
@@ -50,7 +51,6 @@ export default class BrickSetTransformer extends BaseTransformer<BrickSet> {
     return {
       ...this.toObject(),
       ...this.pick(set, [
-        'rrpUsd',
         'rrpGbp',
         'estimatedValueNew',
         'estimatedValueUsed',

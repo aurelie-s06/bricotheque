@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import { resolveLocale } from '#helpers/locale'
 import ThemeTree from '#services/catalogue/theme_tree'
 import { parseSetFilters } from '#services/catalogue/set_filters'
 import { setCatalogueQuery } from '#services/catalogue/set_query'
@@ -27,7 +28,10 @@ export default class SearchController {
 
     const themes = await ThemeTree.load()
     const [sets, minifigs] = await Promise.all([
-      setCatalogueQuery(parseSetFilters({ q }), themes).paginate(1, PREVIEW_SIZE),
+      setCatalogueQuery(parseSetFilters({ q }), themes, resolveLocale(request)).paginate(
+        1,
+        PREVIEW_SIZE
+      ),
       minifigCatalogueQuery(parseMinifigFilters({ q }), themes).paginate(1, PREVIEW_SIZE),
     ])
 

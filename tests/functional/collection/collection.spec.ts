@@ -331,7 +331,11 @@ test.group('Wishlist: total and sharing', (group) => {
     await UserSet.create({ userId: user.id, setId: await setId('75192-2'), status: 'wanted' })
 
     const response = await client.get('/ma-wishlist').loginAs(user).withInertia()
-    assert.deepEqual(response.inertiaProps.wishlistTotal, { total: 1249.97, unknownPrices: 1 })
+    assert.deepEqual(response.inertiaProps.wishlistTotal, {
+      currency: 'EUR',
+      total: 1249.97,
+      unknownPrices: 1,
+    })
   })
 
   test('a shared wishlist is public, read-only and shows only the wishlist', async ({

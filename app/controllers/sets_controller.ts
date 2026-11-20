@@ -22,7 +22,10 @@ export default class SetsController {
     const filters = parseSetFilters(request.qs())
     const themes = await ThemeTree.load()
     const counts = await themes.setCounts()
-    const page = await setCatalogueQuery(filters, themes).paginate(filters.page, SETS_PER_PAGE)
+    const page = await setCatalogueQuery(filters, themes, resolveLocale(request)).paginate(
+      filters.page,
+      SETS_PER_PAGE
+    )
 
     return inertia.render('sets/index', {
       sets: BrickSetTransformer.transform(page.all()),

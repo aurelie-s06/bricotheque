@@ -125,7 +125,7 @@ export default function About({ contact, catalogueUpdates }: Props) {
         <dd>
           {fr
             ? 'Prix de vente conseillé en euros à la sortie du set.'
-            : 'Recommended retail price in euros when the set came out.'}
+            : 'Recommended retail price in US dollars when the set came out.'}
         </dd>
         <dt>Wishlist</dt>
         <dd>

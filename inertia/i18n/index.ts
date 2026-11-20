@@ -45,6 +45,21 @@ export function createI18n(locale: Locale) {
     return new Intl.NumberFormat(intlLocale, { style: 'currency', currency }).format(value)
   }
 
+  /** Currency of the prices: euros on the French site, dollars on the English one */
+  const priceCurrency = locale === 'en' ? 'USD' : 'EUR'
+
+  /**
+   * Original price of a set in the currency of the language, or in the
+   * other one when it is unknown (rather than "unknown price").
+   */
+  function formatSetPrice(set: { rrpEur: number | null; rrpUsd?: number | null }) {
+    const usd = set.rrpUsd ?? null
+    if (locale === 'en') {
+      return formatPrice(usd, 'USD') ?? formatPrice(set.rrpEur, 'EUR')
+    }
+    return formatPrice(set.rrpEur, 'EUR') ?? formatPrice(usd, 'USD')
+  }
+
   /**
    * "2017-10-01" → "1 octobre 2017" / "1 October 2017": the month in words
    * leaves no doubt about the day/month order (Opquast rule 4).
@@ -94,7 +109,19 @@ export function createI18n(locale: Locale) {
     )
   }
 
-  return { locale, t, tc, tn, formatNumber, formatPrice, formatDate, formatDateTime, dateNode }
+  return {
+    locale,
+    t,
+    tc,
+    tn,
+    formatNumber,
+    formatPrice,
+    formatSetPrice,
+    priceCurrency,
+    formatDate,
+    formatDateTime,
+    dateNode,
+  }
 }
 
 /**

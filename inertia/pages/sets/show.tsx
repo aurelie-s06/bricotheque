@@ -24,24 +24,17 @@ type Props = InertiaProps<{
 
 const paragraphsOf = (text: string | null) => (text ?? '').split(/\n{2,}/).filter(Boolean)
 
+/** Original price in the currency of the language (euros or dollars) */
 function Prices({ set }: { set: SetDetail }) {
-  const { t, formatPrice } = useI18n()
-  const prices = [
-    formatPrice(set.rrpEur, 'EUR'),
-    formatPrice(set.rrpUsd, 'USD'),
-    formatPrice(set.rrpGbp, 'GBP'),
-  ].filter(Boolean)
-  return prices.length ? (
-    <>{prices.join(' · ')}</>
-  ) : (
-    <span className="text-muted">{t('set.unknownPrice')}</span>
-  )
+  const { t, formatSetPrice } = useI18n()
+  const price = formatSetPrice(set)
+  return price ? <>{price}</> : <span className="text-muted">{t('set.unknownPrice')}</span>
 }
 
 /** Key facts at a glance: pieces, minifigs, year and price in euros */
 function SpecPills({ set }: { set: SetDetail }) {
-  const { t, formatNumber, formatPrice } = useI18n()
-  const price = formatPrice(set.rrpEur, 'EUR')
+  const { t, formatNumber, formatSetPrice } = useI18n()
+  const price = formatSetPrice(set)
   const pills = [
     { icon: Blocks, label: t('set.pieces'), value: formatNumber(set.numParts) },
     { icon: UserRound, label: t('set.minifigs'), value: formatNumber(set.numMinifigs) },
@@ -238,9 +231,11 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
             <dt>{t('set.originalPrice')}</dt>
             <dd>
               <Prices set={set} />
-              {set.availabilityStatus === 'retired' && !hasEstimate && set.rrpEur !== null && (
-                <span className="text-muted">{t('set.noLongerSold')}</span>
-              )}
+              {set.availabilityStatus === 'retired' &&
+                !hasEstimate &&
+                (set.rrpEur !== null || set.rrpUsd !== null) && (
+                  <span className="text-muted">{t('set.noLongerSold')}</span>
+                )}
             </dd>
 
             <EstimatedValue set={set} />

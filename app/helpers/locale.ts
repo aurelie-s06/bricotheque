@@ -33,3 +33,15 @@ export function resolveLocale(request: HttpRequest | undefined): Locale {
 export function safeReturnPath(value: unknown) {
   return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//') ? value : '/'
 }
+
+/**
+ * Original price shown to the visitor: euros on the French site, dollars
+ * on the English one. Used to filter and sort by price as well.
+ */
+export function priceColumn(locale: Locale): 'rrp_eur' | 'rrp_usd' {
+  return locale === 'en' ? 'rrp_usd' : 'rrp_eur'
+}
+
+export function priceCurrency(locale: Locale): 'EUR' | 'USD' {
+  return locale === 'en' ? 'USD' : 'EUR'
+}
