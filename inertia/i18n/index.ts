@@ -42,7 +42,12 @@ export function createI18n(locale: Locale) {
     if (value === null || value === undefined) {
       return null
     }
-    return new Intl.NumberFormat(intlLocale, { style: 'currency', currency }).format(value)
+    // "narrowSymbol": "849,99 $" and "$849.99", not "$US" / "US$"
+    return new Intl.NumberFormat(intlLocale, {
+      style: 'currency',
+      currency,
+      currencyDisplay: 'narrowSymbol',
+    }).format(value)
   }
 
   /** Currency of the prices: euros on the French site, dollars on the English one */
