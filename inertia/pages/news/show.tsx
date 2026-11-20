@@ -134,7 +134,7 @@ export default function NewsShow({ month, thisMonth, recentMonths, firstYear, se
 
       {isCurrent && (
         <p>
-          <Link href="/sets?status=upcoming&sort=release">{t('news.seeUpcoming')}</Link>
+          <Link href="/sets?status=upcoming">{t('news.seeUpcoming')}</Link>
         </p>
       )}
     </>

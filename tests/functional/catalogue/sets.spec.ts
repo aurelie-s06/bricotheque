@@ -258,7 +258,8 @@ test.group('Catalogue: themes and home', (group) => {
       date_first_available: next,
     })
 
-    const list = await client.get('/sets').qs({ status: 'upcoming', sort: 'release' }).withInertia()
+    // Without a sort, the announcements are listed by release date
+    const list = await client.get('/sets').qs({ status: 'upcoming' }).withInertia()
     assert.deepEqual(setNums(list.inertiaProps), ['75192-2', '8880-1'])
 
     const home = await client.get('/').withInertia()

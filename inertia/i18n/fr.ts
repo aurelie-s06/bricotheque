@@ -396,7 +396,6 @@ const fr = {
   'sort.parts_desc': 'Plus de pièces',
   'sort.parts_asc': 'Moins de pièces',
   'sort.price_asc': 'Prix croissant',
-  'sort.release': 'Sortie la plus proche',
   'sort.price_desc': 'Prix décroissant',
   'status.upcoming': 'Bientôt',
   'status.available': 'En vente',

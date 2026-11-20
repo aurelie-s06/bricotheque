@@ -95,7 +95,7 @@ export default function Home({ showcase, announcements }: Props) {
         <section aria-labelledby="announcements-title" className="home-section">
           <div className="home-section__header">
             <h2 id="announcements-title">{t('home.announcements')}</h2>
-            <Link href="/sets?status=upcoming&sort=release">{t('home.allAnnouncements')}</Link>
+            <Link href="/sets?status=upcoming">{t('home.allAnnouncements')}</Link>
           </div>
           <ul className="card-grid">
             {announcements.map((set) => (

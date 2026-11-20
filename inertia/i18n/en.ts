@@ -396,7 +396,6 @@ const en: Record<keyof typeof fr, string> = {
   'sort.parts_desc': 'Most pieces',
   'sort.parts_asc': 'Fewest pieces',
   'sort.price_asc': 'Price: low to high',
-  'sort.release': 'Nearest release',
   'sort.price_desc': 'Price: high to low',
   'status.upcoming': 'Coming soon',
   'status.available': 'On sale',

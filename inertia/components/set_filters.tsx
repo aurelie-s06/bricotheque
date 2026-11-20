@@ -4,16 +4,8 @@ import { useI18n, type MessageKey } from '~/i18n'
 
 export type ThemeOption = { slug: string; name: string; depth: number }
 
-const SORTS = [
-  'recent',
-  'oldest',
-  'name',
-  'parts_desc',
-  'parts_asc',
-  'price_asc',
-  'price_desc',
-  'release',
-] as const
+// "Plus récents" is the first choice of the menu (no sort in the URL)
+const SORTS = ['oldest', 'name', 'parts_desc', 'parts_asc', 'price_asc', 'price_desc'] as const
 const STATUSES = ['upcoming', 'available', 'retired', 'unknown'] as const
 // Spare parts (kind "parts") stay in the catalogue but have no button of their own
 const TYPES = ['set', 'book', 'gear', 'bundle', 'all'] as const

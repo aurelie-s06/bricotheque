@@ -81,7 +81,9 @@ function applySort(
     query.orderByRaw('(`number` = ? OR `set_num` = ?) DESC', [filters.q, filters.q])
   }
 
-  switch (filters.sort ?? 'recent') {
+  // The announcements are listed by release date unless another sort is chosen
+  const defaultSort = filters.status === 'upcoming' ? 'release' : 'recent'
+  switch (filters.sort ?? defaultSort) {
     case 'recent':
       query.orderByRaw('`year` IS NULL').orderBy('year', 'desc')
       return naturalNumber()
