@@ -451,6 +451,8 @@ const fr = {
   // Themes
   'themes.title': 'Thèmes',
   'themes.all': 'Tous les thèmes de A à Z',
+  'themes.biggest': 'Les plus grands thèmes',
+  'themes.others': 'Tous les autres thèmes',
   'themes.filterLabel': 'Filtrer les thèmes',
   'themes.filterPlaceholder': 'Filtrer (ex. Ninjago, Castle…)',
   'themes.filterResults_one': '{count} thème correspond.',
@@ -473,6 +475,7 @@ const fr = {
   'theme.figureSubthemes_one': 'sous-thème',
   'theme.figureSubthemes_other': 'sous-thèmes',
   'theme.featured': 'Set phare :',
+  'theme.seeFeatured': 'Voir le set phare',
   'theme.subthemes': 'Sous-thèmes',
   'theme.unknownYear': 'Année inconnue',
 

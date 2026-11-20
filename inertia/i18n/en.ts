@@ -451,6 +451,8 @@ const en: Record<keyof typeof fr, string> = {
   // Themes
   'themes.title': 'Themes',
   'themes.all': 'All themes from A to Z',
+  'themes.biggest': 'The biggest themes',
+  'themes.others': 'All the other themes',
   'themes.filterLabel': 'Filter themes',
   'themes.filterPlaceholder': 'Filter (e.g. Ninjago, Castle…)',
   'themes.filterResults_one': '{count} theme matches.',
@@ -473,6 +475,7 @@ const en: Record<keyof typeof fr, string> = {
   'theme.figureSubthemes_one': 'subtheme',
   'theme.figureSubthemes_other': 'subthemes',
   'theme.featured': 'Flagship set:',
+  'theme.seeFeatured': 'See the flagship set',
   'theme.subthemes': 'Subthemes',
   'theme.unknownYear': 'Unknown year',
 

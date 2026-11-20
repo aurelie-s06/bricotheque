@@ -7,7 +7,7 @@ import Breadcrumb from '~/components/breadcrumb'
 import Pagination, { type PaginationData } from '~/components/pagination'
 import { type InertiaProps } from '~/types'
 import { useI18n } from '~/i18n'
-import { thumbnailOf } from '~/components/set_image'
+import SetImage from '~/components/set_image'
 import { displaySetNum } from '~/lib/set_number'
 
 type ThemeEntry = { name: string; url: string; count: number }
@@ -21,7 +21,6 @@ type Featured = {
 }
 type Props = InertiaProps<{
   theme: ThemeEntry & { firstYear: number | null; lastYear: number | null }
-  mosaic: string[]
   featured: Featured | null
   themeChain: { name: string; url: string }[]
   subthemes: ThemeEntry[]
@@ -45,7 +44,6 @@ function byYear(sets: Data.BrickSet[]) {
 
 export default function ThemeShow({
   theme,
-  mosaic,
   featured,
   themeChain,
   subthemes,
@@ -71,26 +69,10 @@ export default function ThemeShow({
         ]}
       />
 
-      <section className="hero theme-hero" aria-labelledby="theme-title">
-        {mosaic.length > 0 && (
-          // Decorative: the latest sets of the theme, faded behind the text
-          <div className="hero__mosaic" aria-hidden="true">
-            {mosaic.map((src) => (
-              <img
-                key={src}
-                src={thumbnailOf(src) ?? src}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                width={250}
-                height={250}
-              />
-            ))}
-          </div>
-        )}
-        <div className="hero__content">
-          <h1 id="theme-title">{theme.name}</h1>
-          <ul className="hero__figures">
+      <header className={`theme-banner${featured ? '' : ' theme-banner--plain'}`}>
+        <div className="theme-banner__text">
+          <h1>{theme.name}</h1>
+          <ul className="theme-banner__figures">
             <li>
               <strong>{formatNumber(theme.count)}</strong> {tc('theme.figureSets', theme.count)}
             </li>
@@ -108,21 +90,23 @@ export default function ThemeShow({
               </li>
             )}
           </ul>
-          {featured && (
-            <p className="theme-hero__featured">
-              {t('theme.featured')}{' '}
-              <Link href={featured.url}>
-                {displaySetNum(featured.setNum)} {featured.name}
-              </Link>
-              <span className="text-muted">
-                {' '}
-                · {tc('count.pieces', featured.numParts)}
-                {featured.year && ` · ${featured.year}`}
-              </span>
-            </p>
+
+          {subthemes.length > 0 && (
+            <nav className="theme-banner__subthemes" aria-label={t('theme.subthemes')}>
+              <ul className="chip-list">
+                {subthemes.map((subtheme) => (
+                  <li key={subtheme.url}>
+                    <Link href={subtheme.url} className="chip">
+                      {subtheme.name} <span className="chip__count">{subtheme.count}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           )}
+
           {(pagination.total !== theme.count || pagination.lastPage > 1) && (
-            <p className="text-muted">
+            <p className="text-muted theme-banner__pages">
               {[
                 // the number of sets is already in the figures above
                 pagination.total !== theme.count &&
@@ -142,22 +126,32 @@ export default function ThemeShow({
             </p>
           )}
         </div>
-      </section>
 
-      {subthemes.length > 0 && (
-        <section aria-labelledby="subthemes-title" className="subthemes">
-          <h2 id="subthemes-title">{t('theme.subthemes')}</h2>
-          <ul className="chip-list">
-            {subthemes.map((subtheme) => (
-              <li key={subtheme.url}>
-                <Link href={subtheme.url} className="chip">
-                  {subtheme.name} <span className="chip__count">{subtheme.count}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+        {featured && (
+          <figure className="theme-banner__featured">
+            <div className="theme-banner__image">
+              <SetImage src={featured.imgUrl} alt="" eager />
+            </div>
+            <figcaption className="theme-banner__caption">
+              <span className="theme-banner__label">{t('theme.featured')}</span>
+              <span className="theme-banner__set">
+                {displaySetNum(featured.setNum)} {featured.name}
+              </span>
+              <span className="text-muted">
+                {tc('count.pieces', featured.numParts)}
+                {featured.year && ` · ${featured.year}`}
+              </span>
+              <Link href={featured.url} className="btn btn--secondary btn--sm">
+                {t('theme.seeFeatured')}
+                <span className="visually-hidden">
+                  {' '}
+                  {displaySetNum(featured.setNum)} {featured.name}
+                </span>
+              </Link>
+            </figcaption>
+          </figure>
+        )}
+      </header>
 
       {byYear(sets).map((group) => (
         <section key={group.year ?? 'unknown'} aria-labelledby={`year-${group.year ?? 'unknown'}`}>
