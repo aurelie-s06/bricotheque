@@ -4,10 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#2B3036" />
-    {{-- "?v=2": new address, browsers fetch the new logo instead of their cached icon --}}
+    {{-- Icons under new names (/icons/…) so that the browsers (Safari above all,
+         which ignores SVG favicons and keeps its own cache) fetch the new logo.
+         PNG and ICO first: Safari takes the first one it can read. --}}
+    <link rel="icon" href="/icons/bricotheque-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-32x32.png?v=2" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" sizes="180x180" />
+    <link rel="apple-touch-icon" href="/icons/bricotheque-180.png" sizes="180x180" />
     <link rel="manifest" href="/site.webmanifest?v=2" />
 
     @viteReactRefresh({ nonce: cspNonce })
