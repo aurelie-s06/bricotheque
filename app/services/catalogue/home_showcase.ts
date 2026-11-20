@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import app from '@adonisjs/core/services/app'
 import db from '@adonisjs/lucid/services/db'
+import { catalogueVersion } from '#services/catalogue/catalogue_version'
 import ThemeTree from '#services/catalogue/theme_tree'
 import { themePath } from '#helpers/urls'
 
@@ -20,7 +21,7 @@ export type Showcase = {
   themes: { name: string; url: string; count: number; image: string | null }[]
 }
 
-let cached: { at: number; value: Showcase } | null = null
+let cached: { at: number; version: string; value: Showcase } | null = null
 
 /**
  * What makes the home page lively: figures of the catalogue, a mosaic of
@@ -29,9 +30,13 @@ let cached: { at: number; value: Showcase } | null = null
 export default class HomeShowcase {
   static async get(): Promise<Showcase> {
     // Fresh figures in the tests, cached figures for the visitors
-    if (!app.inTest && cached && Date.now() - cached.at < CACHE_MS) return cached.value
+    // Rebuilt after its delay, or as soon as an import has finished
+    const version = await catalogueVersion()
+    if (!app.inTest && cached && cached.version === version && Date.now() - cached.at < CACHE_MS) {
+      return cached.value
+    }
     const value = await this.#build()
-    cached = { at: Date.now(), value }
+    cached = { at: Date.now(), version, value }
     return value
   }
 

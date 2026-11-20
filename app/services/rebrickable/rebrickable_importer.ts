@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import { readCsv } from '#services/rebrickable/csv'
 import { emptyStats, upsertBatch, type ImportStats } from '#services/rebrickable/bulk'
@@ -219,8 +220,28 @@ export default class RebrickableImporter {
     if (batch.length) {
       await this.#upsertSets(batch, stats)
     }
+    await this.#markUpcoming()
     this.#onProgress(stats.read)
     return stats
+  }
+
+  /**
+   * A new set of a future year is an announcement: "upcoming" right away,
+   * without waiting for Brickset (which refines it with the exact date).
+   * A status chosen by hand in the back office is kept.
+   */
+  async #markUpcoming() {
+    await db
+      .from('sets')
+      .where('availability_status', 'unknown')
+      .whereNull('date_first_available')
+      .where('year', '>', DateTime.utc().year)
+      .where((query) =>
+        query
+          .whereNull('locked_fields')
+          .orWhere('locked_fields', 'not like', '%availability_status%')
+      )
+      .update({ availability_status: 'upcoming' })
   }
 
   /**

@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import app from '@adonisjs/core/services/app'
 import db from '@adonisjs/lucid/services/db'
+import { catalogueVersion } from '#services/catalogue/catalogue_version'
 import type ThemeTree from '#services/catalogue/theme_tree'
 
 /** The picture of a theme is its biggest set of its last years */
@@ -8,7 +9,7 @@ const RECENT_YEARS = 5
 /** Pictures change once a night: kept in memory for a while */
 const CACHE_MS = 6 * 60 * 60 * 1000
 
-let cached: { at: number; value: Map<number, string> } | null = null
+let cached: { at: number; version: string; value: Map<number, string> } | null = null
 
 /**
  * One picture per main theme (for the themes gallery): the biggest set of
@@ -17,9 +18,13 @@ let cached: { at: number; value: Map<number, string> } | null = null
  */
 export default class ThemePictures {
   static async get(themes: ThemeTree): Promise<Map<number, string>> {
-    if (!app.inTest && cached && Date.now() - cached.at < CACHE_MS) return cached.value
+    // Rebuilt after its delay, or as soon as an import has finished
+    const version = await catalogueVersion()
+    if (!app.inTest && cached && cached.version === version && Date.now() - cached.at < CACHE_MS) {
+      return cached.value
+    }
     const value = await this.#build(themes)
-    cached = { at: Date.now(), value }
+    cached = { at: Date.now(), version, value }
     return value
   }
 

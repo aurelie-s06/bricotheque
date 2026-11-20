@@ -7,12 +7,15 @@ export default class HomeController {
   /**
    * GET /: search over a mosaic of the latest sets, figures of the
    * catalogue, the big themes of the moment and the latest announcements
-   * (sets not on sale yet, nearest release first).
+   * (sets not on sale yet, the latest announced first).
    */
   async index({ inertia }: HttpContext) {
     const announcements = await BrickSet.query()
       .where('kind', 'set')
       .where('availability_status', 'upcoming')
+      // the sets announced last (added by the latest import) first, then
+      // the nearest release
+      .orderBy('created_at', 'desc')
       .orderByRaw("COALESCE(`date_first_available`, CONCAT(`year`, '-12-31')) ASC")
       .orderBy('set_num', 'asc')
       .limit(8)
