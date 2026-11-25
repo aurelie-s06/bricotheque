@@ -28,7 +28,6 @@ const paragraphsOf = (text: string | null) => (text ?? '').split(/\n{2,}/).filte
 function SpecPills({ set }: { set: SetDetail }) {
   const { t, formatNumber, formatSetPrice } = useI18n()
   const price = formatSetPrice(set)
-  const retired = set.availabilityStatus === 'retired'
   const pills = [
     { icon: Blocks, label: t('set.pieces'), value: formatNumber(set.numParts), note: null },
     {
@@ -45,8 +44,6 @@ function SpecPills({ set }: { set: SetDetail }) {
           icon: Tag,
           label: t('set.originalPrice'),
           value: price,
-          // the price of a retired set is the one it had in the shops
-          note: retired ? t('set.noLongerSoldShort') : null,
         }
       : null,
   ].filter((pill) => pill !== null)
