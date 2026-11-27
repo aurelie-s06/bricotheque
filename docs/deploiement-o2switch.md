@@ -123,6 +123,7 @@ LIMITER_STORE=database
 
 BRICKSET_API_KEY="ta_cle_brickset"
 BRICKSET_DAILY_LIMIT=100
+BRICKSET_IMAGES_DAILY_LIMIT=20
 
 MAIL_MAILER=smtp
 MAIL_FROM_NAME=Bricothèque
@@ -157,7 +158,7 @@ node ace import:brickset
 ```
 
 - **Rebrickable** : 1 à 3 minutes. Les fichiers sont téléchargés dans `tmp/rebrickable`.
-- **Brickset** : un passage complet utilise environ **98 appels** sur les 100 autorisés par jour. Si le quota est atteint, l'import s'arrête proprement et reprend automatiquement la nuit suivante, grâce au cron de l'étape 12.
+- **Brickset** : un passage complet utilise environ **98 appels**. Depuis novembre 2026, tous les appels comptent dans les 100 autorisés par jour, et 20 sont gardés pour les photos supplémentaires des sets (`BRICKSET_IMAGES_DAILY_LIMIT`). L'import s'arrête donc vers 78 appels et reprend automatiquement la nuit suivante, grâce au cron de l'étape 12.
 
 ## 11. Démarrer le site et créer ton compte administrateur
 
@@ -182,7 +183,7 @@ cPanel › **Tâches Cron** › ajoute deux tâches. Remplace le chemin `nodeven
 source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque && node ace jobs:work >> tmp/jobs.log 2>&1
 ```
 
-**Mise à jour automatique de la nuit**, tous les jours à 3 h 30. Une fois par semaine, elle commence par une sauvegarde de la base. Elle envoie ensuite les alertes wishlist par e-mail aux membres qui les ont activées, puis vérifie un lot de 5 000 images (les cassées apparaissent dans Administration › Images manquantes) :
+**Mise à jour automatique de la nuit**, tous les jours à 3 h 30. Une fois par semaine, elle commence par une sauvegarde de la base. Elle envoie ensuite les alertes wishlist par e-mail aux membres qui les ont activées, vérifie un lot de 5 000 images (les cassées apparaissent dans Administration › Images manquantes), puis récupère les photos supplémentaires des sets les plus collectionnés :
 
 ```
 source /home/USER/nodevenv/bricotheque/24/bin/activate && cd /home/USER/bricotheque && node ace sync:all >> tmp/sync.log 2>&1
@@ -217,6 +218,15 @@ Ne supprime pas les lignes `Passenger…` écrites par cPanel.
   3. au bout de 2 à 5 minutes : « Terminée », notification, liste des nouveautés et historique mis à jour ;
   4. s'il reste « En attente », regarde `tmp/jobs.log` dans le Gestionnaire de fichiers : en général, c'est le chemin `nodevenv` du cron qui est faux.
 - [ ] Sur ton Mac, `A11Y_BASE_URL=https://bricotheque.exemple.fr npm run test:a11y` ne signale aucune erreur.
+
+## Photos supplémentaires des sets
+
+Brickset fournit plusieurs photos par set, mais chaque set coûte un appel du quota quotidien. Elles sont donc récupérées petit à petit, au plus `BRICKSET_IMAGES_DAILY_LIMIT` sets par jour (20 par défaut) :
+
+- à la première visite de la fiche d'un set, puis gardées en base et rafraîchies tous les 90 jours ;
+- la nuit, pour la moitié de ce budget, en commençant par les sets les plus présents dans les collections.
+
+Un set n'est demandé que si Brickset annonce des photos pour lui : ce nombre arrive avec l'import de nuit, il faut donc une passe complète de l'import Brickset avant que les premières photos apparaissent. Si Brickset répond par une erreur (quota atteint), les demandes s'arrêtent une heure ; la fiche s'affiche normalement, avec la seule image principale.
 
 ## Sauvegardes de la base
 

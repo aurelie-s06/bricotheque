@@ -236,8 +236,9 @@ test.group('import:brickset command', (group) => {
 
   test('records an interrupted run with its cursor, then resumes it', async ({ assert }) => {
     await seedCatalogue()
-    // 96 calls already made today: 2 left before the margin
-    let api = new FakeBricksetApi(bricksetFixtures(), 96)
+    // 76 calls already made today: 2 left before the margin and the 20
+    // calls kept for the pictures
+    let api = new FakeBricksetApi(bricksetFixtures(), 76)
     ImportBrickset.apiFactory = () => api
 
     const first = await ace.create(ImportBrickset, ['--refresh'])

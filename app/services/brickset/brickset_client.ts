@@ -1,5 +1,6 @@
 import type {
   BricksetApi,
+  BricksetImage,
   GetSetsParams,
   GetSetsResponse,
   KeyUsage,
@@ -54,7 +55,20 @@ export default class BricksetClient implements BricksetApi {
     return { matches: body.matches, sets: body.sets ?? [] }
   }
 
-  async #call<T>(method: string, fields: Record<string, string> = {}): Promise<T> {
+  async getAdditionalImages(setId: number): Promise<BricksetImage[]> {
+    const body = await this.#call<{ additionalImages?: BricksetImage[] }>(
+      'getAdditionalImages',
+      { setID: String(setId) },
+      15_000
+    )
+    return body.additionalImages ?? []
+  }
+
+  async #call<T>(
+    method: string,
+    fields: Record<string, string> = {},
+    timeoutMs = 60_000
+  ): Promise<T> {
     const response = await this.#fetch(`${BRICKSET_API_URL}/${method}`, {
       method: 'POST',
       headers: {
@@ -62,7 +76,7 @@ export default class BricksetClient implements BricksetApi {
         'User-Agent': 'Bricotheque-importer',
       },
       body: new URLSearchParams({ apiKey: this.#apiKey, ...fields }),
-      signal: AbortSignal.timeout(60_000),
+      signal: AbortSignal.timeout(timeoutMs),
     })
     if (!response.ok) {
       throw new BricksetError(`Brickset ${method} : HTTP ${response.status}`)

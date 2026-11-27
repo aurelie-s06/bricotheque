@@ -96,6 +96,7 @@ test.group('Brickset: data mapping', () => {
       date_last_available: null,
       subtheme: null,
       description: null,
+      additional_image_count: null,
     })
     assert.equal(
       setNumOf({ setID: 1, number: '10179', numberVariant: 2, name: '', year: 2007 }),

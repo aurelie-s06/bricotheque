@@ -44,8 +44,10 @@ export type BricksetStats = {
 }
 
 export type BricksetImporterOptions = {
-  /** max getSets calls per day (Brickset quota) */
+  /** max API calls per day (Brickset quota) */
   dailyLimit?: number
+  /** calls of the quota left for other uses (additional pictures) */
+  reserve?: number
   /** sets per page (Brickset maximum: 500) */
   pageSize?: number
   /** directory for cached API responses */
@@ -78,6 +80,7 @@ const DATA_COLUMNS = [
   'date_last_available',
   'subtheme',
   'description',
+  'additional_image_count',
 ] as const
 
 type StoredSet = { id: number; set_num: string; locked_fields: string | null } & BricksetColumns
@@ -95,6 +98,7 @@ export class QuotaReachedError extends Error {}
 export default class BricksetImporter {
   #api: BricksetApi
   #dailyLimit: number
+  #reserve: number
   #pageSize: number
   #cacheDirectory: string
   #cacheHours: number
@@ -110,6 +114,7 @@ export default class BricksetImporter {
   constructor(api: BricksetApi, options: BricksetImporterOptions) {
     this.#api = api
     this.#dailyLimit = options.dailyLimit ?? 100
+    this.#reserve = options.reserve ?? 0
     this.#pageSize = options.pageSize ?? PAGE_SIZE
     this.#cacheDirectory = options.cacheDirectory
     this.#cacheHours = options.cacheHours ?? 20
@@ -271,9 +276,10 @@ export default class BricksetImporter {
   }
 
   #assertQuota() {
-    if (this.#quotaUsed >= this.#dailyLimit - QUOTA_MARGIN) {
+    if (this.#quotaUsed >= this.#dailyLimit - QUOTA_MARGIN - this.#reserve) {
+      const reserved = this.#reserve ? `, ${this.#reserve} gardés pour les photos` : ''
       throw new QuotaReachedError(
-        `Quota Brickset presque atteint (${this.#quotaUsed}/${this.#dailyLimit} appels getSets aujourd'hui)`
+        `Quota Brickset presque atteint (${this.#quotaUsed}/${this.#dailyLimit} appels aujourd'hui${reserved})`
       )
     }
   }
@@ -355,6 +361,7 @@ export default class BricksetImporter {
         'rrp_gbp',
         'subtheme',
         'description',
+        'additional_image_count',
         'locked_fields',
         db.raw("DATE_FORMAT(date_first_available, '%Y-%m-%d') as date_first_available"),
         db.raw("DATE_FORMAT(date_last_available, '%Y-%m-%d') as date_last_available")

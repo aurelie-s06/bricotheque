@@ -448,6 +448,10 @@ const en: Record<keyof typeof fr, string> = {
   'set.availableUntil': 'until {to}',
   'set.onRebrickable': 'View on Rebrickable',
   'set.onBrickset': 'View on Brickset',
+  'set.photos': '{count} photos of the set',
+  'set.photoShow': 'Show photo {number} of {total}',
+  'set.photoAlt': '{name}, photo {number} of {total}',
+  'set.photosCredit': 'Additional photos: Brickset (LEGO).',
   'set.description': 'Description',
   'set.descriptionTranslated':
     'French translation of the English description provided by Brickset (LEGO.com).',

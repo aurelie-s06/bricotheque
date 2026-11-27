@@ -1,5 +1,6 @@
 import type {
   BricksetApi,
+  BricksetImage,
   BricksetSet,
   GetSetsParams,
   GetSetsResponse,
@@ -11,6 +12,11 @@ import type {
  */
 export class FakeBricksetApi implements BricksetApi {
   calls: GetSetsParams[] = []
+  /** Pictures returned by getAdditionalImages, by Brickset setID */
+  images = new Map<number, BricksetImage[]>()
+  imageCalls: number[] = []
+  /** Makes getAdditionalImages fail (quota, network) */
+  imagesError: Error | null = null
 
   constructor(
     public sets: BricksetSet[],
@@ -24,6 +30,13 @@ export class FakeBricksetApi implements BricksetApi {
 
   async getSetsCallsToday() {
     return this.callsToday
+  }
+
+  async getAdditionalImages(setId: number) {
+    this.imageCalls.push(setId)
+    this.callsToday++
+    if (this.imagesError) throw this.imagesError
+    return this.images.get(setId) ?? []
   }
 
   async getSets(params: GetSetsParams): Promise<GetSetsResponse> {

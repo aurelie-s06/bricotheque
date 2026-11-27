@@ -4,6 +4,7 @@ import SyncJob from '#services/jobs/sync_job'
 import WishlistAlerts from '#services/wishlist_alerts'
 import ImageHealth, { NIGHTLY_LIMIT } from '#services/admin/image_health'
 import DbBackup from '#services/admin/db_backup'
+import SetGallery from '#services/brickset/set_gallery'
 
 /**
  * Full data update now (Rebrickable, then Brickset), e.g. from a nightly
@@ -63,6 +64,15 @@ export default class SyncAll extends BaseCommand {
       )
     } catch (error) {
       this.logger.error(`Vérification des images en échec : ${(error as Error).message}`)
+      this.exitCode = 1
+    }
+
+    // Additional pictures of the most collected sets, with the quota kept for them
+    try {
+      const fetched = await SetGallery.prefetch((message) => this.logger.warning(message))
+      this.logger.success(`Photos supplémentaires : ${fetched} set(s) mis à jour`)
+    } catch (error) {
+      this.logger.error(`Photos supplémentaires en échec : ${(error as Error).message}`)
       this.exitCode = 1
     }
   }

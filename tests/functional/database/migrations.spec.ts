@@ -8,6 +8,7 @@ const APP_TABLES = [
   'minifigs',
   'password_reset_tokens',
   'rate_limits',
+  'set_images',
   'set_minifigs',
   'sets',
   'themes',

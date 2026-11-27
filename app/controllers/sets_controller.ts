@@ -10,6 +10,7 @@ import { setNumCandidates, setPath, themePath } from '#helpers/urls'
 import { resolveLocale } from '#helpers/locale'
 import { rememberListUrl } from '#helpers/catalogue_memory'
 import Collection from '#services/collection'
+import SetGallery from '#services/brickset/set_gallery'
 
 export default class SetsController {
   /**
@@ -61,6 +62,9 @@ export default class SetsController {
 
     await set.load('theme')
     await set.load('minifigs', (query) => query.orderBy('name'))
+    // Additional pictures: fetched from Brickset at the first visit, then stored
+    await SetGallery.ensure(set)
+    const gallery = await SetGallery.imagesOf(set.id)
 
     const themes = await ThemeTree.load()
     const chain = themes.ancestorsOf(set.themeId)
@@ -70,6 +74,7 @@ export default class SetsController {
     return inertia.render('sets/show', {
       set: BrickSetTransformer.transform(set).useVariant('forDetail'),
       themeChain: chain.map((theme) => ({ name: theme.name, url: themePath(theme) })),
+      gallery,
       ownedEntry: owned ? { quantity: owned.quantity, condition: owned.condition } : null,
       fallbackDescription: set.description
         ? null

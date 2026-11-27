@@ -129,6 +129,23 @@ export class RateLimitSchema extends BaseModel {
   declare points: number
 }
 
+export class SetImageSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'imageUrl', 'position', 'setId', 'thumbnailUrl'] as const
+  $columns = SetImageSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare imageUrl: string
+  @column()
+  declare position: number
+  @column()
+  declare setId: number
+  @column()
+  declare thumbnailUrl: string | null
+}
+
 export class SetMinifigSchema extends BaseModel {
   static $columns = ['minifigId', 'quantity', 'setId'] as const
   $columns = SetMinifigSchema.$columns
@@ -141,8 +158,12 @@ export class SetMinifigSchema extends BaseModel {
 }
 
 export class SetSchema extends BaseModel {
-  static $columns = ['availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgBrokenAt', 'imgCheckedAt', 'imgUrl', 'imgUrlManual', 'isManual', 'kind', 'lockedFields', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
+  static $columns = ['additionalImageCount', 'additionalImagesFetchedAt', 'availabilityStatus', 'bricksetId', 'bricksetSyncedAt', 'createdAt', 'dateFirstAvailable', 'dateLastAvailable', 'description', 'descriptionFr', 'descriptionFrSourceHash', 'descriptionFrTranslatedAt', 'estimatedValueCurrency', 'estimatedValueNew', 'estimatedValueUpdatedAt', 'estimatedValueUsed', 'id', 'imgBrokenAt', 'imgCheckedAt', 'imgUrl', 'imgUrlManual', 'isManual', 'kind', 'lockedFields', 'name', 'numMinifigs', 'numParts', 'number', 'rrpEur', 'rrpGbp', 'rrpUsd', 'setNum', 'slug', 'subtheme', 'themeId', 'updatedAt', 'variant', 'year'] as const
   $columns = SetSchema.$columns
+  @column()
+  declare additionalImageCount: number | null
+  @column.dateTime()
+  declare additionalImagesFetchedAt: DateTime | null
   @column()
   declare availabilityStatus: 'upcoming' | 'available' | 'retired' | 'unknown'
   @column()

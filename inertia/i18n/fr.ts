@@ -448,6 +448,10 @@ const fr = {
   'set.availableUntil': 'jusqu’au {to}',
   'set.onRebrickable': 'Voir sur Rebrickable',
   'set.onBrickset': 'Voir sur Brickset',
+  'set.photos': '{count} photos du set',
+  'set.photoShow': 'Afficher la photo {number} sur {total}',
+  'set.photoAlt': '{name}, photo {number} sur {total}',
+  'set.photosCredit': 'Photos supplémentaires : Brickset (LEGO).',
   'set.description': 'Description',
   'set.descriptionTranslated':
     'Traduction française de la description anglaise fournie par Brickset (LEGO.com).',

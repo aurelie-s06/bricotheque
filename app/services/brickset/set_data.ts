@@ -97,6 +97,8 @@ export function bricksetColumns(set: BricksetSet) {
     date_last_available: toDate(set.exitDate),
     subtheme: subtheme && subtheme !== '{None}' ? subtheme : null,
     description: htmlToText(set.extendedData?.description),
+    additional_image_count:
+      typeof set.additionalImageCount === 'number' ? set.additionalImageCount : null,
   }
 }
 

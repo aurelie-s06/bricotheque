@@ -10,6 +10,7 @@ import BricksetImporter, {
   type BricksetStats,
   type ImportOutcome,
 } from '#services/brickset/brickset_importer'
+import SetGallery from '#services/brickset/set_gallery'
 import type { BricksetApi } from '#services/brickset/types'
 
 /** How many warnings are printed before only counting them */
@@ -154,6 +155,8 @@ export default class ImportBrickset extends BaseCommand {
   #importer(api: BricksetApi, onCursor?: (cursor: BricksetCursor, stats: BricksetStats) => void) {
     return new BricksetImporter(api, {
       dailyLimit: env.get('BRICKSET_DAILY_LIMIT') ?? 100,
+      // Not for a single set (--set): only the full import leaves room for the pictures
+      reserve: this.set ? 0 : SetGallery.dailyLimit(),
       cacheDirectory: ImportBrickset.cacheDirectory ?? this.app.tmpPath('brickset'),
       cacheHours: this.refresh ? 0 : 20,
       delayMs: ImportBrickset.apiFactory ? 0 : 1000,

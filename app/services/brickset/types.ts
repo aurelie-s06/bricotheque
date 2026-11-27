@@ -31,8 +31,13 @@ export type BricksetSet = {
     DE?: BricksetCountryPrice
   }
   extendedData?: { description?: string; tags?: string[] }
+  /** Pictures available with getAdditionalImages (0 when none) */
+  additionalImageCount?: number
   lastUpdated?: string
 }
+
+/** One entry of getAdditionalImages */
+export type BricksetImage = { thumbnailURL?: string; imageURL?: string }
 
 export type GetSetsParams = {
   setNumber?: string
@@ -54,7 +59,9 @@ export type KeyUsage = { dateStamp: string; count: number }
  */
 export interface BricksetApi {
   checkKey(): Promise<boolean>
-  /** getSets calls made today (UTC) with this key */
+  /** API calls made today (UTC) with this key (every method counts since 2026-11-19) */
   getSetsCallsToday(): Promise<number>
   getSets(params: GetSetsParams): Promise<GetSetsResponse>
+  /** Additional pictures of a set (Brickset setID); one call of the quota */
+  getAdditionalImages(setId: number): Promise<BricksetImage[]>
 }

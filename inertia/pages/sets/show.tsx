@@ -4,6 +4,7 @@ import { type Data } from '@generated/data'
 import AppLayout from '~/layouts/app'
 import Seo from '~/components/seo'
 import SetImage from '~/components/set_image'
+import SetGallery, { type GalleryImage } from '~/components/set_gallery'
 import StatusBadge from '~/components/status_badge'
 import Breadcrumb from '~/components/breadcrumb'
 import CollectionButtons from '~/components/collection_buttons'
@@ -18,6 +19,7 @@ type SetDetail = Data.BrickSet.Variants['forDetail']
 type Props = InertiaProps<{
   set: SetDetail
   themeChain: { name: string; url: string }[]
+  gallery: GalleryImage[]
   ownedEntry: SetEntry | null
   fallbackDescription: string | null
 }>
@@ -160,7 +162,13 @@ function metaText(set: SetDetail, locale: string, fallback: string | null) {
   return flat.length > 155 ? `${flat.slice(0, 155)}…` : flat
 }
 
-export default function SetShow({ set, themeChain, ownedEntry, fallbackDescription }: Props) {
+export default function SetShow({
+  set,
+  themeChain,
+  gallery,
+  ownedEntry,
+  fallbackDescription,
+}: Props) {
   const { props } = usePage()
   const { t, formatNumber, locale } = useI18n()
   const lastTheme = themeChain.at(-1)
@@ -187,9 +195,7 @@ export default function SetShow({ set, themeChain, ownedEntry, fallbackDescripti
       />
 
       <article className="set-detail">
-        <div className="set-detail__media">
-          <SetImage src={set.imgUrl} alt={imageAlt} eager item={{ kind: 'sets', id: set.id }} />
-        </div>
+        <SetGallery setId={set.id} imgUrl={set.imgUrl} gallery={gallery} alt={imageAlt} />
 
         <div className="set-detail__info set-panel">
           <header className="set-panel__head">

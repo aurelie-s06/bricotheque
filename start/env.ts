@@ -42,8 +42,10 @@ export default await Env.create(new URL('../', import.meta.url), {
 
   // Brickset API v3 (https://brickset.com/tools/webservices/requestkey/)
   BRICKSET_API_KEY: Env.schema.secret.optional(),
-  // Max getSets calls per day allowed by Brickset (the importer keeps a small margin)
+  // Max calls per day allowed by Brickset, all methods (the importer keeps a small margin)
   BRICKSET_DAILY_LIMIT: Env.schema.number.optional(),
+  // Calls of that quota kept for the additional pictures of the sets (default 20)
+  BRICKSET_IMAGES_DAILY_LIMIT: Env.schema.number.optional(),
 
   // Claude API (Anthropic): French translation of the Brickset descriptions
   ANTHROPIC_API_KEY: Env.schema.secret.optional(),
